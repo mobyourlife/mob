@@ -5,4 +5,32 @@ body {
   padding-bottom: 20px;
   overflow-y: scroll; }
 
+/* line 9, D:/Repos/mob/public/css/custom.scss */
+.navbar-mob {
+  background-color: #fff;
+  border-color: #e7e7e7; }
+
+/* line 14, D:/Repos/mob/public/css/custom.scss */
+.navbar-brand {
+  margin-top: -6px; }
+
+/* line 18, D:/Repos/mob/public/css/custom.scss */
+.jumbotron {
+  background-color: #009fe3;
+  background-image: url(../img/jumbg.jpg);
+  background-repeat: repeat;
+  color: #fff; }
+
+/* line 25, D:/Repos/mob/public/css/custom.scss */
+.btn-jumbo {
+  background-color: #fff;
+  border-color: #3071a9;
+  color: #000; }
+
+/* line 31, D:/Repos/mob/public/css/custom.scss */
+.btn-jumbo:hover {
+  background-color: #f58634;
+  border-color: #f1b88f;
+  color: #fff; }
+
 /*# sourceMappingURL=custom.css.map */

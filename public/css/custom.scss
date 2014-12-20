@@ -5,31 +5,89 @@ body {
     padding-bottom: 20px;
     overflow-y: scroll;
 }
-
 .navbar-mob {
-	background-color: #fff;
-	border-color: #e7e7e7;
+    background-color: #fff;
+    border-color: #e7e7e7;
 }
-
 .navbar-brand {
-	margin-top: -6px;
+    margin-top: -6px;
 }
-
 .jumbotron {
-	background-color: #009fe3;
-	background-image: url(../img/jumbg.jpg);
-	background-repeat: repeat;
-	color: #fff;
+    background-color: #009fe3;
+    background-image: url(../img/jumbg.jpg);
+    background-repeat: repeat;
+    color: #fff;
 }
-
 .btn-jumbo {
-	background-color: #fff;
-	border-color: #3071a9;
-	color: #000;
+    background-color: #fff;
+    border-color: #3071a9;
+    color: #000;
 }
+.btn-jumbo:hover {
+    background-color: #f58634;
+    border-color: #f1b88f;
+    color: #fff;
+}
+/* Boxes da página inicial */
 
-.btn-jumbo:hover{
-	background-color: #f58634;
-	border-color: #f1b88f;
-	color: #fff;
+/* Features da página inicial */
+
+.box > .icon {
+    text-align: center;
+    position: relative;
+}
+.box > .icon > .image {
+    position: relative;
+    z-index: 2;
+    margin: auto;
+    width: 88px;
+    height: 88px;
+    border: 8px solid white;
+    line-height: 88px;
+    border-radius: 50%;
+    background: #009fe3;
+    vertical-align: middle;
+}
+.box > .icon:hover > .image {
+    background: #f58634;
+    cursor: pointer;
+}
+.box > .icon > .image > i {
+    font-size: 36px !important;
+    color: #fff !important;
+}
+.box > .icon:hover > .image > i {
+    color: white !important;
+}
+.box > .icon > .info {
+    margin-top: -24px;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid #e0e0e0;
+    padding: 15px 0 10px 0;
+}
+.box > .icon:hover > .info {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: #e0e0e0;
+    color: white;
+}
+.box > .icon > .info > h3.title {
+    color: #222;
+}
+.box > .icon > .info > p {
+    color: #777;
+    line-height: 1.5em;
+    margin: 20px;
+}
+.box > .icon > .info > .more a {
+    color: #222;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.box > .icon:hover > .info > .more > a {
+    color: #fff;
+    padding: 6px 8px;
+    background-color: #009fe3;
+}
+.box .space {
+    height: 30px;
 }

@@ -5,32 +5,105 @@ body {
   padding-bottom: 20px;
   overflow-y: scroll; }
 
-/* line 9, D:/Repos/mob/public/css/custom.scss */
+/* line 8, D:/Repos/mob/public/css/custom.scss */
 .navbar-mob {
   background-color: #fff;
   border-color: #e7e7e7; }
 
-/* line 14, D:/Repos/mob/public/css/custom.scss */
+/* line 12, D:/Repos/mob/public/css/custom.scss */
 .navbar-brand {
   margin-top: -6px; }
 
-/* line 18, D:/Repos/mob/public/css/custom.scss */
+/* line 15, D:/Repos/mob/public/css/custom.scss */
 .jumbotron {
   background-color: #009fe3;
   background-image: url(../img/jumbg.jpg);
   background-repeat: repeat;
   color: #fff; }
 
-/* line 25, D:/Repos/mob/public/css/custom.scss */
+/* line 21, D:/Repos/mob/public/css/custom.scss */
 .btn-jumbo {
   background-color: #fff;
   border-color: #3071a9;
   color: #000; }
 
-/* line 31, D:/Repos/mob/public/css/custom.scss */
+/* line 26, D:/Repos/mob/public/css/custom.scss */
 .btn-jumbo:hover {
   background-color: #f58634;
   border-color: #f1b88f;
   color: #fff; }
+
+/* Boxes da página inicial */
+/* Features da página inicial */
+/* line 35, D:/Repos/mob/public/css/custom.scss */
+.box > .icon {
+  text-align: center;
+  position: relative; }
+
+/* line 39, D:/Repos/mob/public/css/custom.scss */
+.box > .icon > .image {
+  position: relative;
+  z-index: 2;
+  margin: auto;
+  width: 88px;
+  height: 88px;
+  border: 8px solid white;
+  line-height: 88px;
+  border-radius: 50%;
+  background: #009fe3;
+  vertical-align: middle; }
+
+/* line 51, D:/Repos/mob/public/css/custom.scss */
+.box > .icon:hover > .image {
+  background: #f58634;
+  cursor: pointer; }
+
+/* line 55, D:/Repos/mob/public/css/custom.scss */
+.box > .icon > .image > i {
+  font-size: 36px !important;
+  color: #fff !important; }
+
+/* line 59, D:/Repos/mob/public/css/custom.scss */
+.box > .icon:hover > .image > i {
+  color: white !important; }
+
+/* line 62, D:/Repos/mob/public/css/custom.scss */
+.box > .icon > .info {
+  margin-top: -24px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid #e0e0e0;
+  padding: 15px 0 10px 0; }
+
+/* line 68, D:/Repos/mob/public/css/custom.scss */
+.box > .icon:hover > .info {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: #e0e0e0;
+  color: white; }
+
+/* line 73, D:/Repos/mob/public/css/custom.scss */
+.box > .icon > .info > h3.title {
+  color: #222; }
+
+/* line 76, D:/Repos/mob/public/css/custom.scss */
+.box > .icon > .info > p {
+  color: #777;
+  line-height: 1.5em;
+  margin: 20px; }
+
+/* line 81, D:/Repos/mob/public/css/custom.scss */
+.box > .icon > .info > .more a {
+  color: #222;
+  text-transform: uppercase;
+  text-decoration: none; }
+
+/* line 86, D:/Repos/mob/public/css/custom.scss */
+.box > .icon:hover > .info > .more > a {
+  color: #fff;
+  padding: 6px 8px;
+  background-color: #009fe3; }
+
+/* line 91, D:/Repos/mob/public/css/custom.scss */
+.box .space {
+  height: 30px; }
 
 /*# sourceMappingURL=custom.css.map */

@@ -1,0 +1,8 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+/* line 3, D:/Repos/mob/public/css/custom.scss */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+  overflow-y: scroll; }
+
+/*# sourceMappingURL=custom.css.map */

@@ -1,0 +1,52 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 #{title}
+            p O funcionamento do Mob Your Life foi pensado para facilitar ainda mais a sua vida! Afinal, a facilidade gera novos caminhos.
+
+    div.container
+        div.row
+            div.col-md-8
+                div.well.well-sm
+                    form#mail-form.form-horizontal(action='/enviar-email', method='post')
+                        fieldset
+                            legend.text-center Fale Conosco
+                        
+                        div.form-group
+                            label.col-md-3.control-label(for='name') Nome
+                            div.col-md-9
+                                input#name.form-control(name='name', type='text', placeholder='Seu nome')
+                        
+                        div.form-group
+                            label.col-md-3.control-label(for='email') E-mail
+                            div.col-md-9
+                                input#email.form-control(name='email', type='text', placeholder='Seu endereço de e-mail')
+                        
+                        div.form-group
+                            label.col-md-3.control-label(for='mensagem') Mensagem
+                            div.col-md-9
+                                textarea#message.form-control(placeholder='Digite a sua mensagem aqui', rows=5)
+                        
+                        div.form-group
+                            div.col-md-12.text-right
+                                button.btn.btn-info.btn-lg(type='submit') Enviar
+            
+            div.col-md-4
+                form
+                    legend
+                        span.glyphicon.glyphicon-globe Nossa localização
+                    address
+                        strong F&gt;MOB STUDIO
+                        br
+                        | Rua Luiz Dalincourt 325, Bosque
+                        br
+                        | Campinas, SP
+                        br
+                        abbr(title='Telefone comercial') F:
+                        |  (19) 3032-1279
+                    address
+                        strong Suporte Técnico: 
+                        a(href='mailto:suporte@mobyourlife.com.br') suporte@mobyourlife.com.br

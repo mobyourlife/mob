@@ -7,10 +7,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var comoFunciona = require('./routes/como-funciona');
-var duvidasFrequentes = require('./routes/duvidas-frequentes');
-var contato = require('./routes/contato');
+var pgInicio = require('./routes/index');
+var pgComoFunciona = require('./routes/como-funciona');
+var pgDuvidasFrequentes = require('./routes/duvidas-frequentes');
+var pgContato = require('./routes/contato');
 
 var app = express();
 
@@ -28,10 +28,11 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', routes);
-app.get('/como-funciona', comoFunciona);
-app.get('/duvidas-frequentes', duvidasFrequentes);
-app.get('/contato', contato);
+app.get('/', pgInicio);
+app.get('/inicio', pgInicio);
+app.get('/como-funciona', pgComoFunciona);
+app.get('/duvidas-frequentes', pgDuvidasFrequentes);
+app.get('/contato', pgContato);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

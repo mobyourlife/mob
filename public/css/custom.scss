@@ -28,9 +28,17 @@ body {
     border-color: #f1b88f;
     color: #fff;
 }
-/* Boxes da página inicial */
 
-/* Features da página inicial */
+ul.navbar-nav li.active {
+	background-color: #4fc1f1;
+	color: #fff;
+}
+
+ul.navbar-nav li.active a {
+	color: #fff;
+}
+
+/* Boxes da página inicial */
 
 .box > .icon {
     text-align: center;

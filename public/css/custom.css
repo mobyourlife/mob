@@ -33,14 +33,22 @@ body {
   border-color: #f1b88f;
   color: #fff; }
 
+/* line 32, D:/Repos/mob/public/css/custom.scss */
+ul.navbar-nav li.active {
+  background-color: #4fc1f1;
+  color: #fff; }
+
+/* line 37, D:/Repos/mob/public/css/custom.scss */
+ul.navbar-nav li.active a {
+  color: #fff; }
+
 /* Boxes da página inicial */
-/* Features da página inicial */
-/* line 35, D:/Repos/mob/public/css/custom.scss */
+/* line 43, D:/Repos/mob/public/css/custom.scss */
 .box > .icon {
   text-align: center;
   position: relative; }
 
-/* line 39, D:/Repos/mob/public/css/custom.scss */
+/* line 47, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .image {
   position: relative;
   z-index: 2;
@@ -53,56 +61,56 @@ body {
   background: #009fe3;
   vertical-align: middle; }
 
-/* line 51, D:/Repos/mob/public/css/custom.scss */
+/* line 59, D:/Repos/mob/public/css/custom.scss */
 .box > .icon:hover > .image {
   background: #f58634;
   cursor: pointer; }
 
-/* line 55, D:/Repos/mob/public/css/custom.scss */
+/* line 63, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .image > i {
   font-size: 36px !important;
   color: #fff !important; }
 
-/* line 59, D:/Repos/mob/public/css/custom.scss */
+/* line 67, D:/Repos/mob/public/css/custom.scss */
 .box > .icon:hover > .image > i {
   color: white !important; }
 
-/* line 62, D:/Repos/mob/public/css/custom.scss */
+/* line 70, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .info {
   margin-top: -24px;
   background: rgba(0, 0, 0, 0.04);
   border: 1px solid #e0e0e0;
   padding: 15px 0 10px 0; }
 
-/* line 68, D:/Repos/mob/public/css/custom.scss */
+/* line 76, D:/Repos/mob/public/css/custom.scss */
 .box > .icon:hover > .info {
   background: rgba(0, 0, 0, 0.04);
   border-color: #e0e0e0;
   color: white; }
 
-/* line 73, D:/Repos/mob/public/css/custom.scss */
+/* line 81, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .info > h3.title {
   color: #222; }
 
-/* line 76, D:/Repos/mob/public/css/custom.scss */
+/* line 84, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .info > p {
   color: #777;
   line-height: 1.5em;
   margin: 20px; }
 
-/* line 81, D:/Repos/mob/public/css/custom.scss */
+/* line 89, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .info > .more a {
   color: #222;
   text-transform: uppercase;
   text-decoration: none; }
 
-/* line 86, D:/Repos/mob/public/css/custom.scss */
+/* line 94, D:/Repos/mob/public/css/custom.scss */
 .box > .icon:hover > .info > .more > a {
   color: #fff;
   padding: 6px 8px;
   background-color: #009fe3; }
 
-/* line 91, D:/Repos/mob/public/css/custom.scss */
+/* line 99, D:/Repos/mob/public/css/custom.scss */
 .box .space {
   height: 30px; }
 

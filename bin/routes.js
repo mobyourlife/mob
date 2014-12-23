@@ -44,7 +44,7 @@ module.exports = function(app, passport) {
     
     // perfil, página protegida
     app.get('/perfil', isLoggedIn, function(req, res) {
-        res.render('perfil', { usuario: req.usuario });
+        res.render('perfil', { user: req.user });
     });
     
     // sair

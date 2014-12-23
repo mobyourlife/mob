@@ -6,13 +6,25 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash = require('connect-flash');
+var session = require('express-session');
 
-var pgInicio = require('./routes/index');
-var pgComoFunciona = require('./routes/como-funciona');
-var pgDuvidasFrequentes = require('./routes/duvidas-frequentes');
-var pgContato = require('./routes/contato');
-
+// init the app
 var app = express();
+
+// get db config
+var configDB = require('./config/database')
+
+// connect to database
+mongoose.connect(configDB.url);
+
+// setup passport
+app.use(session({secret: 'XCCQZF&rQ5ykE>kU/F6.M-U62jQXs=kX' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessons
+app.use(flash()); // use connect-flash messages stored in session
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,11 +40,8 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', pgInicio);
-app.get('/inicio', pgInicio);
-app.get('/como-funciona', pgComoFunciona);
-app.get('/duvidas-frequentes', pgDuvidasFrequentes);
-app.get('/contato', pgContato);
+// setup routes
+require('./bin/routes')(app, passport); // load our routes and pass in our app fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

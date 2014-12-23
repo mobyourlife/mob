@@ -1,35 +1,33 @@
 // app/routes.js
 module.exports = function(app, passport) {
-    var express = require('express');
-    var router = express.Router();
     
     // raiz
-    router.get('/', function(req, res) {
+    app.get('/', function(req, res) {
         res.redirect('/inicio');
     });
 
     // início
-    router.get('/inicio', function(req, res) {
+    app.get('/inicio', function(req, res) {
       res.render('index', { link: 'inicio', title: 'Bem-vindo à facilidade!' });
     });
     
     // como funciona
-    router.get('/como-funciona', function(req, res) {
+    app.get('/como-funciona', function(req, res) {
       res.render('como-funciona', { link: 'como-funciona', title: 'Como Funciona' });
     });
                
     // dúvdas frequentes
-    router.get('/duvidas-frequentes', function(req, res) {
+    app.get('/duvidas-frequentes', function(req, res) {
         res.render('duvidas-frequentes', { link: 'duvidas-frequentes', title: 'Dúvidas Frequentes' });
     });
     
     // contato
-    router.get('/contato', function(req, res) {
+    app.get('/contato', function(req, res) {
         res.render('contato', { link: 'contato', title: 'Contato' });
     });
     
     // entrar
-    router.get('/entrar', function(req, res) {
+    app.get('/entrar', function(req, res) {
         res.render('entrar', { message: req.flash('loginMessage') });
     });
     
@@ -37,7 +35,7 @@ module.exports = function(app, passport) {
     //router.post('/entrar', ...
     
     // registro
-    router.get('/registrar', function(req, res) {
+    app.get('/registrar', function(req, res) {
         res.render('registrar', { message: req.flash('signupMessage') });
     });
     

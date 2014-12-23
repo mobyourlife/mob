@@ -21,7 +21,7 @@ var configDB = require('./config/database')
 mongoose.connect(configDB.url);
 
 // setup passport
-app.use(session({secret: 'XCCQZF&rQ5ykE>kU/F6.M-U62jQXs=kX' })); // session secret
+//app.use(session({secret: 'XCCQZF&rQ5ykE>kU/F6.M-U62jQXs=kX' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessons
 app.use(flash()); // use connect-flash messages stored in session

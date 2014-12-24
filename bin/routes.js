@@ -28,23 +28,31 @@ module.exports = function(app, passport) {
     
     // entrar
     app.get('/entrar', function(req, res) {
-        res.render('entrar', { message: req.flash('loginMessage') });
+        res.render('entrar', { title: 'Entrar', message: req.flash('loginMessage') });
     });
     
     // processa o formulário de login
-    //router.post('/entrar', ...
+    app.post('/entrar', passport.authenticate('local-login', {
+        successRedirect : '/perfil', // redirect to the secure profile section
+        failureRedirect : '/entrar', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
     
     // registro
     app.get('/registrar', function(req, res) {
-        res.render('registrar', { message: req.flash('signupMessage') });
+        res.render('registrar', { title: 'Registrar', message: req.flash('signupMessage') });
     });
     
     // processa o formulário de registro
-    //router.post('/registrar', ...
+    app.post('/registrar', passport.authenticate('local-signup', {
+        successRedirect : '/perfil', // redirect to the secure profile section
+        failureRedirect : '/registrar', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
     
     // perfil, página protegida
     app.get('/perfil', isLoggedIn, function(req, res) {
-        res.render('perfil', { user: req.user });
+        res.render('perfil', { title: 'Perfil', user: req.user });
     });
     
     // sair

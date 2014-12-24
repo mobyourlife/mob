@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 #{title}
+            p Entre para gerenciar os seus sites.
+
+    div.container
+        div.col-sm-6.col-sm-offset-3
+            div.row
+                form(action='/entrar', method='post')
+                    div.form-group
+                        label Email
+                        input.form-control(name='email', type='text')
+                    div.form-group
+                        label Senha
+                        input.form-control(name='password', type='password')
+                    div.pull-right
+                        button.btn.btn-primary.btn-lg(type='submit') Entrar
+            hr
+            div.row
+                p.pull-right Não é registrado? 
+                    a(href='/registrar') Clique aqui
+                    |  e registre-se!

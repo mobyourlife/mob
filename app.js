@@ -21,7 +21,8 @@ var configDB = require('./config/database')
 mongoose.connect(configDB.url);
 
 // setup passport
-//app.use(session({secret: 'XCCQZF&rQ5ykE>kU/F6.M-U62jQXs=kX' })); // session secret
+app.use(cookieParser());
+app.use(session({secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessons
 app.use(flash()); // use connect-flash messages stored in session
@@ -39,6 +40,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// load passport
+require('./config/passport')(passport);
 
 // setup routes
 require('./bin/routes')(app, passport); // load our routes and pass in our app fully configured passport

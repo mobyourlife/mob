@@ -50,6 +50,20 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
     
+    // =====================================
+    // FACEBOOK ROUTES =====================
+    // =====================================
+    // route for facebook authentication and login
+    app.get('/auth/facebook', passport.authenticate('facebook', {
+        scope : 'email,manage_pages'
+    }));
+
+    // handle the callback after facebook has authenticated the user
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        successRedirect : '/perfil',
+        failureRedirect : '/'
+    }));
+    
     // perfil, página protegida
     app.get('/perfil', isLoggedIn, function(req, res) {
         res.render('perfil', { title: 'Perfil', auth: req.isAuthenticated(), user: req.user });

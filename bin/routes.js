@@ -26,18 +26,6 @@ module.exports = function(app, passport) {
         res.render('contato', { link: 'contato', title: 'Contato', auth: req.isAuthenticated(), user: req.user });
     });
     
-    // entrar
-    app.get('/entrar', function(req, res) {
-        res.render('entrar', { title: 'Entrar', auth: req.isAuthenticated(), user: req.user, message: req.flash('loginMessage') });
-    });
-    
-    // processa o formulário de login
-    app.post('/entrar', passport.authenticate('local-login', {
-        successRedirect : '/perfil', // redirect to the secure profile section
-        failureRedirect : '/entrar', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-    
     // registro
     app.get('/registrar', function(req, res) {
         res.render('registrar', { title: 'Registrar', auth: req.isAuthenticated(), user: req.user, message: req.flash('signupMessage') });

@@ -52,7 +52,7 @@ module.exports = function(app, passport) {
     
     // perfil, página protegida
     app.get('/perfil', isLoggedIn, function(req, res) {
-        res.render('perfil', { title: 'Perfil', user: req.user });
+        res.render('perfil', { title: 'Perfil', user: req.user, auth: req.isAuthenticated() });
     });
     
     // sair
@@ -63,11 +63,10 @@ module.exports = function(app, passport) {
     
     // middleware de autenticação
     function isLoggedIn(req, res, next) {
-        if (req.isAuthenticated())
-        {
+        if (req.isAuthenticated()) {
             next();
+        } else {
+            res.redirect('/');
         }
-        
-        res.redirect('/');
     }
 };

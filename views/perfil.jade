@@ -6,3 +6,13 @@ block content
         div.container
             h1 #{title}
             p Gerencie os seus sites.
+    
+    div.row
+        div.col-sm-6.col-sm-offset-3
+            div.well
+                h3 Usuário
+                p Auth: #{auth}
+                if user
+                    p Id: #{user._id}
+                    p Email: #{user.local.email}
+                    p Senha: #{user.local.password}

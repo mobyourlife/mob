@@ -18,14 +18,19 @@ div.navbar.navbar-mob.navbar-fixed-top(role='navigation')
                 if auth === true
                     div.btn-group
                         button.btn.btn-jumbo.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                            span.fa.fa-user.jump-5
                             span.jump-5 #{user.local.email}
                             span.caret
                         ul.dropdown-menu(role='menu')
                             li
-                                a(href='/perfil') Meu Perfil
+                                a(href='/perfil')
+                                    span.fa.fa-user.jump-5
+                                    | Meu Perfil
                             li.divider
                             li
-                                a(href='/sair') Sair
+                                a(href='/sair')
+                                    span.fa.fa-sign-out.jump-5
+                                    | Sair
                 else
                     a.btn.btn-jumbo(href='/entrar')
                         span.fa.fa-facebook.jump-5

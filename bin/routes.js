@@ -68,7 +68,7 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated()) {
             next();
         } else {
-            res.redirect('/entrar');
+            res.redirect('/');
         }
     }
 };

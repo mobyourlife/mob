@@ -8,27 +8,27 @@ module.exports = function(app, passport) {
 
     // início
     app.get('/inicio', function(req, res) {
-      res.render('index', { link: 'inicio', title: 'Bem-vindo à facilidade!' });
+      res.render('index', { link: 'inicio', title: 'Bem-vindo à facilidade!', auth: req.isAuthenticated(), user: req.user });
     });
     
     // como funciona
     app.get('/como-funciona', function(req, res) {
-      res.render('como-funciona', { link: 'como-funciona', title: 'Como Funciona' });
+      res.render('como-funciona', { link: 'como-funciona', title: 'Como Funciona', auth: req.isAuthenticated(), user: req.user });
     });
                
     // dúvdas frequentes
     app.get('/duvidas-frequentes', function(req, res) {
-        res.render('duvidas-frequentes', { link: 'duvidas-frequentes', title: 'Dúvidas Frequentes' });
+        res.render('duvidas-frequentes', { link: 'duvidas-frequentes', title: 'Dúvidas Frequentes', auth: req.isAuthenticated(), user: req.user });
     });
     
     // contato
     app.get('/contato', function(req, res) {
-        res.render('contato', { link: 'contato', title: 'Contato' });
+        res.render('contato', { link: 'contato', title: 'Contato', auth: req.isAuthenticated(), user: req.user });
     });
     
     // entrar
     app.get('/entrar', function(req, res) {
-        res.render('entrar', { title: 'Entrar', message: req.flash('loginMessage') });
+        res.render('entrar', { title: 'Entrar', auth: req.isAuthenticated(), user: req.user, message: req.flash('loginMessage') });
     });
     
     // processa o formulário de login
@@ -40,7 +40,7 @@ module.exports = function(app, passport) {
     
     // registro
     app.get('/registrar', function(req, res) {
-        res.render('registrar', { title: 'Registrar', message: req.flash('signupMessage') });
+        res.render('registrar', { title: 'Registrar', auth: req.isAuthenticated(), user: req.user, message: req.flash('signupMessage') });
     });
     
     // processa o formulário de registro
@@ -52,7 +52,7 @@ module.exports = function(app, passport) {
     
     // perfil, página protegida
     app.get('/perfil', isLoggedIn, function(req, res) {
-        res.render('perfil', { title: 'Perfil', user: req.user, auth: req.isAuthenticated() });
+        res.render('perfil', { title: 'Perfil', auth: req.isAuthenticated(), user: req.user });
     });
     
     // sair
@@ -66,7 +66,7 @@ module.exports = function(app, passport) {
         if (req.isAuthenticated()) {
             next();
         } else {
-            res.redirect('/');
+            res.redirect('/entrar');
         }
     }
 };

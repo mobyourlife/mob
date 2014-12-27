@@ -57,6 +57,13 @@ module.exports = function(app, passport) {
         res.render('perfil', { title: 'Perfil', auth: req.isAuthenticated(), user: req.user });
     });
     
+    // criar novo site, página protegida
+    app.get('/novo-site', isLoggedIn, function(req, res) {
+        req.facebook.api('/me', function(err, user) {
+            res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, teste: user });
+        });
+    });
+    
     // sair
     app.get('/sair', function(req, res) {
         req.logout();

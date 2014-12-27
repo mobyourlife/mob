@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 #{title}
+            p Escolha uma de suas páginas para criar um site sincronizado com o Facebook.
+    
+    div.container
+        div.col-sm-10.col-sm-offset-1
+            div.well
+                div.row
+                    div.col-sm-6
+                        h4
+                            strong Mob Your Life
+                        p Descrição da fan page. #{teste}
+                    div.col-sm-6.space-vertical.space-right
+                        div.row
+                            a.btn.btn-info.pull-right
+                                span.fa.fa-external-link.jump-5
+                                | Acessar Site
+                        div.row
+                            a.btn.btn-default.pull-right
+                                span.fa.fa-facebook.jump-5
+                                | Acessar Fanpage

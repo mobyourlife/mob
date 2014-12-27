@@ -10,12 +10,14 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
+var Facebook = require('facebook-node-sdk');
 
 // init the app
 var app = express();
 
 // get db config
-var configDB = require('./config/database')
+var auth = require('./config/auth');
+var configDB = require('./config/database');
 
 // connect to database
 mongoose.connect(configDB.url);
@@ -40,6 +42,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(Facebook.middleware({ appID: auth.facebookAuth.clientID, secret: auth.facebookAuth.clientSecret }));
 
 // load passport
 require('./config/passport')(passport);

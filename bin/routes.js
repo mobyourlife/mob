@@ -1,5 +1,5 @@
 // app/routes.js
-module.exports = function(app, passport) {
+module.exports = function(app, passport, FB) {
     
     // raiz
     app.get('/', function(req, res) {
@@ -59,8 +59,31 @@ module.exports = function(app, passport) {
     
     // criar novo site, página protegida
     app.get('/novo-site', isLoggedIn, function(req, res) {
-        req.facebook.api('/me', function(err, user) {
-            res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, teste: user });
+        
+        FB.setAccessToken(req.user.facebook.token);
+        FB.api('/me/accounts', { fields: ['id', 'name', 'description', 'picture'] }, function(records) {
+            if (records.data) {
+                var pages_list = Array();
+                
+                records.data.forEach(function(p) {
+                    var item = {
+                        id: p.id,
+                        name: p.name,
+                        description: p.description,
+                        picture: p.picture.data.url
+                    };
+                    pages_list.push(item);
+                });
+                
+                pages_list.sort(function(a, b) {
+                    var x = a.name.toLowerCase(), y = b.name.toLowerCase();
+                    if (x < y) return -1;
+                    if (x > y) return 1;
+                    return 0;
+                });
+                
+                res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, pages: pages_list });
+            }
         });
     });
     

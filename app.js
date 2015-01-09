@@ -11,6 +11,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
 var Facebook = require('facebook-node-sdk');
+var FB = require('fb');
 
 // init the app
 var app = express();
@@ -48,7 +49,7 @@ app.use(Facebook.middleware({ appID: auth.facebookAuth.clientID, secret: auth.fa
 require('./config/passport')(passport);
 
 // setup routes
-require('./bin/routes')(app, passport); // load our routes and pass in our app fully configured passport
+require('./bin/routes')(app, passport, FB); // load our routes and pass in our app fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

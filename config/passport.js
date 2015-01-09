@@ -58,7 +58,15 @@ module.exports = function(passport) {
 
                 // if the user is found, then log them in
                 if (user) {
-                    return done(null, user); // user found, return that user
+                    // update user access token in the database
+                    user.facebook.token = token;
+                    user.save(function(err) {
+                        if (err)
+                            throw err;
+                        
+                        // user found, return that user
+                        return done(null, user);
+                    });
                 } else {
                     // if there is no user found with that facebook id, create them
                     var newUser            = new User();

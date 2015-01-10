@@ -3,19 +3,21 @@ var Fanpage            = require('../models/fanpage');
 var Owner              = require('../models/owner');
 
 // check if it's top domain or any subdomain
-validateSubdomain = function(req, callback) {
+validateSubdomain = function(req, callbackTop, callbackSubdomain) {
     var hostname = req.headers.host.split(':')[0];
     var subdomain = hostname.split('.')[0];
-    var fanpage = null;
     
-    if (hostname != 'www.mobyourlife.com.br') {
-        if (subdomain != 'debug') {
-            fanpage = 'teste';
-        }
+    if (hostname == 'www.mobyourlife.com.br' || subdomain == 'debug') {
+        callbackTop();
+    } else {
+        Fanpage.findOne({'_id': subdomain}, function(err, found) {
+            if (found) {
+                callbackSubdomain(found);
+            } else {
+                callbackTop();
+            }
+        });
     }
-    
-    var isTop = (fanpage == null);
-    callback(isTop, fanpage);
 }
 
 // app/routes.js
@@ -28,9 +30,10 @@ module.exports = function(app, passport, FB) {
 
     // início
     app.get('/inicio', function(req, res) {
-        validateSubdomain(req, function(isTop, fanpage) {
-            var view = (isTop ? 'index' : 'user-index');
-            res.render(view, { link: 'inicio', auth: req.isAuthenticated(), user: req.user });
+        validateSubdomain(req, function() {
+            res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
         });
     });
     

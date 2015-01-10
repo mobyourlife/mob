@@ -144,6 +144,7 @@ module.exports = function(app, passport, FB) {
         FB.api('/me/accounts', { fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
             if (records.data) {
                 var pages_list = Array();
+                var ids_list = Array();
                 
                 records.data.forEach(function(p) {
                     var item = {
@@ -154,6 +155,7 @@ module.exports = function(app, passport, FB) {
                         picture: p.picture.data.url
                     };
                     pages_list.push(item);
+                    ids_list.push(p.id);
                 });
                 
                 pages_list.sort(function(a, b) {
@@ -163,7 +165,31 @@ module.exports = function(app, passport, FB) {
                     return 0;
                 });
                 
-                res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, pages: pages_list });
+                Fanpage.find({'facebook.id': { $in: ids_list }}, function(err, records) {
+                    var built_list = Array();
+                    
+                    if (records) {
+                        for (i = 0; i < pages_list.length; i++) {
+                            var existe = false;
+                            
+                            for (j = 0; j < records.length; j++) {
+                                if (pages_list[i].id == records[j].facebook.id) {
+                                    console.log('Já existe ' + pages_list[i].name + '.');
+                                    existe = true;
+                                }
+                            }
+                            
+                            if (existe === false) {
+                                console.log('Não existe ' + pages_list[i].name + '.');
+                                built_list.push(pages_list[i]);
+                            }
+                        }
+                    } else {
+                        built_list = pages_list;
+                    }
+                    
+                    res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, pages: built_list });
+                });
             }
         });
     });

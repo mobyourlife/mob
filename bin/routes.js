@@ -1,3 +1,7 @@
+// load up the models
+var Fanpage            = require('../models/fanpage');
+var Owner              = require('../models/owner');
+
 // app/routes.js
 module.exports = function(app, passport, FB) {
     
@@ -57,11 +61,50 @@ module.exports = function(app, passport, FB) {
         res.render('perfil', { title: 'Perfil', auth: req.isAuthenticated(), user: req.user });
     });
     
-    // criar novo site, página protegida
+    // criação do novo site, página protegida
+    app.get('/novo-site/:id(\\d+)', isLoggedIn, function(req, res) {
+        
+        FB.setAccessToken(req.user.facebook.token);
+        FB.api('/' + req.params.id, { fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
+            if (records) {
+                var newFanpage = new Fanpage();
+                newFanpage.facebook.id = records.id;
+                newFanpage.facebook.name = records.name;
+                newFanpage.facebook.about = records.about;
+                newFanpage.facebook.link = records.link;
+                newFanpage.facebook.picture = records.picture.data.url;
+                newFanpage.creation.time = Date.now();
+                newFanpage.creation.user = req.user;
+                
+                // save the new fanpage to the database
+                newFanpage.save(function(err) {
+                    if (err)
+                        throw err;
+
+                    // if successful, insert the fanpage into the owners collection
+                    var newOwnership = new Owner();
+                    newOwnership.user = req.user;
+                    newOwnership.fanpages.push(newFanpage);
+                    
+                    // save the ownership to the database
+                    newOwnership.save(function(err) {
+                        if (err)
+                            throw err;
+
+                        // if successful, return a success message
+                        res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, fanpage: newFanpage });
+                    });
+                });
+            }
+        });
+        
+    });
+    
+    // escolha do novo site, página protegida
     app.get('/novo-site', isLoggedIn, function(req, res) {
         
         FB.setAccessToken(req.user.facebook.token);
-        FB.api('/me/accounts', { fields: ['id', 'name', 'description', 'picture'] }, function(records) {
+        FB.api('/me/accounts', { fields: ['id', 'name', 'description', 'link', 'picture'] }, function(records) {
             if (records.data) {
                 var pages_list = Array();
                 
@@ -70,6 +113,7 @@ module.exports = function(app, passport, FB) {
                         id: p.id,
                         name: p.name,
                         description: p.description,
+                        link: p.link,
                         picture: p.picture.data.url
                     };
                     pages_list.push(item);

@@ -20,10 +20,10 @@ block content
                             p #{p.description}
                         div.col-sm-3.space-vertical.space-right
                             div.row
-                                a.btn.btn-success.pull-right
+                                a.btn.btn-success.pull-right(href='/novo-site/' + p.id)
                                     span.fa.fa-external-link.jump-5
                                     | Criar novo site
                             div.row
-                                a.btn.btn-default.pull-right
+                                a.btn.btn-default.pull-right(href=p.link,target='_blank')
                                     span.fa.fa-facebook.jump-5
                                     | Acessar fanpage

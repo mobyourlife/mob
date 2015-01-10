@@ -55,32 +55,63 @@ module.exports = function(app, passport, FB) {
         FB.setAccessToken(req.user.facebook.token);
         FB.api('/' + req.params.id, { fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
             if (records) {
-                var newFanpage = new Fanpage();
-                newFanpage.facebook.id = records.id;
-                newFanpage.facebook.name = records.name;
-                newFanpage.facebook.about = records.about;
-                newFanpage.facebook.link = records.link;
-                newFanpage.facebook.picture = records.picture.data.url;
-                newFanpage.creation.time = Date.now();
-                newFanpage.creation.user = req.user;
-                
-                // save the new fanpage to the database
-                newFanpage.save(function(err) {
-                    if (err)
-                        throw err;
-
-                    // if successful, insert the fanpage into the owners collection
-                    var newOwnership = new Owner();
-                    newOwnership.user = req.user;
-                    newOwnership.fanpages.push(newFanpage);
+                Fanpage.findOne({ 'facebook.id' : records.id }, function(err, found) {
+                    var newFanpage = null;
                     
-                    // save the ownership to the database
-                    newOwnership.save(function(err) {
+                    if (found) {
+                        newFanpage = found;
+                    } else {
+                        newFanpage = new Fanpage();
+                        newFanpage.facebook.id = records.id;
+                        newFanpage.facebook.name = records.name;
+                        newFanpage.facebook.about = records.about;
+                        newFanpage.facebook.link = records.link;
+                        newFanpage.facebook.picture = records.picture.data.url;
+                        newFanpage.creation.time = Date.now();
+                        newFanpage.creation.user = req.user;
+                    }
+
+                    // save the new fanpage to the database
+                    newFanpage.save(function(err) {
                         if (err)
                             throw err;
 
-                        // if successful, return a success message
-                        res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, fanpage: newFanpage });
+                        // if successful, insert the fanpage into the owners collection
+                        Owner.findOne({ 'owner.$' : req.user.$ }, function(err, found) {
+                            var newOwnership = null;
+                        
+                            if (found) {
+                                newOwnership = found;
+                            } else {
+                                newOwnership = new Owner();
+                                newOwnership.user = req.user;
+                            }
+                            
+                            // look if user already owns that page
+                            found = false;
+                            console.log('Already owns ' + newOwnership.fanpages.length + ' pages.');
+                            for (i = 0; i < newOwnership.fanpages.length; i++) {
+                                console.log('Owns: "' + newOwnership.fanpages[i] + '" - Want: "' + newFanpage._id + '"');
+                                if (newOwnership.fanpages[i].equals(newFanpage._id)) {
+                                    console.log('Found!');
+                                    found = true;
+                                }
+                            }
+                            
+                            if (found === false) {
+                                console.log('Not found!');
+                                newOwnership.fanpages.push(newFanpage);
+                            }
+                                
+                            // save the ownership to the database
+                            newOwnership.save(function(err) {
+                                if (err)
+                                    throw err;
+
+                                // if successful, return a success message
+                                res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, fanpage: newFanpage });
+                            });
+                        });
                     });
                 });
             }
@@ -92,7 +123,7 @@ module.exports = function(app, passport, FB) {
     app.get('/novo-site', isLoggedIn, function(req, res) {
         
         FB.setAccessToken(req.user.facebook.token);
-        FB.api('/me/accounts', { fields: ['id', 'name', 'description', 'link', 'picture'] }, function(records) {
+        FB.api('/me/accounts', { fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
             if (records.data) {
                 var pages_list = Array();
                 
@@ -100,7 +131,7 @@ module.exports = function(app, passport, FB) {
                     var item = {
                         id: p.id,
                         name: p.name,
-                        description: p.description,
+                        about: p.about,
                         link: p.link,
                         picture: p.picture.data.url
                     };

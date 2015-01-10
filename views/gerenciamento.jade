@@ -7,59 +7,45 @@ block content
             h1 Gerenciamento
             p Gerencie os seus sites atuais ou crie novos sites.
     
-    div.container
-        div.col-sm-10.col-sm-offset-1
-            div.well
+    if fanpages.length == 0
+        div.row
+            div.col-sm-3.col-sm-offset-1
+                img(src='/img/welcome.png', alt='Seja bem-vindo!')
+            div.col-sm-7.space-right
+                    h2
+                        strong Seja bem-vindo!
+                    p Crie agora o seu primeiro site sincronizado com o Facebook!
+                    p Você pode experimentá-lo gratuitamente durante 7 dias sem compromisso!
+                    p
+                        a.btn.btn-success.btn-lg.space-top(href='/novo-site')
+                            span.fa.fa-plus.jump-5
+                            | Criar meu primeiro site
+    else
+        each p in fanpages
+            div.container
+                div.col-sm-10.col-sm-offset-1
+                    div.well
+                        div.row
+                            div.col-sm-1
+                                img(src=p.facebook.picture, alt=p.facebook.name)
+                            div.col-sm-8
+                                h4
+                                    strong #{p.facebook.name}
+                                p #{p.facebook.about}
+                            div.col-sm-3.space-vertical.space-right
+                                div.row
+                                    a.btn.btn-info.pull-right(href='http://' + p._id + '.mobyourlife.com.br', target='_blank')
+                                        span.fa.fa-external-link.jump-5
+                                        | Acessar site
+                                div.row
+                                    a.btn.btn-default.pull-right(href=p.facebook.link, target='_blank')
+                                        span.fa.fa-facebook.jump-5
+                                        | Acessar fanpage
+
+        div.container
+            div.col-sm-10.col-sm-offset-1
                 div.row
-                    div.col-sm-6
-                        h4
-                            strong Mob Your Life
-                        p Descrição da fan page.
-                    div.col-sm-6.space-vertical.space-right
-                        div.row
-                            a.btn.btn-info.pull-right
-                                span.fa.fa-external-link.jump-5
-                                | Acessar Site
-                        div.row
-                            a.btn.btn-default.pull-right
-                                span.fa.fa-facebook.jump-5
-                                | Acessar Fanpage
-        
-        div.col-sm-10.col-sm-offset-1
-            div.well
-                div.row
-                    div.col-sm-6
-                        h4
-                            strong Mob Your Life
-                        p Descrição da fan page.
-                    div.col-sm-6.space-vertical.space-right
-                        div.row
-                            a.btn.btn-info.pull-right
-                                span.fa.fa-external-link.jump-5
-                                | Acessar site
-                        div.row
-                            a.btn.btn-default.pull-right
-                                span.fa.fa-facebook.jump-5
-                                | Acessar fanpage
-        
-        div.col-sm-10.col-sm-offset-1
-            div.row
-                div.col-sm-12.space-right
-                    a.btn.btn-success.btn-lg.pull-right(href='/novo-site')
-                        span.fa.fa-plus.jump-5
-                        | Criar um novo site
-        
-        div.col-sm-10.col-sm-offset-1
-            div.row
-                div.col-sm-12.space-right
-                    h4
-                        strong Oops!
-                    p Você ainda não tem nenhum site sincronizado com o Facebook!
-                    p Que tal criar o seu primeiro agora? Experimente durante 7 dias sem compromisso!
-        
-        div.col-sm-10.col-sm-offset-1
-            div.row
-                div.col-sm-12.space-right
-                    a.btn.btn-success.btn-lg.pull-right(href='/novo-site')
-                        span.fa.fa-plus.jump-5
-                        | Criar meu primeiro site
+                    div.col-sm-12.space-right
+                        a.btn.btn-success.btn-lg.pull-right(href='/novo-site')
+                            span.fa.fa-plus.jump-5
+                            | Criar um novo site

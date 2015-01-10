@@ -46,7 +46,20 @@ module.exports = function(app, passport, FB) {
     
     // gerenciamento, página protegida
     app.get('/gerenciamento', isLoggedIn, function(req, res) {
-        res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user });
+        
+        Owner.findOne({ 'owner.$' : req.user.$ }, function(err, found) {
+            var ownedFanpages = Array();
+            
+            console.log('found:');
+            if (found) {
+                Fanpage.find({'_id': { $in: found.fanpages }}, function(err, records) {
+                    ownedFanpages = records;
+                    res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages });
+                });
+            } else {
+                res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages });
+            }
+        });
     });
     
     // criação do novo site, página protegida

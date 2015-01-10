@@ -46,7 +46,6 @@ module.exports = function(app, passport, FB) {
     
     // gerenciamento, página protegida
     app.get('/gerenciamento', isLoggedIn, function(req, res) {
-        
         Owner.findOne({ 'owner.$' : req.user.$ }, function(err, found) {
             var ownedFanpages = Array();
             
@@ -54,6 +53,14 @@ module.exports = function(app, passport, FB) {
             if (found) {
                 Fanpage.find({'_id': { $in: found.fanpages }}, function(err, records) {
                     ownedFanpages = records;
+                
+                    ownedFanpages.sort(function(a, b) {
+                        var x = a.facebook.name.toLowerCase(), y = b.facebook.name.toLowerCase();
+                        if (x < y) return -1;
+                        if (x > y) return 1;
+                        return 0;
+                    });
+                    
                     res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages });
                 });
             } else {
@@ -64,7 +71,6 @@ module.exports = function(app, passport, FB) {
     
     // criação do novo site, página protegida
     app.get('/novo-site/:id(\\d+)', isLoggedIn, function(req, res) {
-        
         FB.setAccessToken(req.user.facebook.token);
         FB.api('/' + req.params.id, { fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
             if (records) {
@@ -134,7 +140,6 @@ module.exports = function(app, passport, FB) {
     
     // escolha do novo site, página protegida
     app.get('/novo-site', isLoggedIn, function(req, res) {
-        
         FB.setAccessToken(req.user.facebook.token);
         FB.api('/me/accounts', { fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
             if (records.data) {

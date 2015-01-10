@@ -12,35 +12,23 @@ module.exports = function(app, passport, FB) {
 
     // início
     app.get('/inicio', function(req, res) {
-      res.render('index', { link: 'inicio', title: 'Bem-vindo à facilidade!', auth: req.isAuthenticated(), user: req.user });
+      res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user });
     });
     
     // como funciona
     app.get('/como-funciona', function(req, res) {
-      res.render('como-funciona', { link: 'como-funciona', title: 'Como Funciona', auth: req.isAuthenticated(), user: req.user });
+      res.render('como-funciona', { link: 'como-funciona', auth: req.isAuthenticated(), user: req.user });
     });
                
     // dúvdas frequentes
     app.get('/duvidas-frequentes', function(req, res) {
-        res.render('duvidas-frequentes', { link: 'duvidas-frequentes', title: 'Dúvidas Frequentes', auth: req.isAuthenticated(), user: req.user });
+        res.render('duvidas-frequentes', { link: 'duvidas-frequentes', auth: req.isAuthenticated(), user: req.user });
     });
     
     // contato
     app.get('/contato', function(req, res) {
-        res.render('contato', { link: 'contato', title: 'Contato', auth: req.isAuthenticated(), user: req.user });
+        res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user });
     });
-    
-    // registro
-    app.get('/registrar', function(req, res) {
-        res.render('registrar', { title: 'Registrar', auth: req.isAuthenticated(), user: req.user, message: req.flash('signupMessage') });
-    });
-    
-    // processa o formulário de registro
-    app.post('/registrar', passport.authenticate('local-signup', {
-        successRedirect : '/perfil', // redirect to the secure profile section
-        failureRedirect : '/registrar', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
     
     // =====================================
     // FACEBOOK ROUTES =====================
@@ -52,13 +40,13 @@ module.exports = function(app, passport, FB) {
 
     // handle the callback after facebook has authenticated the user
     app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect : '/perfil',
+        successRedirect : '/gerenciamento',
         failureRedirect : '/'
     }));
     
-    // perfil, página protegida
-    app.get('/perfil', isLoggedIn, function(req, res) {
-        res.render('perfil', { title: 'Perfil', auth: req.isAuthenticated(), user: req.user });
+    // gerenciamento, página protegida
+    app.get('/gerenciamento', isLoggedIn, function(req, res) {
+        res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user });
     });
     
     // criação do novo site, página protegida

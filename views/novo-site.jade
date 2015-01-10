@@ -7,27 +7,39 @@ block content
             h1 #{title}
             p Escolha uma de suas páginas para criar um site sincronizado com o Facebook.
     
-    each p in pages
+    if pages.length == 0
+        div.row
+            div.col-sm-3.col-sm-offset-1
+                img(src='/img/none.png', alt='Nenhuma fanpage disponível!')
+            div.col-sm-7.space-right
+                    h2
+                        strong Não há nenhuma fanpage disponível!
+                    p Talvez você já tenha criado sites para todas as suas fanpages, ou não tem permissão na fanpage desejada.
+                    p
+                        a.btn.btn-info.btn-lg.space-top(href='/gerenciamento')
+                            | Voltar para o gerenciamento
+    else
+        each p in pages
+            div.container
+                div.col-sm-10.col-sm-offset-1
+                    div.well
+                        div.row
+                            div.col-sm-1
+                                img(src=p.picture, alt=p.name)
+                            div.col-sm-8
+                                h4
+                                    strong #{p.name}
+                                p #{p.about}
+                            div.col-sm-3.space-vertical.space-right
+                                div.row
+                                    a.btn.btn-success.pull-right(href='/novo-site/' + p.id)
+                                        span.fa.fa-external-link.jump-5
+                                        | Criar novo site
+                                div.row
+                                    a.btn.btn-default.pull-right(href=p.link,target='_blank')
+                                        span.fa.fa-facebook.jump-5
+                                        | Acessar fanpage
         div.container
             div.col-sm-10.col-sm-offset-1
-                div.well
-                    div.row
-                        div.col-sm-1
-                            img(src=p.picture, alt=p.name)
-                        div.col-sm-8
-                            h4
-                                strong #{p.name}
-                            p #{p.about}
-                        div.col-sm-3.space-vertical.space-right
-                            div.row
-                                a.btn.btn-success.pull-right(href='/novo-site/' + p.id)
-                                    span.fa.fa-external-link.jump-5
-                                    | Criar novo site
-                            div.row
-                                a.btn.btn-default.pull-right(href=p.link,target='_blank')
-                                    span.fa.fa-facebook.jump-5
-                                    | Acessar fanpage
-    div.container
-        div.col-sm-10.col-sm-offset-1
-            a.btn.btn-warning.btn-lg.pull-right(href='/gerenciamento')
-                | Cancelar
+                a.btn.btn-warning.btn-lg.pull-right(href='/gerenciamento')
+                    | Cancelar

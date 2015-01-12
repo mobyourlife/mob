@@ -73,7 +73,12 @@ module.exports = function(app, passport, FB) {
             
             console.log('found:');
             if (found) {
-                Fanpage.find({'_id': { $in: found.fanpages }}, function(err, records) {
+                var ids = Array();
+                for (i = 0; i < found.fanpages.length; i++) {
+                    ids.push(found.fanpages[i].ref);
+                }
+                
+                Fanpage.find({'_id': { $in: ids }}, function(err, records) {
                     ownedFanpages = records;
                 
                     ownedFanpages.sort(function(a, b) {

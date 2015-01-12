@@ -135,17 +135,14 @@ module.exports = function(app, passport, FB) {
                             
                             // look if user already owns that page
                             found = false;
-                            console.log('Already owns ' + newOwnership.fanpages.length + ' pages.');
                             for (i = 0; i < newOwnership.fanpages.length; i++) {
-                                console.log('Owns: "' + newOwnership.fanpages[i].ref + '" - Want: "' + newFanpage._id + '"');
                                 if (newOwnership.fanpages[i].ref.equals(newFanpage._id)) {
-                                    console.log('Found!');
                                     found = true;
+                                    break;
                                 }
                             }
                             
                             if (found === false) {
-                                console.log('Not found!');
                                 var inner = {
                                     ref: newFanpage,
                                     token: records.access_token
@@ -157,6 +154,23 @@ module.exports = function(app, passport, FB) {
                             newOwnership.save(function(err) {
                                 if (err)
                                     throw err;
+                                
+                                // insert the owner row in fanpages collection
+                                var found = false;
+                                for (i = 0; i < newFanpage.owners.length; i++) {
+                                    if (newFanpage.owners[i].equals(newOwnership._id)) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (found === false) {
+                                    newFanpage.owners.push(newOwnership);
+                                    newFanpage.save(function(err) {
+                                        if (err)
+                                            throw err;
+                                    });
+                                }
 
                                 // if successful, return a success message
                                 res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, fanpage: newFanpage });

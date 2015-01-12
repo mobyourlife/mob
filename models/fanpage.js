@@ -15,7 +15,8 @@ var fanpageSchema = mongoose.Schema({
     creation: {
         time : { type: Date },
         user : { type: Schema.Types.ObjectId, ref: 'User' }
-    }
+    },
+    owners: [{ type: Schema.Types.ObjectId, ref: 'Owner' }]
 });
 
 // export user model

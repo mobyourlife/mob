@@ -6,7 +6,10 @@ var mongoose = require('mongoose')
 // define the model schema
 var ownerSchema = mongoose.Schema({
     user : { type: Schema.Types.ObjectId, ref: 'User' },
-    fanpages : [{ type: Schema.Types.ObjectId, ref: 'Fanpage' }]
+    fanpages: [{
+        ref : { type: Schema.Types.ObjectId, ref: 'Fanpage' },
+        token : String
+    }]
 });
 
 // export user model

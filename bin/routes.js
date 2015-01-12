@@ -94,7 +94,7 @@ module.exports = function(app, passport, FB) {
     // criação do novo site, página protegida
     app.get('/novo-site/:id(\\d+)', isLoggedIn, function(req, res) {
         FB.setAccessToken(req.user.facebook.token);
-        FB.api('/' + req.params.id, { fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
+        FB.api('/' + req.params.id, { fields: ['id', 'name', 'about', 'link', 'picture', 'access_token'] }, function(records) {
             if (records) {
                 Fanpage.findOne({ 'facebook.id' : records.id }, function(err, found) {
                     var newFanpage = null;
@@ -132,8 +132,8 @@ module.exports = function(app, passport, FB) {
                             found = false;
                             console.log('Already owns ' + newOwnership.fanpages.length + ' pages.');
                             for (i = 0; i < newOwnership.fanpages.length; i++) {
-                                console.log('Owns: "' + newOwnership.fanpages[i] + '" - Want: "' + newFanpage._id + '"');
-                                if (newOwnership.fanpages[i].equals(newFanpage._id)) {
+                                console.log('Owns: "' + newOwnership.fanpages[i].ref + '" - Want: "' + newFanpage._id + '"');
+                                if (newOwnership.fanpages[i].ref.equals(newFanpage._id)) {
                                     console.log('Found!');
                                     found = true;
                                 }
@@ -141,7 +141,11 @@ module.exports = function(app, passport, FB) {
                             
                             if (found === false) {
                                 console.log('Not found!');
-                                newOwnership.fanpages.push(newFanpage);
+                                var inner = {
+                                    ref: newFanpage,
+                                    token: records.access_token
+                                };
+                                newOwnership.fanpages.push(inner);
                             }
                                 
                             // save the ownership to the database

@@ -99,7 +99,7 @@ module.exports = function(app, passport, FB) {
     // criação do novo site, página protegida
     app.get('/novo-site/:id(\\d+)', isLoggedIn, function(req, res) {
         FB.setAccessToken(req.user.facebook.token);
-        FB.api('/' + req.params.id, { fields: ['id', 'name', 'about', 'link', 'picture', 'access_token'] }, function(records) {
+        FB.api('/' + req.params.id, { locale: 'pt_BR', fields: ['id', 'name', 'about', 'link', 'picture', 'access_token'] }, function(records) {
             if (records) {
                 Fanpage.findOne({ 'facebook.id' : records.id }, function(err, found) {
                     var newFanpage = null;
@@ -186,7 +186,7 @@ module.exports = function(app, passport, FB) {
     // escolha do novo site, página protegida
     app.get('/novo-site', isLoggedIn, function(req, res) {
         FB.setAccessToken(req.user.facebook.token);
-        FB.api('/me/accounts', { fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
+        FB.api('/me/accounts', { locale: 'pt_BR', fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
             if (records.data) {
                 var pages_list = Array();
                 var ids_list = Array();

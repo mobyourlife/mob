@@ -7,8 +7,8 @@ var mongoose = require('mongoose')
 var ownerSchema = mongoose.Schema({
     user : { type: Schema.Types.ObjectId, ref: 'User' },
     fanpages: [{
-        ref : { type: Schema.Types.ObjectId, ref: 'Fanpage' },
-        token : String
+        ref: { type: Schema.Types.ObjectId, ref: 'Fanpage' },
+        token: String
     }]
 });
 

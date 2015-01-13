@@ -6,11 +6,31 @@ var mongoose = require('mongoose')
 // define the model schema
 var fanpageSchema = mongoose.Schema({
     facebook: {
-        id : String,
-        name : String,
-        about : String,
-        link : String,
-        picture : String
+        id: String,
+        name: String,
+        about: String,
+        description: String,
+        link: String,
+        picture: String,
+        category: String,
+        category_list: [{
+            id: String,
+            name: String
+        }],
+        likes: Number,
+        phone: String,
+        location: {
+            city: String,
+            country: String,
+            street: String,
+            zip: String,
+            coordinates: {type: [], index: '2d'}
+        },
+        parking: {
+            lot: Number,
+            Street: Number,
+            valet: Number
+        }
     },
     creation: {
         time : { type: Date },

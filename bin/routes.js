@@ -36,6 +36,15 @@ module.exports = function(app, passport, FB) {
             res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
         });
     });
+
+    // sobre
+    app.get('/sobre', function(req, res) {
+        validateSubdomain(req, function() {
+            res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            res.render('user-sobre', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+        });
+    });
     
     // como funciona
     app.get('/como-funciona', function(req, res) {

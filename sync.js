@@ -54,7 +54,7 @@ var sync = function() {
                                 fanpage.facebook.location.zip = records.location.zip;
                                 
                                 if (records.location.latitude && records.location.longitude) {
-                                    fanpage.facebook.location.coordinates = [ parseFloat(records.location.longitude), parseFloat(records.location.latitude) ];
+                                    fanpage.facebook.location.coordinates = [ parseFloat(records.location.latitude), parseFloat(records.location.longitude) ];
                                 }
                             }
                             

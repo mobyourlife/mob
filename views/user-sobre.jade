@@ -1,0 +1,31 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 Sobre
+    
+    div.container
+        ul
+            li Sobre: #{fanpage.facebook.about}
+            li Descrição: #{fanpage.facebook.description}
+            li Categoria: #{fanpage.facebook.category}
+            li Subcategorias:
+            ul
+                each cat in fanpage.facebook.category_list
+                    li #{cat.name}
+            li Curtidas: #{fanpage.facebook.likes}
+            li Telefone: #{fanpage.facebook.phone}
+            li Localização:
+            ul
+                li Cidade: #{fanpage.facebook.location.city}
+                li País: #{fanpage.facebook.location.country}
+                li Endereço: #{fanpage.facebook.location.street}
+                li CEP: #{fanpage.facebook.location.zip}
+                li Coordenadas: #{fanpage.facebook.location.coordinates}
+            li Estacionamento:
+            ul
+                li Vagas próprias: #{fanpage.facebook.parking.lot}
+                li Vagas na rua: #{fanpage.facebook.parking.street}
+                li Vagas com manobrista: #{fanpage.facebook.parking.valet}

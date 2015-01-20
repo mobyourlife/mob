@@ -140,4 +140,8 @@ ul.navbar-nav li.active a {
 .box .space {
   height: 30px; }
 
+/* line 133, D:/Repos/mob/public/css/custom.scss */
+div.space-rows > div.row {
+  margin-bottom: 1em; }
+
 /*# sourceMappingURL=custom.css.map */

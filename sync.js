@@ -35,7 +35,6 @@ var sync = function() {
                     
                     FB.setAccessToken(token);
                     
-                    // 1446731825581145?locale=pt_BR?fields=id,about,category,category_list,description,likes,link,location,name,parking,phone
                     FB.api(fanpage.facebook.id, { locale: 'pt_BR', fields: ['id', 'about', 'category', 'category_list', 'description', 'likes', 'link', 'location', 'name', 'parking', 'phone'] }, function(records) {
                         if (records) {
                             fanpage.facebook.about = records.about;
@@ -68,6 +67,18 @@ var sync = function() {
                                 if (err)
                                     throw err;
                             });
+                        }
+                    });
+                    
+                    FB.api(fanpage.facebook.id + '/photos', { locale: 'pt_BR', fields: ['id', 'source'] }, function(records) {
+                        if (records && records.data) {
+                            for (i = 0; i < records.data.length; i++) {
+                                var item = { id: records.data[i].id, source: records.data[i].source };
+                                Fanpage.update({ _id: fanpage._id }, { $addToSet: { photos: item } }, function(err, updated) {
+                                    if (err)
+                                        throw err;
+                                });
+                            }
                         }
                     });
                 });

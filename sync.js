@@ -14,6 +14,45 @@ var configDB = require('./config/database');
 // connect to database
 mongoose.connect(configDB.url);
 
+// fetch photos function
+var fetchPhotos = function(fanpage, direction, cursor) {
+    var args = { locale: 'pt_BR', fields: ['id', 'source'] };
+    
+    if (direction && cursor) {
+        switch (direction) {
+            case 'before':
+                args.before = cursor;
+                break;
+                
+            case 'after':
+                args.after = cursor;
+                break;
+        }
+    }
+    
+    FB.api(fanpage.facebook.id + '/photos', args, function(records) {
+        if (records && records.data) {
+            for (i = 0; i < records.data.length; i++) {
+                var item = { _id: records.data[i].id, source: records.data[i].source };
+                Fanpage.update({ _id: fanpage._id }, { $addToSet: { photos: item } }, function(err, updated) {
+                    if (err)
+                        throw err;
+                });
+            }
+
+            if (records.paging && records.paging.cursors) {
+                if (records.paging.cursors.before) {
+                    fetchPhotos(fanpage, 'before', records.paging.cursors.before);
+                }
+
+                if (records.paging.cursors.after) {
+                    fetchPhotos(fanpage, 'after', records.paging.cursors.after);
+                }
+            }
+        }
+    });
+}
+
 // app loop
 var sync = function() {
     console.log('Running Sync');
@@ -70,17 +109,7 @@ var sync = function() {
                         }
                     });
                     
-                    FB.api(fanpage.facebook.id + '/photos', { locale: 'pt_BR', fields: ['id', 'source'] }, function(records) {
-                        if (records && records.data) {
-                            for (i = 0; i < records.data.length; i++) {
-                                var item = { id: records.data[i].id, source: records.data[i].source };
-                                Fanpage.update({ _id: fanpage._id }, { $addToSet: { photos: item } }, function(err, updated) {
-                                    if (err)
-                                        throw err;
-                                });
-                            }
-                        }
-                    });
+                    fetchPhotos(fanpage);
                 });
             });
         });

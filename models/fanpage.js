@@ -33,7 +33,7 @@ var fanpageSchema = mongoose.Schema({
         }
     },
     photos: [{
-        id: String,
+        _id: { type: String },
         source: String
     }],
     creation: {

@@ -20,7 +20,7 @@ var sync = function() {
     
     Fanpage.find({}, function(err, foundFanpages) {
         foundFanpages.forEach(function(fanpage) {
-            console.log('Processing fanpage "' + fanpage.facebook.name + '"...');
+            console.log('Processing fanpage "' + fanpage._id + '" named "' + fanpage.facebook.name + '"...');
             
             fanpage.owners.forEach(function(fanpageOwner) {
                 Owner.findOne({ '_id': fanpageOwner }, function(err, found) {

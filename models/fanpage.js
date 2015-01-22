@@ -30,12 +30,12 @@ var fanpageSchema = mongoose.Schema({
             lot: Number,
             Street: Number,
             valet: Number
-        },
-        photos: [{
-            id: String,
-            source: String
-        }]
+        }
     },
+    photos: [{
+        id: String,
+        source: String
+    }],
     creation: {
         time : { type: Date },
         user : { type: Schema.Types.ObjectId, ref: 'User' }

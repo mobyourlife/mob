@@ -39,11 +39,14 @@ var fanpageSchema = mongoose.Schema({
             },
             parking: {
                 lot: Number,
-                Street: Number,
+                street: Number,
                 valet: Number
             }
         },
         info: {
+            general_info: String,
+            hours: [String],
+            impressum: String,
             band: {
                 band_members: String,
                 booking_agent: String,
@@ -53,8 +56,7 @@ var fanpageSchema = mongoose.Schema({
             company: {
                 company_overview: String,
                 founded: String,
-                mission: String,
-                price_range: String
+                mission: String
             },
             film: {
                 directed_by: String
@@ -62,6 +64,7 @@ var fanpageSchema = mongoose.Schema({
             foodnight: {
                 attire: String,
                 general_manager: String,
+                price_range: String,
                 restaurant: {
                     services: {
                         kids: Boolean,
@@ -86,9 +89,6 @@ var fanpageSchema = mongoose.Schema({
             personality: {
                 birthday: Date
             },
-            general_info: String,
-            hours: [String],
-            impressum: String,
             payment_options: {
                 amex: Boolean,
                 cash_only: Boolean,

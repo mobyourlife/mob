@@ -7,33 +7,15 @@ block content
             h1 Sobre
     
     div.container.space-rows
-        div.row
-            div.col-sm-3
-                p.pull-right
-                    strong Sobre:
-            div.col-sm-9
-                | #{fanpage.facebook.about}
-                
-        div.row
-            div.col-sm-3
-                p.pull-right
-                    strong Descrição:
-            div.col-sm-9
-                | #{fanpage.facebook.description}
-                
-        div.row
-            div.col-sm-3
-                p.pull-right
-                    strong Categoria:
-            div.col-sm-9
-                | #{fanpage.facebook.category}
-                if fanpage.facebook.category_list
-                ul
-                    each cat in fanpage.facebook.category_list
-                        li #{cat.name}
-        div.row
-            div.col-sm-3
-                p.pull-right
-                    strong Curtidas:
-            div.col-sm-9
-                | #{fanpage.facebook.stats.likes}
+        each i in info
+            if i.value
+                div.row
+                    div.col-sm-3
+                        p.pull-right
+                            strong #{i.key}:
+                    div.col-sm-9
+                        | #{i.value}
+                        if i.list
+                            ul
+                            each l in i.list
+                                li #{l.name}

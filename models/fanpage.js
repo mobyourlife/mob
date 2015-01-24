@@ -51,7 +51,8 @@ var fanpageSchema = mongoose.Schema({
                 band_members: String,
                 booking_agent: String,
                 press_contact: String,
-                hometown: String
+                hometown: String,
+                record_label: String
             },
             company: {
                 company_overview: String,

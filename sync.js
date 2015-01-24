@@ -15,10 +15,11 @@ var configDB = require('./config/database');
 mongoose.connect(configDB.url);
 
 // fetch photos function
-var fetchPhotos = function(fanpage, direction, cursor) {
+var fetchPhotos = function(fanpage, albumid, direction, cursor) {
     var args = { locale: 'pt_BR', fields: ['id', 'source'] };
     
     if (direction && cursor) {
+        
         switch (direction) {
             case 'before':
                 args.before = cursor;
@@ -30,7 +31,7 @@ var fetchPhotos = function(fanpage, direction, cursor) {
         }
     }
     
-    FB.api(fanpage.facebook.id + '/photos', args, function(records) {
+    FB.api(albumid + '/photos', args, function(records) {
         if (records && records.data) {
             for (i = 0; i < records.data.length; i++) {
                 var item = { _id: records.data[i].id, source: records.data[i].source };
@@ -41,13 +42,22 @@ var fetchPhotos = function(fanpage, direction, cursor) {
             }
 
             if (records.paging && records.paging.cursors) {
-                if (records.paging.cursors.before) {
-                    fetchPhotos(fanpage, 'before', records.paging.cursors.before);
-                }
-
                 if (records.paging.cursors.after) {
-                    fetchPhotos(fanpage, 'after', records.paging.cursors.after);
+                    fetchPhotos(fanpage, albumid, 'after', records.paging.cursors.before);
                 }
+            }
+        }
+    });
+}
+
+// fetch albums functions
+var fetchAlbums = function(fanpage) {
+    var args = { locale: 'pt_BR', fields: ['id'] };
+    
+    FB.api(fanpage.facebook.id + '/albums', args, function(records) {
+        if (records) {
+            for (i = 0; i < records.data.length; i++) {
+                fetchPhotos(fanpage, records.data[i].id);
             }
         }
     });
@@ -109,7 +119,7 @@ var sync = function() {
                         }
                     });
                     
-                    fetchPhotos(fanpage);
+                    fetchAlbums(fanpage);
                 });
             });
         });

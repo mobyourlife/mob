@@ -133,3 +133,14 @@ ul.navbar-nav li.active a {
 div.space-rows > div.row {
     margin-bottom: 1em;
 }
+
+div.container.fotos {
+    div {
+        margin-bottom: 2em;
+        
+        img {
+            width: 320px;
+            height: 240px;
+        }
+    }
+}

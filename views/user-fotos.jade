@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 Fotos
+    
+    div.container.fotos
+        each foto in fanpage.photos
+            div.col-sm-4
+                img(src=foto.source, alt=fanpage.facebook.name)

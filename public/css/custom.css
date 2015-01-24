@@ -144,4 +144,12 @@ ul.navbar-nav li.active a {
 div.space-rows > div.row {
   margin-bottom: 1em; }
 
+/* line 138, D:/Repos/mob/public/css/custom.scss */
+div.container.fotos div {
+  margin-bottom: 2em; }
+  /* line 141, D:/Repos/mob/public/css/custom.scss */
+  div.container.fotos div img {
+    width: 320px;
+    height: 240px; }
+
 /*# sourceMappingURL=custom.css.map */

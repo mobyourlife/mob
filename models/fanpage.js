@@ -10,34 +10,100 @@ var fanpageSchema = mongoose.Schema({
         name: String,
         about: String,
         description: String,
-        link: String,
         picture: String,
         category: String,
         category_list: [{
             id: String,
             name: String
         }],
-        likes: Number,
-        phone: String,
-        location: {
-            city: String,
-            country: String,
-            street: String,
-            zip: String,
-            coordinates: {type: [], index: '2d'}
+        is_verified: Boolean,
+        link: String,
+        website: String,
+        emails: [String],
+        stats: {
+            checkins: Number,
+            likes: Number,
+            talking_about_count: Number,
+            were_here_count: Number
         },
-        parking: {
-            lot: Number,
-            Street: Number,
-            valet: Number
+        place: {
+            name_with_location_descriptor: String,
+            phone: String,
+            location: {
+                street: String,
+                city: String,
+                state: String,
+                country: String,
+                zip: String,
+                coordinates: {type: [], index: '2d'}
+            },
+            parking: {
+                lot: Number,
+                Street: Number,
+                valet: Number
+            }
+        },
+        info: {
+            band: {
+                band_members: String,
+                booking_agent: String,
+                press_contact: String,
+                hometown: String
+            },
+            company: {
+                company_overview: String,
+                founded: String,
+                mission: String,
+                price_range: String
+            },
+            film: {
+                directed_by: String
+            },
+            foodnight: {
+                attire: String,
+                general_manager: String,
+                restaurant: {
+                    services: {
+                        kids: Boolean,
+                        delivery: Boolean,
+                        walkins: Boolean,
+                        catering: Boolean,
+                        reserve: Boolean,
+                        groups: Boolean,
+                        waiter: Boolean,
+                        outdoor: Boolean,
+                        takeout: Boolean
+                    },
+                    specialties: {
+                        coffee: Boolean,
+                        drinks: Boolean,
+                        breakfast: Boolean,
+                        dinner: Boolean,
+                        lunch: Boolean
+                    }
+                }
+            },
+            personality: {
+                birthday: Date
+            },
+            general_info: String,
+            hours: [String],
+            impressum: String,
+            payment_options: {
+                amex: Boolean,
+                cash_only: Boolean,
+                discover: Boolean,
+                mastercard: Boolean,
+                visa: Boolean
+            }
         }
     },
     photos: [{
-        _id: { type: String },
+        _id: String,
         source: String
     }],
     creation: {
-        time : { type: Date },
+        time : Date,
         user : { type: Schema.Types.ObjectId, ref: 'User' }
     },
     owners: [{ type: Schema.Types.ObjectId, ref: 'Owner' }]

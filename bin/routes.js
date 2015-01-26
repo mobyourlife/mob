@@ -106,7 +106,11 @@ module.exports = function(app, passport, FB) {
     
     // contato
     app.get('/contato', function(req, res) {
-        res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user });
+        validateSubdomain(req, function() {
+            res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            res.render('user-contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+        });
     });
     
     // =====================================

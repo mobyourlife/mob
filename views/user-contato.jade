@@ -4,54 +4,62 @@ block content
     //- Jumbotron
     div.jumbotron
         div.container
-            h1 Sobre
-    
+            h1 Contato
+
     div.container
         div.row
-            div.col-sm-3
-                p.pull-right
-                    strong Descrição:
-            div.col-sm-9
-                | #{fanpage.facebook.description}
-                
-        div.row
-            div.col-sm-3
-                p.pull-right
-                    strong Categoria:
-            div.col-sm-9
-                | #{fanpage.facebook.category}
-                if fanpage.facebook.category_list
-                ul
-                    each cat in fanpage.facebook.category_list
-                        li #{cat.name}
-        div.row
-            div.col-sm-3
-                p.pull-right
-                    strong Curtidas:
-            div.col-sm-9
-                | #{fanpage.facebook.likes}
-    
-        hr
-    
-        ul
-            li Sobre: #{fanpage.facebook.about}
-            li Descrição: #{fanpage.facebook.description}
-            li Categoria: #{fanpage.facebook.category}
-            li Subcategorias:
-            ul
-                each cat in fanpage.facebook.category_list
-                    li #{cat.name}
-            li Curtidas: #{fanpage.facebook.likes}
-            li Telefone: #{fanpage.facebook.phone}
-            li Localização:
-            ul
-                li Cidade: #{fanpage.facebook.location.city}
-                li País: #{fanpage.facebook.location.country}
-                li Endereço: #{fanpage.facebook.location.street}
-                li CEP: #{fanpage.facebook.location.zip}
-                li Coordenadas: #{fanpage.facebook.location.coordinates}
-            li Estacionamento:
-            ul
-                li Vagas próprias: #{fanpage.facebook.parking.lot}
-                li Vagas na rua: #{fanpage.facebook.parking.street}
-                li Vagas com manobrista: #{fanpage.facebook.parking.valet}
+            div.col-md-8
+                div.well.well-sm
+                    form#mail-form.form-horizontal(action='/enviar-email', method='post')
+                        fieldset
+                            legend.text-center Fale Conosco
+                        
+                        div.form-group
+                            label.col-md-3.control-label(for='name') Nome
+                            div.col-md-9
+                                input#name.form-control(name='name', type='text', placeholder='Seu nome')
+                        
+                        div.form-group
+                            label.col-md-3.control-label(for='email') E-mail
+                            div.col-md-9
+                                input#email.form-control(name='email', type='text', placeholder='Seu endereço de e-mail')
+                        
+                        div.form-group
+                            label.col-md-3.control-label(for='mensagem') Mensagem
+                            div.col-md-9
+                                textarea#message.form-control(placeholder='Digite a sua mensagem aqui', rows=5)
+                        
+                        div.form-group
+                            div.col-md-12.text-right
+                                button.btn.btn-info.btn-lg(type='submit') Enviar
+            
+            div.col-md-4
+                form
+                    legend
+                        span
+                            i.glyphicon.glyphicon-globe.jump-5
+                            | Dados de contato
+                    address
+                        strong #{fanpage.facebook.name}
+                        br
+                        if fanpage.facebook.place.location.street
+                            | #{fanpage.facebook.place.location.street}
+                            br
+                        if fanpage.facebook.place.location.city
+                            | #{fanpage.facebook.place.location.city}
+                            br
+                        if fanpage.facebook.info.band
+                            if fanpage.facebook.info.band.hometown
+                                strong Cidade de origem:
+                                |  #{fanpage.facebook.info.band.hometown}
+                                br
+                            if fanpage.facebook.info.band.booking_agent
+                                strong Empresário:
+                                |  #{fanpage.facebook.info.band.booking_agent}
+                                br
+                        if fanpage.facebook.place.phone
+                            abbr(title='Telefone comercial') F:
+                            |  #{fanpage.facebook.place.phone}
+                    address
+                        each e in fanpage.facebook.emails
+                            a(href='mailto:' + e) #{e}

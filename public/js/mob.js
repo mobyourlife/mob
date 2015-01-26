@@ -6,11 +6,11 @@ $(document).ready(function() {
             dataType: 'json',
             xhrFields: { withCredentials: true }
         }
-    ).done(function(data) {
-        if (data.auth === true) {
+    ).done(function(res) {
+        if (res.auth === true) {
             $('.loggedout').hide();
             $('.loggedin').show();
-            $('.field-name').text(data.name);
+            $('.field-name').text(res.name);
         }
     });
 });

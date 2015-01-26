@@ -24,24 +24,47 @@ div.navbar.navbar-mob.navbar-fixed-top(role='navigation')
                     li(class=key === link ? 'active' : undefined)
                         a(href='/' + key) #{value}
             
-            div.navbar-form.navbar-right
-                div.loggedin
-                    div.btn-group
-                        button.btn.btn-jumbo.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                            span.fa.fa-user.jump-5
-                            span.jump-5.field-name
-                            span.caret
-                        ul.dropdown-menu(role='menu')
-                            li
-                                a(href='/gerenciamento')
-                                    span.fa.fa-user.jump-5
-                                    | Gerenciamento
-                            li.divider
-                            li
-                                a(href='/sair')
-                                    span.fa.fa-sign-out.jump-5
-                                    | Sair
-                div.loggedout
-                    a.btn.btn-jumbo(href='/auth/facebook')
-                        span.fa.fa-facebook.jump-5
-                        | Entrar com Facebook
+            if !fanpage
+                div.navbar-form.navbar-right
+                    if auth === true
+                        div.btn-group
+                            button.btn.btn-jumbo.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                                span.fa.fa-user.jump-5
+                                span.jump-5 #{user.facebook.name}
+                                span.caret
+                            ul.dropdown-menu(role='menu')
+                                li
+                                    a(href='/gerenciamento')
+                                        span.fa.fa-user.jump-5
+                                        | Gerenciamento
+                                li.divider
+                                li
+                                    a(href='/sair')
+                                        span.fa.fa-sign-out.jump-5
+                                        | Sair
+                    else
+                        a.btn.btn-jumbo(href='/auth/facebook')
+                            span.fa.fa-facebook.jump-5
+                            | Entrar com Facebook
+            else
+                div.navbar-form.navbar-right
+                    div.loggedin
+                        div.btn-group
+                            button.btn.btn-jumbo.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                                span.fa.fa-user.jump-5
+                                span.jump-5.field-name
+                                span.caret
+                            ul.dropdown-menu(role='menu')
+                                li
+                                    a(href='http://debug.mobyourlife.com.br:3000/gerenciamento')
+                                        span.fa.fa-user.jump-5
+                                        | Gerenciamento
+                                li.divider
+                                li
+                                    a(href='http://debug.mobyourlife.com.br:3000/sair')
+                                        span.fa.fa-sign-out.jump-5
+                                        | Sair
+                    div.loggedout
+                        a.btn.btn-jumbo(href='http://debug.mobyourlife.com.br:3000/auth/facebook')
+                            span.fa.fa-facebook.jump-5
+                            | Entrar com Facebook

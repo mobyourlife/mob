@@ -306,7 +306,7 @@ module.exports = function(app, passport, FB) {
     // sair
     app.get('/sair', function(req, res) {
         req.logout();
-        res.redirect('/');
+        res.redirect(req.headers.referer);
     });
     
     // middleware de autenticação

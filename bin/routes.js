@@ -117,6 +117,21 @@ module.exports = function(app, passport, FB) {
     // =====================================
     // FACEBOOK ROUTES =====================
     // =====================================
+    app.get('/login', function(req, res) {
+        validateSubdomain(req.headers.referer, function() {}, function(userFanpage) {
+            req.session.backto = req.headers.referer;
+        });
+        res.redirect('/auth/facebook');
+    });
+    
+    app.get('/login/callback', function(req, res) {
+        if (req.session.backto) {
+            res.redirect(req.session.backto);
+        } else {
+            res.redirect('/gerenciamento');
+        }
+    });
+    
     // route for facebook authentication and login
     app.get('/auth/facebook', passport.authenticate('facebook', {
         scope : 'email,manage_pages'
@@ -124,7 +139,7 @@ module.exports = function(app, passport, FB) {
 
     // handle the callback after facebook has authenticated the user
     app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect : '/gerenciamento',
+        successRedirect : '/login/callback',
         failureRedirect : '/'
     }));
     

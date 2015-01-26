@@ -16,6 +16,29 @@ var FB = require('fb');
 // init the app
 var app = express();
 
+// enable cors
+var allowCrossDomain = function(req, res, next) {
+    console.log("----------------------------");
+    console.log('Host: ' + req.headers.host);
+    console.log("Origin: ", req.headers.origin);
+    console.log("Session: ", req.session);
+
+    if (req.headers.origin) {
+        if(req.headers.origin.indexOf('.mobyourlife.com.br') !== -1) { /* DANGER! validate this the right way asap */
+            res.header('Access-Control-Allow-Credentials', true);
+            res.header('Access-Control-Allow-Origin', req.headers.origin)
+            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+            next();
+        } else {
+            console.log("Failed the CORS origin test: ", req.session.username)
+            res.send(401, {auth: false});
+        }
+    } else {
+        next();
+    }
+}
+
 // get db config
 var auth = require('./config/auth');
 var configDB = require('./config/database');
@@ -44,6 +67,19 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(Facebook.middleware({ appID: auth.facebookAuth.clientID, secret: auth.facebookAuth.clientSecret }));
+app.use(allowCrossDomain);
+
+app.get('/api/login', function(req, res) {
+    console.log("GET /api/login");
+    if(typeof req.user !== 'undefined'){
+        console.log("Verified logged in: ", req.user.facebook.name)
+        res.send({ auth: true, id: req.session.id, user: req.user });
+        // res.send({auth: true, id: req.session.id, username: req.session.username, _csrf: req.session._csrf});
+    } else {
+        res.status(401).send({ auth: false });
+        // res.send(401, {auth: false, _csrf: req.session._csrf});
+    }
+});
 
 // load passport
 require('./config/passport')(passport);

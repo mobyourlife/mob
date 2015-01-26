@@ -1,6 +1,7 @@
 // load up the models
 var Fanpage            = require('../models/fanpage');
 var Owner              = require('../models/owner');
+var rest = require('../rest.js');
 
 // check if it's top domain or any subdomain
 validateSubdomain = function(req, callbackTop, callbackSubdomain) {
@@ -20,6 +21,33 @@ validateSubdomain = function(req, callbackTop, callbackSubdomain) {
     }
 }
 
+// get user corsly
+validateUser = function(requser) {
+    console.log('----- VALIDATE USER : ' + requser + ' ------');
+    if(typeof requser === 'undefined') {
+        console.log('Getting from CORS...');
+        
+        var options = {
+            host: 'debug.mobyourlife.com.br',
+            port: 3000,
+            path: '/api/login',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Credentials': false,
+                'Access-Control-Max-Age': '86400',
+                'Access-Control-Allow-Headers': 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
+            }
+        };
+        
+        rest.getJSON(options, function(statusCode, result) {
+            console.log("    onResult: (" + statusCode + ")" + JSON.stringify(result));
+        });
+    }
+}
+
 // app/routes.js
 module.exports = function(app, passport, FB) {
     
@@ -30,9 +58,12 @@ module.exports = function(app, passport, FB) {
 
     // início
     app.get('/inicio', function(req, res) {
+        console.log('User: ' + req.user);
         validateSubdomain(req, function() {
             res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
+            var user = validateUser(req.user);
+            console.log('Req: ' + req.user + ', Cors: ' + user);
             res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
         });
     });

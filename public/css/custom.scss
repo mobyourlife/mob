@@ -10,6 +10,14 @@ body {
     border-color: #e7e7e7;
 }
 
+.loggedin {
+    display: none;
+}
+
+.loggedout {
+    display: inline;
+}
+
 .navbar-brand {
     margin-top: -6px;
 

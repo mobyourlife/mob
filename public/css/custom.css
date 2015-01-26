@@ -11,70 +11,78 @@ body {
   border-color: #e7e7e7; }
 
 /* line 13, D:/Repos/mob/public/css/custom.scss */
+.loggedin {
+  display: none; }
+
+/* line 17, D:/Repos/mob/public/css/custom.scss */
+.loggedout {
+  display: inline; }
+
+/* line 21, D:/Repos/mob/public/css/custom.scss */
 .navbar-brand {
   margin-top: -6px; }
-  /* line 16, D:/Repos/mob/public/css/custom.scss */
+  /* line 24, D:/Repos/mob/public/css/custom.scss */
   .navbar-brand img.icon {
     width: 32px;
     height: 32px;
     margin-right: 10px; }
-  /* line 22, D:/Repos/mob/public/css/custom.scss */
+  /* line 30, D:/Repos/mob/public/css/custom.scss */
   .navbar-brand > span {
     float: left;
     line-height: 32px;
     vertical-align: middle; }
 
-/* line 29, D:/Repos/mob/public/css/custom.scss */
+/* line 37, D:/Repos/mob/public/css/custom.scss */
 .jumbotron {
   background-color: #009fe3;
   background-image: url(../img/jumbg.jpg);
   background-repeat: repeat;
   color: #fff; }
 
-/* line 35, D:/Repos/mob/public/css/custom.scss */
+/* line 43, D:/Repos/mob/public/css/custom.scss */
 .btn-jumbo {
   background-color: #fff;
   border-color: #3071a9;
   color: #000; }
 
-/* line 40, D:/Repos/mob/public/css/custom.scss */
+/* line 48, D:/Repos/mob/public/css/custom.scss */
 .btn-jumbo:hover {
   background-color: #f58634;
   border-color: #f1b88f;
   color: #fff; }
 
-/* line 46, D:/Repos/mob/public/css/custom.scss */
+/* line 54, D:/Repos/mob/public/css/custom.scss */
 ul.navbar-nav li.active {
   background-color: #4fc1f1;
   color: #fff; }
 
-/* line 51, D:/Repos/mob/public/css/custom.scss */
+/* line 59, D:/Repos/mob/public/css/custom.scss */
 ul.navbar-nav li.active a {
   color: #fff; }
 
-/* line 55, D:/Repos/mob/public/css/custom.scss */
+/* line 63, D:/Repos/mob/public/css/custom.scss */
 .jump-5 {
   margin-right: 10px; }
 
-/* line 59, D:/Repos/mob/public/css/custom.scss */
+/* line 67, D:/Repos/mob/public/css/custom.scss */
 .space-vertical > .row {
   margin-bottom: 5px; }
 
-/* line 63, D:/Repos/mob/public/css/custom.scss */
+/* line 71, D:/Repos/mob/public/css/custom.scss */
 .space-right {
   padding-right: 2em; }
 
-/* line 67, D:/Repos/mob/public/css/custom.scss */
+/* line 75, D:/Repos/mob/public/css/custom.scss */
 .space-top {
   margin-top: 2em; }
 
 /* Boxes da página inicial */
-/* line 73, D:/Repos/mob/public/css/custom.scss */
+/* line 81, D:/Repos/mob/public/css/custom.scss */
 .box > .icon {
   text-align: center;
   position: relative; }
 
-/* line 77, D:/Repos/mob/public/css/custom.scss */
+/* line 85, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .image {
   position: relative;
   z-index: 2;
@@ -87,67 +95,67 @@ ul.navbar-nav li.active a {
   background: #009fe3;
   vertical-align: middle; }
 
-/* line 89, D:/Repos/mob/public/css/custom.scss */
+/* line 97, D:/Repos/mob/public/css/custom.scss */
 .box > .icon:hover > .image {
   background: #f58634;
   cursor: pointer; }
 
-/* line 93, D:/Repos/mob/public/css/custom.scss */
+/* line 101, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .image > i {
   font-size: 36px !important;
   color: #fff !important; }
 
-/* line 97, D:/Repos/mob/public/css/custom.scss */
+/* line 105, D:/Repos/mob/public/css/custom.scss */
 .box > .icon:hover > .image > i {
   color: white !important; }
 
-/* line 100, D:/Repos/mob/public/css/custom.scss */
+/* line 108, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .info {
   margin-top: -24px;
   background: rgba(0, 0, 0, 0.04);
   border: 1px solid #e0e0e0;
   padding: 15px 0 10px 0; }
 
-/* line 106, D:/Repos/mob/public/css/custom.scss */
+/* line 114, D:/Repos/mob/public/css/custom.scss */
 .box > .icon:hover > .info {
   background: rgba(0, 0, 0, 0.04);
   border-color: #e0e0e0;
   color: white; }
 
-/* line 111, D:/Repos/mob/public/css/custom.scss */
+/* line 119, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .info > h3.title {
   color: #222; }
 
-/* line 114, D:/Repos/mob/public/css/custom.scss */
+/* line 122, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .info > p {
   color: #777;
   line-height: 1.5em;
   margin: 20px; }
 
-/* line 119, D:/Repos/mob/public/css/custom.scss */
+/* line 127, D:/Repos/mob/public/css/custom.scss */
 .box > .icon > .info > .more a {
   color: #222;
   text-transform: uppercase;
   text-decoration: none; }
 
-/* line 124, D:/Repos/mob/public/css/custom.scss */
+/* line 132, D:/Repos/mob/public/css/custom.scss */
 .box > .icon:hover > .info > .more > a {
   color: #fff;
   padding: 6px 8px;
   background-color: #009fe3; }
 
-/* line 129, D:/Repos/mob/public/css/custom.scss */
+/* line 137, D:/Repos/mob/public/css/custom.scss */
 .box .space {
   height: 30px; }
 
-/* line 133, D:/Repos/mob/public/css/custom.scss */
+/* line 141, D:/Repos/mob/public/css/custom.scss */
 div.space-rows > div.row {
   margin-bottom: 1em; }
 
-/* line 138, D:/Repos/mob/public/css/custom.scss */
+/* line 146, D:/Repos/mob/public/css/custom.scss */
 div.container.fotos div {
   margin-bottom: 2em; }
-  /* line 141, D:/Repos/mob/public/css/custom.scss */
+  /* line 149, D:/Repos/mob/public/css/custom.scss */
   div.container.fotos div img {
     width: 320px;
     height: 240px; }

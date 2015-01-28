@@ -107,6 +107,21 @@ var fanpageSchema = mongoose.Schema({
         time : Date,
         user : { type: Schema.Types.ObjectId, ref: 'User' }
     },
+    billing: {
+        active: Boolean,
+        evaluation: Boolean,
+        expiration: Date,
+        tickets: [{
+            time: Date,
+            validity: {
+                months: Number,
+                days: Number
+            },
+            payment_type: String,
+            paid: Boolean,
+            transaction_id: String
+        }]
+    },
     owners: [{ type: Schema.Types.ObjectId, ref: 'Owner' }]
 });
 

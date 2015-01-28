@@ -1,3 +1,6 @@
+// load up libraries
+var moment = require('moment');
+
 // load up the models
 var Fanpage            = require('../models/fanpage');
 var Owner              = require('../models/owner');
@@ -200,8 +203,27 @@ module.exports = function(app, passport, FB) {
                         newFanpage.facebook.about = records.about;
                         newFanpage.facebook.link = records.link;
                         newFanpage.facebook.picture = records.picture.data.url;
+                        
+                        /* creation info */
                         newFanpage.creation.time = Date.now();
                         newFanpage.creation.user = req.user;
+                        
+                        /* billing info */
+                        newFanpage.billing.active = true;
+                        newFanpage.billing.evaluation = true;
+                        var ticket = {
+                            time: moment(),
+                            validity: {
+                                months: 0,
+                                days: 7
+                            },
+                            payment_type: 'signup_coupon',
+                            paid: true
+                        };
+                        newFanpage.billing.expiration = moment()
+                            .add(ticket.validity.months, 'months')
+                            .add(ticket.validity.days, 'days');
+                        newFanpage.billing.tickets.push(ticket);
                     }
 
                     // save the new fanpage to the database

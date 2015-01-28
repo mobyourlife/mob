@@ -6,7 +6,14 @@ var mongoose = require('mongoose')
 // define the model schema
 var domainSchema = mongoose.Schema({
     _id: String,
-    ref: { type: Schema.Types.ObjectId, ref: 'Fanpage' }
+    ref: { type: Schema.Types.ObjectId, ref: 'Fanpage' },
+    status: String,
+    registrar: String,
+    expiration: Boolean,
+    creation: {
+        time : Date,
+        user : { type: Schema.Types.ObjectId, ref: 'User' }
+    }
 });
 
 // export user model

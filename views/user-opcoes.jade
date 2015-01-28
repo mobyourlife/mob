@@ -1,7 +1,21 @@
 extends none
 
-div.row
-    div.col-md-6
-        Domínio
-    div.col-md-6
-        input
+block content
+    div.form-horizontal
+        div.form-group
+            div.col-sm-3
+                label(for='dominio', control-label)
+                    | Domínios
+            div.col-sm-9
+                div.input-group(style='margin-bottom:8px')
+                    input.form-control(id='dominio', name='dominio', type='text', readonly='readonly', value=fanpage._id + '.mobyourlife.com.br')
+                    span.input-group-addon.label-success(style='cursor:not-allowed')
+                        i.fa.fa-lock(style='color:#fff;width:20px')
+                div.input-group(style='margin-bottom:8px')
+                    input.form-control(id='dominio', name='dominio', type='text', readonly='readonly', value='debug.mobyourlife.com.br')
+                    span.input-group-addon.label-success(style='cursor:pointer')
+                        i.fa.fa-home(style='color:#fff;width:20px')
+                div.input-group
+                    input.form-control(id='dominio', name='dominio', type='text')
+                    span.input-group-addon.label-info(style='cursor:pointer')
+                        i.fa.fa-plus(style='color:#fff;width:20px')

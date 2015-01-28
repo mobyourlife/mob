@@ -354,7 +354,7 @@ module.exports = function(app, passport, FB) {
     });
     
     // opções do site
-    app.get('/opcoes', isLoggedIn, function(req, res) {
+    app.get('/opcoes', function(req, res) {
         validateSubdomain(req.headers.host, res, function() {
             res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {

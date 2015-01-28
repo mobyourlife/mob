@@ -1,6 +1,7 @@
 // load up the models
 var Fanpage            = require('../models/fanpage');
 var Owner              = require('../models/owner');
+var Domain             = require('../models/domain');
 
 // check if it's top domain or any subdomain
 validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
@@ -10,9 +11,15 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
     if (subdomain == 'www') {
         callbackTop();
     } else {
-        Fanpage.findOne({'_id': subdomain}, function(err, found) {
+        Domain.findOne({'_id': subdomain}, function(err, found) {
             if (found) {
-                callbackSubdomain(found);
+                Fanpage.findOne({'_id': found.ref}, function(err, found) {
+                    if (found) {
+                        callbackSubdomain(found);
+                    } else {
+                        res.redirect('http://www.mobyourlife.com.br');
+                    }
+                });
             } else {
                 res.redirect('http://www.mobyourlife.com.br');
             }
@@ -202,59 +209,69 @@ module.exports = function(app, passport, FB) {
                     newFanpage.save(function(err) {
                         if (err)
                             throw err;
-
-                        // if successful, insert the fanpage into the owners collection
-                        Owner.findOne({ 'owner.$' : req.user.$ }, function(err, found) {
-                            var newOwnership = null;
                         
-                            if (found) {
-                                newOwnership = found;
-                            } else {
-                                newOwnership = new Owner();
-                                newOwnership.user = req.user;
-                            }
-                            
-                            // look if user already owns that page
-                            found = false;
-                            for (i = 0; i < newOwnership.fanpages.length; i++) {
-                                if (newOwnership.fanpages[i].ref.equals(newFanpage._id)) {
-                                    found = true;
-                                    break;
+                        // create default subdomain
+                        var domain = new Domain();
+                        domain._id = newFanpage._id;
+                        domain.ref = newFanpage;
+                        
+                        domain.save(function(err) {
+                            if (err)
+                                throw err;
+
+                            // if successful, insert the fanpage into the owners collection
+                            Owner.findOne({ 'owner.$' : req.user.$ }, function(err, found) {
+                                var newOwnership = null;
+
+                                if (found) {
+                                    newOwnership = found;
+                                } else {
+                                    newOwnership = new Owner();
+                                    newOwnership.user = req.user;
                                 }
-                            }
-                            
-                            if (found === false) {
-                                var inner = {
-                                    ref: newFanpage,
-                                    token: records.access_token
-                                };
-                                newOwnership.fanpages.push(inner);
-                            }
-                                
-                            // save the ownership to the database
-                            newOwnership.save(function(err) {
-                                if (err)
-                                    throw err;
-                                
-                                // insert the owner row in fanpages collection
-                                var found = false;
-                                for (i = 0; i < newFanpage.owners.length; i++) {
-                                    if (newFanpage.owners[i].equals(newOwnership._id)) {
+
+                                // look if user already owns that page
+                                found = false;
+                                for (i = 0; i < newOwnership.fanpages.length; i++) {
+                                    if (newOwnership.fanpages[i].ref.equals(newFanpage._id)) {
                                         found = true;
                                         break;
                                     }
                                 }
-                                
+
                                 if (found === false) {
-                                    newFanpage.owners.push(newOwnership);
-                                    newFanpage.save(function(err) {
-                                        if (err)
-                                            throw err;
-                                    });
+                                    var inner = {
+                                        ref: newFanpage,
+                                        token: records.access_token
+                                    };
+                                    newOwnership.fanpages.push(inner);
                                 }
 
-                                // if successful, return a success message
-                                res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, fanpage: newFanpage });
+                                // save the ownership to the database
+                                newOwnership.save(function(err) {
+                                    if (err)
+                                        throw err;
+
+                                    // insert the owner row in fanpages collection
+                                    var found = false;
+                                    for (i = 0; i < newFanpage.owners.length; i++) {
+                                        if (newFanpage.owners[i].equals(newOwnership._id)) {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (found === false) {
+                                        newFanpage.owners.push(newOwnership);
+                                        newFanpage.save(function(err) {
+                                            if (err)
+                                                throw err;
+                                        });
+                                    }
+
+                                    // if successful, return a success message
+                                    res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, fanpage: newFanpage });
+                                });
                             });
                         });
                     });

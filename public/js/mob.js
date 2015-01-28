@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $.ajax(
         {
-            url: "http://debug.mobyourlife.com.br:3000/api/login",
+            url: "http://www.mobyourlife.com.br/api/login",
             type: "GET",
             dataType: 'json',
             xhrFields: { withCredentials: true }

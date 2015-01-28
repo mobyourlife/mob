@@ -3,18 +3,18 @@ var Fanpage            = require('../models/fanpage');
 var Owner              = require('../models/owner');
 
 // check if it's top domain or any subdomain
-validateSubdomain = function(uri, callbackTop, callbackSubdomain) {
-    var hostname = uri.split(':')[0];
+validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
+    var hostname = uri.replace('http://', '').replace('https://', '').split(':')[0];
     var subdomain = hostname.split('.')[0];
     
-    if (hostname == 'www.mobyourlife.com.br' || subdomain == 'debug') {
+    if (subdomain == 'www') {
         callbackTop();
     } else {
         Fanpage.findOne({'_id': subdomain}, function(err, found) {
             if (found) {
                 callbackSubdomain(found);
             } else {
-                callbackTop();
+                res.redirect('http://www.mobyourlife.com.br');
             }
         });
     }
@@ -31,7 +31,7 @@ module.exports = function(app, passport, FB) {
     // início
     app.get('/inicio', function(req, res) {
         console.log('User: ' + req.user);
-        validateSubdomain(req.headers.host, function() {
+        validateSubdomain(req.headers.host, res, function() {
             res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
             res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
@@ -40,7 +40,7 @@ module.exports = function(app, passport, FB) {
 
     // sobre
     app.get('/sobre', function(req, res) {
-        validateSubdomain(req.headers.host, function() {
+        validateSubdomain(req.headers.host, res, function() {
             res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
             
@@ -88,7 +88,7 @@ module.exports = function(app, passport, FB) {
 
     // fotos
     app.get('/fotos', function(req, res) {
-        validateSubdomain(req.headers.host, function() {
+        validateSubdomain(req.headers.host, res, function() {
             res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
             res.render('user-fotos', { link: 'fotos', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
@@ -107,7 +107,7 @@ module.exports = function(app, passport, FB) {
     
     // contato
     app.get('/contato', function(req, res) {
-        validateSubdomain(req.headers.host, function() {
+        validateSubdomain(req.headers.host, res, function() {
             res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
             res.render('user-contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
@@ -118,10 +118,12 @@ module.exports = function(app, passport, FB) {
     // FACEBOOK ROUTES =====================
     // =====================================
     app.get('/login', function(req, res) {
-        validateSubdomain(req.headers.referer, function() {}, function(userFanpage) {
+        validateSubdomain(req.headers.referer, res, function() {
+            res.redirect('/auth/facebook');
+        }, function(userFanpage) {
             req.session.backto = req.headers.referer;
+            res.redirect('/auth/facebook');
         });
-        res.redirect('/auth/facebook');
     });
     
     app.get('/login/callback', function(req, res) {

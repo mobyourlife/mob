@@ -18,11 +18,6 @@ var app = express();
 
 // enable cors
 var allowCrossDomain = function(req, res, next) {
-    console.log("----------------------------");
-    console.log('Host: ' + req.headers.host);
-    console.log("Origin: ", req.headers.origin);
-    console.log("Session: ", req.session);
-
     if (req.headers.origin) {
         if(req.headers.origin.indexOf('.mobyourlife.com.br') !== -1) { /* DANGER! validate this the right way asap */
             res.header('Access-Control-Allow-Credentials', true);
@@ -70,9 +65,7 @@ app.use(Facebook.middleware({ appID: auth.facebookAuth.clientID, secret: auth.fa
 app.use(allowCrossDomain);
 
 app.get('/api/login', function(req, res) {
-    console.log("GET /api/login");
     if(typeof req.user !== 'undefined'){
-        console.log("Verified logged in: ", req.user.facebook.name)
         res.send({ auth: true, name: req.user.facebook.name });
         // res.send({auth: true, id: req.session.id, username: req.session.username, _csrf: req.session._csrf});
     } else {

@@ -37,7 +37,6 @@ module.exports = function(app, passport, FB) {
 
     // início
     app.get('/inicio', function(req, res) {
-        console.log('User: ' + req.user);
         validateSubdomain(req.headers.host, res, function() {
             res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
@@ -341,6 +340,31 @@ module.exports = function(app, passport, FB) {
     app.get('/sair', function(req, res) {
         req.logout();
         res.redirect(req.headers.referer);
+    });
+    
+    // api para sincronização de login
+    app.get('/api/login', function(req, res) {
+        if (req.isAuthenticated()) {
+            res.send({ auth: true, name: req.user.facebook.name });
+            // res.send({auth: true, id: req.session.id, username: req.session.username, _csrf: req.session._csrf});
+        } else {
+            res.status(401).send({ auth: false });
+            // res.send(401, {auth: false, _csrf: req.session._csrf});
+        }
+    });
+    
+    // opções do site
+    app.get('/opcoes', isLoggedIn, function(req, res) {
+        validateSubdomain(req.headers.host, res, function() {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            res.render('user-opcoes', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+        });
+    });
+    
+    // templates
+    app.get('/templates/modal/save-cancel', function(req, res) {
+        res.render('tmpl-modal-save-cancel');
     });
     
     // middleware de autenticação

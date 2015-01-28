@@ -64,16 +64,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(Facebook.middleware({ appID: auth.facebookAuth.clientID, secret: auth.facebookAuth.clientSecret }));
 app.use(allowCrossDomain);
 
-app.get('/api/login', function(req, res) {
-    if(typeof req.user !== 'undefined'){
-        res.send({ auth: true, name: req.user.facebook.name });
-        // res.send({auth: true, id: req.session.id, username: req.session.username, _csrf: req.session._csrf});
-    } else {
-        res.status(401).send({ auth: false });
-        // res.send(401, {auth: false, _csrf: req.session._csrf});
-    }
-});
-
 // load passport
 require('./config/passport')(passport);
 

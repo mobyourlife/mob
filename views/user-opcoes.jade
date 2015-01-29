@@ -9,7 +9,12 @@ block content
             div.col-sm-9
                 div.input-group(style='margin-bottom:8px')
                     span.form-control
-                        | Avaliação
+                        if fanpage.billing.evaluation === true
+                            | Avaliação
+                        else if fanpage.billing.active === true
+                            | Ativo
+                        else
+                            | Inativo
                     span.input-group-addon.label-success(style='cursor:pointer')
                         i.fa.fa-check(style='color:#fff;width:20px')
         div.form-group
@@ -19,8 +24,8 @@ block content
             div.col-sm-9
                 div.input-group(style='margin-bottom:8px')
                     span.form-control
-                        | daqui 7 dias
-                    span.input-group-addon.label-danger(style='cursor:pointer')
+                        | #{moment(fanpage.billing.expiration).fromNow()}
+                    span.input-group-addon.label-warning(style='cursor:pointer')
                         i.fa.fa-dollar(style='color:#fff;width:20px')
         div.form-group
             div.col-sm-3

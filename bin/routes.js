@@ -1,6 +1,9 @@
 // load up libraries
 var moment = require('moment');
 
+// setup i18n
+moment.locale('pt-br');
+
 // load up the models
 var Fanpage            = require('../models/fanpage');
 var Owner              = require('../models/owner');
@@ -380,7 +383,7 @@ module.exports = function(app, passport, FB) {
         validateSubdomain(req.headers.host, res, function() {
             res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
-            res.render('user-opcoes', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+            res.render('user-opcoes', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, moment: moment });
         });
     });
     

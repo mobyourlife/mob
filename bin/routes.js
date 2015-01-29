@@ -1,5 +1,6 @@
 // load up libraries
 var moment = require('moment');
+var URL = require('url-parse');
 
 // setup i18n
 moment.locale('pt-br');
@@ -11,7 +12,8 @@ var Domain             = require('../models/domain');
 
 // check if it's top domain or any subdomain
 validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
-    var hostname = uri.replace('http://', '').replace('https://', '').split(':')[0];
+    var parsed = new URL(uri);
+    var hostname = parsed.hostname;
     var subdomain = hostname.split('.')[0];
     
     if (subdomain == 'www') {

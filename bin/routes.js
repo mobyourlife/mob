@@ -17,7 +17,7 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
     if (subdomain == 'www') {
         callbackTop();
     } else {
-        Domain.findOne({'_id': subdomain}, function(err, found) {
+        Domain.findOne({'_id': hostname }, function(err, found) {
             if (found) {
                 Fanpage.findOne({'_id': found.ref}, function(err, found) {
                     if (found) {
@@ -236,7 +236,7 @@ module.exports = function(app, passport, FB) {
                         
                         // create default subdomain
                         var domain = new Domain();
-                        domain._id = newFanpage._id;
+                        domain._id = newFanpage._id + '.mobyourlife.com.br';
                         domain.ref = newFanpage;
                         
                         domain.save(function(err) {
@@ -378,18 +378,51 @@ module.exports = function(app, passport, FB) {
         }
     });
     
+    // api para inclusão de domínio
+    app.post('/api/incluirdominio', function(req, res) {
+        if (req.body.dominio && req.body.fanpageid) {
+            Domain.findOne({ '_id': req.body.dominio }, function(err, found) {
+                if (!found) {
+                    var d = new Domain();
+                    d._id = req.body.dominio;
+                    d.ref = req.body.fanpageid;
+                    d.status = 'expired';
+                    d.creation.time = Date.now();
+                    d.creation.user = req.user;
+                    
+                    d.save(function(err) {
+                        if (err)
+                            throw err;
+                        
+                        res.send({ created: true });
+                    });
+                } else {
+                    res.send({ created: false });
+                }
+            });
+        } else {
+            res.send({ created: false });
+        }
+    });
+    
     // opções do site
     app.get('/opcoes', function(req, res) {
         validateSubdomain(req.headers.host, res, function() {
             res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
-            res.render('user-opcoes', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, moment: moment });
+            Domain.find({ 'ref': userFanpage._id }, function(err, found) {
+                res.render('user-opcoes', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, domains: found, moment: moment });
+            });
         });
     });
     
     // templates
-    app.get('/templates/modal/save-cancel', function(req, res) {
-        res.render('tmpl-modal-save-cancel');
+    app.get('/templates/modal/save-close', function(req, res) {
+        res.render('tmpl-modal-save-close');
+    });
+    
+    app.get('/templates/modal/close', function(req, res) {
+        res.render('tmpl-modal-close');
     });
     
     // middleware de autenticação

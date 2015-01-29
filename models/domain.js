@@ -13,7 +13,8 @@ var domainSchema = mongoose.Schema({
     creation: {
         time : Date,
         user : { type: Schema.Types.ObjectId, ref: 'User' }
-    }
+    },
+    routes: [String]
 });
 
 // export user model

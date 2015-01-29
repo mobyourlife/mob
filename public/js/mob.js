@@ -21,10 +21,11 @@ $(document).ready(function() {
         }
         
         var $container = $('#modal-container');
+        var $frmt = $(this).data('frmt');
         var $link = $(this).attr('href');
         var $title = $(this).find('span.modal-title').html()
         
-        $container.load('/templates/modal/save-cancel', function() {
+        $container.load('/templates/modal/' + $frmt, function() {
             $container.find('.modal-title').html($title);
             
             $container.find('.modal-body').load($link, function () {
@@ -34,4 +35,29 @@ $(document).ready(function() {
         
         return false;
     });
+    
+    incluirDominio = function(p_dominio, p_fanpageid) {
+        if (p_dominio.length == 0) {
+            alert('Digite o nome de domínio desejado!');
+        } else {
+            $.ajax(
+                {
+                    url: "http://www.mobyourlife.com.br/api/incluirdominio",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        dominio: p_dominio,
+                        fanpageid: p_fanpageid
+                    }
+                }
+            ).done(function(res) {
+                if (res.created === true) {
+                    alert('Domínio incluído com sucesso!');
+                } else {
+                    alert('Falha ao tentar incluir domínio!');
+                }
+                $('#modal-dialog').modal();
+            });
+        }
+    };
 });

@@ -5,6 +5,13 @@ block content
         div.form-group
             div.col-sm-3
                 label(for='dominio', control-label)
+                    | Nome do site
+            div.col-sm-9
+                | #{fanpage.facebook.name}
+                        
+        div.form-group
+            div.col-sm-3
+                label(for='dominio', control-label)
                     | Estado do site
             div.col-sm-9
                 div.input-group(style='margin-bottom:8px')
@@ -17,6 +24,7 @@ block content
                             | Inativo
                     span.input-group-addon.label-success(style='cursor:pointer')
                         i.fa.fa-check(style='color:#fff;width:20px')
+                        
         div.form-group
             div.col-sm-3
                 label(for='dominio', control-label)
@@ -27,32 +35,41 @@ block content
                         | #{moment(fanpage.billing.expiration).fromNow()}
                     span.input-group-addon.label-warning(style='cursor:pointer')
                         i.fa.fa-dollar(style='color:#fff;width:20px')
+                        
         div.form-group
             div.col-sm-3
                 label(for='dominio', control-label)
                     | Domínios
             div.col-sm-9
-                div.input-group(style='margin-bottom:8px')
-                    input.form-control(id='dominio', name='dominio', type='text', readonly='readonly', value=fanpage._id + '.mobyourlife.com.br')
-                    span.input-group-addon.label-success(style='cursor:not-allowed')
-                        i.fa.fa-lock(style='color:#fff;width:20px')
+                each d in domains
+                    div.input-group(style='margin-bottom:8px')
+                        if d.id === fanpage.id
+                            input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id + '.mobyourlife.com.br')
+                            span.input-group-addon.label-success(style='cursor:not-allowed')
+                                i.fa.fa-lock(style='color:#fff;width:20px')
+                        else
+                            case d.status
+                                when 'expired'
+                                    input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
+                                    span.input-group-addon.label-danger(style='cursor:pointer')
+                                        i.fa.fa-dollar(style='color:#fff;width:20px')
+                                            
+                                when 'expiring'
+                                    input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
+                                    span.input-group-addon.label-warning(style='cursor:pointer')
+                                        i.fa.fa-dollar(style='color:#fff;width:20px')
+                                            
+                                when 'dns_failure'
+                                    input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
+                                    span.input-group-addon.label-warning(style='cursor:pointer')
+                                        i.fa.fa-warning(style='color:#fff;width:20px')
+                                
+                                default
+                                    input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
+                                    span.input-group-addon.label-globe(style='cursor:pointer')
+                                        i.fa.fa-success(style='color:#fff;width:20px')
                         
                 div.input-group(style='margin-bottom:8px')
-                    input.form-control(id='dominio', name='dominio', type='text', readonly='readonly', value='debug.mobyourlife.com.br')
-                    span.input-group-addon.label-success(style='cursor:pointer')
-                        i.fa.fa-home(style='color:#fff;width:20px')
-                        
-                div.input-group(style='margin-bottom:8px')
-                    input.form-control(id='dominio', name='dominio', type='text', readonly='readonly', value='debug.mobyourlife.com')
-                    span.input-group-addon.label-warning(style='cursor:pointer')
-                        i.fa.fa-warning(style='color:#fff;width:20px')
-                        
-                div.input-group(style='margin-bottom:8px')
-                    input.form-control(id='dominio', name='dominio', type='text', readonly='readonly', value='error.mobyourlife.com')
-                    span.input-group-addon.label-danger(style='cursor:pointer')
-                        i.fa.fa-close(style='color:#fff;width:20px')
-                        
-                div.input-group(style='margin-bottom:8px')
-                    input.form-control(id='dominio', name='dominio', type='text')
+                    input.form-control(id='novodominio', name='novodominio', type='text')
                     span.input-group-addon.label-info(style='cursor:pointer')
-                        i.fa.fa-plus(style='color:#fff;width:20px')
+                        i.fa.fa-plus(onclick='incluirDominio($("#novodominio").val(), "#{fanpage.id}");', style='color:#fff;width:20px')

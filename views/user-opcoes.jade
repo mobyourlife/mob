@@ -41,10 +41,11 @@ block content
                 label(for='dominio', control-label)
                     | Domínios
             div.col-sm-9
+                -var cmp = fanpage.id + '.mobyourlife.com.br'
                 each d in domains
                     div.input-group(style='margin-bottom:8px')
-                        if d.id === fanpage.id
-                            input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id + '.mobyourlife.com.br')
+                        if d.id === cmp
+                            input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
                             span.input-group-addon.label-success(style='cursor:not-allowed')
                                 i.fa.fa-lock(style='color:#fff;width:20px')
                         else
@@ -66,10 +67,10 @@ block content
                                 
                                 default
                                     input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
-                                    span.input-group-addon.label-globe(style='cursor:pointer')
-                                        i.fa.fa-success(style='color:#fff;width:20px')
+                                    span.input-group-addon.label-success(style='cursor:pointer')
+                                        i.fa.fa-globe(style='color:#fff;width:20px')
                         
                 div.input-group(style='margin-bottom:8px')
                     input.form-control(id='novodominio', name='novodominio', type='text')
                     span.input-group-addon.label-info(style='cursor:pointer')
-                        i.fa.fa-plus(onclick='incluirDominio($("#novodominio").val(), "#{fanpage.id}");', style='color:#fff;width:20px')
+                        i.fa.fa-plus(onclick='incluirDominio($("#novodominio"), "#{fanpage.id}", "/opcoes");', style='color:#fff;width:20px')

@@ -36,7 +36,7 @@ $(document).ready(function() {
         return false;
     });
     
-    incluirDominio = function(p_dominio, p_fanpageid) {
+    incluirDominio = function(p_dominio, p_fanpageid, p_link) {
         if (p_dominio.length == 0) {
             alert('Digite o nome de domínio desejado!');
         } else {
@@ -46,17 +46,20 @@ $(document).ready(function() {
                     type: "POST",
                     dataType: "json",
                     data: {
-                        dominio: p_dominio,
+                        dominio: p_dominio.val(),
                         fanpageid: p_fanpageid
                     }
                 }
             ).done(function(res) {
                 if (res.created === true) {
-                    alert('Domínio incluído com sucesso!');
+                    $('#modal-container .modal-body').load(p_link, function () {
+                        alert('Domínio incluído com sucesso!');
+                    });
                 } else {
-                    alert('Falha ao tentar incluir domínio!');
+                    alert(res.message);
                 }
-                $('#modal-dialog').modal();
+            }).fail(function() {
+                alert('Falha ao tentar incluir o domínio!\n\n');
             });
         }
     };

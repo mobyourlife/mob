@@ -382,28 +382,37 @@ module.exports = function(app, passport, FB) {
     
     // api para inclusão de domínio
     app.post('/api/incluirdominio', function(req, res) {
-        if (req.body.dominio && req.body.fanpageid) {
-            Domain.findOne({ '_id': req.body.dominio }, function(err, found) {
-                if (!found) {
-                    var d = new Domain();
-                    d._id = req.body.dominio;
-                    d.ref = req.body.fanpageid;
-                    d.status = 'expired';
-                    d.creation.time = Date.now();
-                    d.creation.user = req.user;
-                    
-                    d.save(function(err) {
-                        if (err)
-                            throw err;
-                        
-                        res.send({ created: true });
+        if (req.body.dominio && req.body.dominio.length != 0 && req.body.fanpageid && req.body.fanpageid.length != 0) {
+            var parsed = new URL(req.body.dominio);
+            if (parsed) {
+                if (parsed.hostname.indexOf(' ') == -1 && parsed.hostname.split('.').length > 1) {
+                    Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
+                        if (!found) {
+                            var d = new Domain();
+                            d._id = parsed.hostname;
+                            d.ref = req.body.fanpageid;
+                            d.status = 'expired';
+                            d.creation.time = Date.now();
+                            d.creation.user = req.user;
+
+                            d.save(function(err) {
+                                if (err)
+                                    throw err;
+
+                                res.send({ created: true, dominio: parsed.hostname });
+                            });
+                        } else {
+                            res.send({ created: false, message: 'Nome de domínio já está em uso em outro site!' });
+                        }
                     });
                 } else {
-                    res.send({ created: false });
+                    res.send({ created: false, message: 'Nome de domínio inválido!' });
                 }
-            });
+            } else {
+                res.send({ created: false, message: 'Nome de domínio inválido!' });
+            }
         } else {
-            res.send({ created: false });
+                res.send({ created: false, message: 'Digite nome de domínio desejado!' });
         }
     });
     
@@ -413,6 +422,15 @@ module.exports = function(app, passport, FB) {
             res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
             Domain.find({ 'ref': userFanpage._id }, function(err, found) {
+                
+                var domains = found.sort(function(a, b) {
+                    if (a < b)
+                        return -1;
+                    if (a > b)
+                        return 1;
+                    return 0;
+                });
+                
                 res.render('user-opcoes', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, domains: found, moment: moment });
             });
         });

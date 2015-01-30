@@ -101,7 +101,8 @@ var fanpageSchema = mongoose.Schema({
     },
     photos: [{
         _id: String,
-        source: String
+        source: String,
+        time: Date
     }],
     creation: {
         time : Date,

@@ -428,6 +428,25 @@ module.exports = function(app, passport, FB) {
         }
     });
     
+    // api para consulta das fotos
+    app.get('/api/fotos', function(req, res) {
+        validateSubdomain(req.headers.host, res, function() {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            var filter = { _id: userFanpage._id };
+            console.log('filter: ' + filter);
+            
+            if (req.params.before) {
+                filter.photos.time = { $lte: req.params.before };
+            }
+            console.log('filter: ' + filter);
+            
+            Fanpage.find(filter).limit(15).sort('-time').exec(function(err, found) {
+                res.send({ fotos: found });
+            });
+        });
+    });
+    
     // opções do domínio
     app.get('/opcoes/dominio/:id', function(req, res) {
         validateSubdomain(req.headers.host, res, function() {

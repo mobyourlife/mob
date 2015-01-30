@@ -14,6 +14,21 @@ $(document).ready(function() {
         }
     });
     
+    var $fotos = $('div.container.fotos');
+    
+    if ($fotos) {
+        $.get('/api/fotos', function(data) {
+            if (data) {
+                if (data.fotos) {
+                    data.fotos.forEach(function(f) {
+                        $fotos.append('<div class="col-sm-4"><img src="' + f.source + '" alt="?"/></div>');
+                    });
+                }
+            }
+            console.log(data.fotos);
+        });
+    }
+    
     carregarModal = function(template, action, title, onLoaded, onClickSave, onClickClose, onClickDelete) {
         if ($('#modal-container').length == 0) {
             $('body').append('<div id="modal-container"/>');

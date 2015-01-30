@@ -16,7 +16,7 @@ mongoose.connect(configDB.url);
 
 // fetch photos function
 var fetchPhotos = function(fanpage, albumid, direction, cursor) {
-    var args = { locale: 'pt_BR', fields: ['id', 'source'] };
+    var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time'] };
     
     if (direction && cursor) {
         
@@ -34,7 +34,7 @@ var fetchPhotos = function(fanpage, albumid, direction, cursor) {
     FB.api(albumid + '/photos', args, function(records) {
         if (records && records.data) {
             for (i = 0; i < records.data.length; i++) {
-                var item = { _id: records.data[i].id, source: records.data[i].source };
+                var item = { _id: records.data[i].id, source: records.data[i].source, time: records.data[i].updated_time };
                 Fanpage.update({ _id: fanpage._id }, { $addToSet: { photos: item } }, function(err, updated) {
                     if (err)
                         throw err;

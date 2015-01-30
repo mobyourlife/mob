@@ -9,6 +9,7 @@ moment.locale('pt-br');
 var Fanpage            = require('../models/fanpage');
 var Owner              = require('../models/owner');
 var Domain             = require('../models/domain');
+var Photo              = require('../models/photo');
 
 // check if it's top domain or any subdomain
 validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
@@ -433,15 +434,13 @@ module.exports = function(app, passport, FB) {
         validateSubdomain(req.headers.host, res, function() {
             res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
-            var filter = { _id: userFanpage._id };
-            console.log('filter: ' + filter);
+            var filter = { ref: userFanpage._id };
             
             if (req.params.before) {
-                filter.photos.time = { $lte: req.params.before };
+                filter.time = { $lte: req.params.before };
             }
-            console.log('filter: ' + filter);
             
-            Fanpage.find(filter).limit(15).sort('-time').exec(function(err, found) {
+            Photo.find(filter).limit(15).sort('-time').exec(function(err, found) {
                 res.send({ fotos: found });
             });
         });

@@ -6,6 +6,7 @@ var FB = require('fb');
 // load models
 var Fanpage = require('./models/fanpage');
 var Owner = require('./models/owner');
+var Photo = require('./models/photo');
 
 // get db config
 var auth = require('./config/auth');
@@ -34,8 +35,13 @@ var fetchPhotos = function(fanpage, albumid, direction, cursor) {
     FB.api(albumid + '/photos', args, function(records) {
         if (records && records.data) {
             for (i = 0; i < records.data.length; i++) {
-                var item = { _id: records.data[i].id, source: records.data[i].source, time: records.data[i].updated_time };
-                Fanpage.update({ _id: fanpage._id }, { $addToSet: { photos: item } }, function(err, updated) {
+                var item = new Photo();
+                item._id = records.data[i].id;
+                item.ref = fanpage;
+                item.source = records.data[i].source;
+                item.time = records.data[i].updated_time;
+                
+                item.save(function(err) {
                     if (err)
                         throw err;
                 });

@@ -14,4 +14,4 @@ block content
                 label(for='dominio', control-label)
                     | Valor
             div.col-sm-9
-                | #{pagamento.simbolo} #{numeral(pagamento.preco).format('0.00').toString().replace('.', ',')}
+                | R$ #{numeral(pagamento.preco).format('0.00').toString().replace('.', ',')}

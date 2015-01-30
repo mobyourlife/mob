@@ -200,10 +200,25 @@ $(document).ready(function() {
     }
     
     gotoPagamento = function() {
-        carregarModal('close', '/opcoes/pagamento', 'Opções &gt; Pagamento', function() {
+        carregarModal('pay-close', '/opcoes/pagamento', 'Opções &gt; Pagamento', function() {
             //
         }, function() {
             // salvando
+            $.ajax(
+                {
+                    url: "http://www.mobyourlife.com.br/pagseguro/pay",
+                    type: "POST",
+                    dataType: "json",
+                    xhrFields: { withCredentials: true }
+                }
+            ).always(function(res) {
+                if (res.status == 200) {
+                    alert('Você será redirecionado para o site do PagSeguro para realizar o pagamento!');
+                    location.href = res.responseText;
+                } else {
+                    alert('Falha ao tentar realizar o pagamento! Por favor tente novamente mais tarde!');
+                }
+            });
         }, function() {
             // fechando
             gotoOpcoes();

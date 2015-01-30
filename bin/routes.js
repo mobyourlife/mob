@@ -2,6 +2,7 @@
 var moment = require('moment');
 var URL = require('url-parse');
 var numeral = require('numeral');
+var pagamento = require('../bin/pagamento');
 
 // setup i18n
 moment.locale('pt-br');
@@ -415,7 +416,7 @@ module.exports = function(app, passport, FB) {
                 res.send({ created: false, message: 'Nome de domínio inválido!' });
             }
         } else {
-                res.send({ created: false, message: 'Digite nome de domínio desejado!' });
+            res.send({ created: false, message: 'Digite nome de domínio desejado!' });
         }
     });
     
@@ -501,12 +502,47 @@ module.exports = function(app, passport, FB) {
                         inicio: moment(),
                         fim: moment().add(1, 'years')
                     },
-                    moeda: 'BRL',
-                    simbolo: 'R$',
                     preco: 999.90
                 }
             });
         });
+    });
+    
+    // realizar pagamento
+    app.post('/pagseguro/pay', function(req, res) {
+        validateSubdomain(req.headers.referer, res, function() {
+            res.render('404', { link: 'pagseguro-pay', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            pagamento(req.user, userFanpage, 999.90,
+                function(uri) {
+                    res.send(uri);
+                },
+                function() {
+                    res.status(500).send();
+                });
+        });
+    });
+    
+    // realizar pagamento
+    app.post('/pagseguro/callback', function(req, res) {
+        console.log('##############################');
+        console.log('callback:');
+        console.log(req);
+        console.log('##############################');
+        console.log('response:');
+        console.log(res);
+        console.log('##############################');
+    });
+    
+    // realizar pagamento
+    app.post('/pagseguro/notification', function(req, res) {
+        console.log('##############################');
+        console.log('notification:');
+        console.log(req);
+        console.log('##############################');
+        console.log('response:');
+        console.log(res);
+        console.log('##############################');
     });
     
     // opções do site
@@ -532,6 +568,10 @@ module.exports = function(app, passport, FB) {
     // templates
     app.get('/templates/modal/save-close', function(req, res) {
         res.render('tmpl-modal-save-close');
+    });
+    
+    app.get('/templates/modal/pay-close', function(req, res) {
+        res.render('tmpl-modal-pay-close');
     });
     
     app.get('/templates/modal/delete-close', function(req, res) {

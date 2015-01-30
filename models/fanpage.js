@@ -1,3 +1,5 @@
+var Ticket = require('../models/ticket');
+
 // app/models/fanpage.js
 // load dependencies
 var mongoose = require('mongoose')
@@ -106,17 +108,7 @@ var fanpageSchema = mongoose.Schema({
     billing: {
         active: Boolean,
         evaluation: Boolean,
-        expiration: Date,
-        tickets: [{
-            time: Date,
-            validity: {
-                months: Number,
-                days: Number
-            },
-            payment_type: String,
-            paid: Boolean,
-            transaction_id: String
-        }]
+        expiration: Date
     },
     owners: [{ type: Schema.Types.ObjectId, ref: 'Owner' }]
 });

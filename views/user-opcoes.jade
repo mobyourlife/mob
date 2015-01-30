@@ -52,22 +52,22 @@ block content
                             case d.status
                                 when 'expired'
                                     input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
-                                    span.input-group-addon.label-danger(style='cursor:pointer')
+                                    span.input-group-addon.label-danger(style='cursor:pointer', onclick='gotoDominio("#{d.id}");')
                                         i.fa.fa-dollar(style='color:#fff;width:20px')
                                             
                                 when 'expiring'
                                     input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
-                                    span.input-group-addon.label-warning(style='cursor:pointer')
+                                    span.input-group-addon.label-warning(style='cursor:pointer', onclick='gotoDominio("#{d.id}");')
                                         i.fa.fa-dollar(style='color:#fff;width:20px')
                                             
                                 when 'dns_failure'
                                     input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
-                                    span.input-group-addon.label-warning(style='cursor:pointer')
+                                    span.input-group-addon.label-warning(style='cursor:pointer', onclick='gotoDominio("#{d.id}");')
                                         i.fa.fa-warning(style='color:#fff;width:20px')
                                 
                                 default
                                     input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
-                                    span.input-group-addon.label-success(style='cursor:pointer')
+                                    span.input-group-addon.label-success(style='cursor:pointer', onclick='gotoDominio("#{d.id}");')
                                         i.fa.fa-globe(style='color:#fff;width:20px')
                         
                 div.input-group(style='margin-bottom:8px')

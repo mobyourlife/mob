@@ -416,6 +416,33 @@ module.exports = function(app, passport, FB) {
         }
     });
     
+    // api para exclusão de domínio
+    app.post('/api/excluirdominio', function(req, res) {
+        if (req.body.dominio && req.body.dominio.length != 0) {
+            Domain.remove({ _id: req.body.dominio }, function(err) {
+                if (err)
+                    throw err;
+                
+                res.send();
+            });
+        }
+    });
+    
+    // opções do domínio
+    app.get('/opcoes/dominio/:id', function(req, res) {
+        validateSubdomain(req.headers.host, res, function() {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            Domain.find({ '_id': req.params.id }, function(err, found) {
+                if (found) {
+                    res.render('user-opcoes-dominio', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+                } else {
+                    res.render('user-404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+                }
+            });
+        });
+    });
+    
     // opções do site
     app.get('/opcoes', function(req, res) {
         validateSubdomain(req.headers.host, res, function() {
@@ -439,6 +466,10 @@ module.exports = function(app, passport, FB) {
     // templates
     app.get('/templates/modal/save-close', function(req, res) {
         res.render('tmpl-modal-save-close');
+    });
+    
+    app.get('/templates/modal/delete-close', function(req, res) {
+        res.render('tmpl-modal-delete-close');
     });
     
     app.get('/templates/modal/close', function(req, res) {

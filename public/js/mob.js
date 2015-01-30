@@ -14,27 +14,43 @@ $(document).ready(function() {
         }
     });
     
-    $('.modal-link').click(function() {
-        
+    carregarModal = function(template, action, title, onLoaded, onClickSave, onClickClose, onClickDelete) {
         if ($('#modal-container').length == 0) {
             $('body').append('<div id="modal-container"/>');
         }
         
         var $container = $('#modal-container');
-        var $frmt = $(this).data('frmt');
-        var $link = $(this).attr('href');
-        var $title = $(this).find('span.modal-title').html()
         
-        $container.load('/templates/modal/' + $frmt, function() {
-            $container.find('.modal-title').html($title);
-            
-            $container.find('.modal-body').load($link, function () {
+        $container.load('/templates/modal/' + template, function() {
+            $container.find('.modal-body').load(action, function () {
+                $container.find('.modal-title').html(title);
+                
+                $('#modal-dialog #save').click(function() {
+                    if (onClickSave) {
+                        onClickSave();
+                    }
+                });
+                
+                $('#modal-dialog #close').click(function() {
+                    if (onClickClose) {
+                        onClickClose();
+                    }
+                });
+                
+                $('#modal-dialog #delete').click(function() {
+                    if (onClickDelete) {
+                        onClickDelete();
+                    }
+                });
+                
+                if (onLoaded) {
+                    onLoaded();
+                }
+                
                 $('#modal-dialog').modal();
             });
         });
-        
-        return false;
-    });
+    }
     
     incluirDominio = function(p_dominio, p_fanpageid, p_link) {
         if (p_dominio.length == 0) {
@@ -59,8 +75,41 @@ $(document).ready(function() {
                     alert(res.message);
                 }
             }).fail(function() {
-                alert('Falha ao tentar incluir o domínio!\n\n');
+                alert('Falha ao tentar incluir o domínio!');
             });
         }
-    };
+    }
+    
+    gotoOpcoes = function() {
+        carregarModal('close', '/opcoes', 'Opções');
+        return false;
+    }
+    
+    gotoDominio = function(p_dominio) {
+        carregarModal('delete-close', '/opcoes/dominio/' + p_dominio, 'Opções &gt; Domínio', function() {
+            $('.label-dominio').html(p_dominio);
+        }, function() {
+            // salvando
+        }, function() {
+            // fechando
+            gotoOpcoes();
+        }, function() {
+            // excluindo
+            if (confirm('Deseja excluir o domínio "' + p_dominio + '"?')) {
+                $.ajax(
+                    {
+                        url: "http://www.mobyourlife.com.br/api/excluirdominio",
+                        type: "POST",
+                        dataType: 'json',
+                        data: {
+                            dominio: p_dominio
+                        }
+                    }
+                ).always(function() {
+                    gotoOpcoes();
+                });
+            }
+        });
+        return false;
+    }
 });

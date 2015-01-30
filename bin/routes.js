@@ -10,6 +10,7 @@ var Fanpage            = require('../models/fanpage');
 var Owner              = require('../models/owner');
 var Domain             = require('../models/domain');
 var Photo              = require('../models/photo');
+var Feed               = require('../models/feed');
 
 // check if it's top domain or any subdomain
 validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
@@ -427,6 +428,25 @@ module.exports = function(app, passport, FB) {
                 res.send();
             });
         }
+    });
+    
+    // api para consulta do feed
+    app.get('/api/feeds/:before?', function(req, res) {
+        validateSubdomain(req.headers.host, res, function() {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            var filter = { ref: userFanpage._id };
+            
+            if (req.params.before) {
+                filter.time = { $lte: moment.unix(req.params.before).format() };
+            }
+            
+            console.log('filter: ' + req.params.before);
+            
+            Feed.find(filter).limit(15).sort('-time').exec(function(err, found) {
+                res.send({ feeds: found });
+            });
+        });
     });
     
     // api para consulta das fotos

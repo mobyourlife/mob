@@ -14,6 +14,51 @@ $(document).ready(function() {
         }
     });
     
+    /* carregamento do feed */
+    var $feeds = $('div.container.feeds');
+    var $feeds_loading = false;
+    
+    carregarFeeds = function() {
+        var last = $feeds.find('.feed').last();
+        var compl = '';
+        
+        if (last.length == 1) {
+            console.log('last: [' + last + ']');
+            compl = '/' + last.data('imgtime');
+        }
+        
+        $.get('/api/feeds' + compl, function(data) {
+            if (data) {
+                if (data.feeds) {
+                    data.feeds.forEach(function(f) {
+                        if (f.picture) {
+                            if ($('.feed[data-feedid="' + f._id + '"]').length == 0) {
+                                $feeds.append('<div class="feed col-sm-4" data-feedid="' + f._id + '" data-feedtime="' + moment(f.time).unix() + '"><img src="' + f.picture + '" alt="?"/><br/>' + f.story +'</div>');
+                            }
+                        }
+                    });
+                }
+            }
+            $feeds_loading = false;
+        });
+    }
+    
+    if ($feeds) {
+        carregarFeeds();
+        
+        $(document).scroll(function() {
+            var diff = $(document).height() - $(window).scrollTop();
+            
+            if (diff < 650) {
+                if ($feeds_loading == false) {
+                    $feeds_loading = true;
+                    carregarFeeds();
+                }
+            }
+        });
+    }
+    
+    /* carregamento de fotos */
     var $fotos = $('div.container.fotos');
     var $fotos_loading = false;
     

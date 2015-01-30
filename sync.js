@@ -7,6 +7,7 @@ var FB = require('fb');
 var Fanpage = require('./models/fanpage');
 var Owner = require('./models/owner');
 var Photo = require('./models/photo');
+var Feed = require('./models/feed');
 
 // get db config
 var auth = require('./config/auth');
@@ -64,6 +65,53 @@ var fetchAlbums = function(fanpage) {
         if (records) {
             for (i = 0; i < records.data.length; i++) {
                 fetchPhotos(fanpage, records.data[i].id);
+            }
+        }
+    });
+}
+
+// fetch feed function
+var fetchFeed = function(fanpage, direction, cursor) {
+    var args = { locale: 'pt_BR', fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description'] };
+    
+    if (direction && cursor) {
+        
+        switch (direction) {
+            case 'before':
+                args.before = cursor;
+                break;
+                
+            case 'after':
+                args.after = cursor;
+                break;
+        }
+    }
+    
+    FB.api(fanpage.facebook.id + '/feed', args, function(records) {
+        if (records && records.data) {
+            for (i = 0; i < records.data.length; i++) {
+                var item = new Feed();
+                item._id = records.data[i].id;
+                item.ref = fanpage;
+                item.time = records.data[i].updated_time;
+                item.story = records.data[i].story;
+                item.picture = records.data[i].picture;
+                item.link = records.data[i].link;
+                item.type = records.data[i].type;
+                item.name = records.data[i].name;
+                item.caption = records.data[i].caption;
+                item.description = records.data[i].description;
+                
+                Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
+                    if (err)
+                        throw err;
+                });
+            }
+
+            if (records.paging && records.paging.cursors) {
+                if (records.paging.cursors.after) {
+                    fetchFeed(fanpage, 'after', records.paging.cursors.before);
+                }
             }
         }
     });
@@ -200,6 +248,7 @@ var sync = function() {
                     });
                     
                     fetchAlbums(fanpage);
+                    fetchFeed(fanpage);
                 });
             });
         });

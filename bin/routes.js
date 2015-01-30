@@ -430,15 +430,17 @@ module.exports = function(app, passport, FB) {
     });
     
     // api para consulta das fotos
-    app.get('/api/fotos', function(req, res) {
+    app.get('/api/fotos/:before?', function(req, res) {
         validateSubdomain(req.headers.host, res, function() {
             res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
             var filter = { ref: userFanpage._id };
             
             if (req.params.before) {
-                filter.time = { $lte: req.params.before };
+                filter.time = { $lte: moment.unix(req.params.before).format() };
             }
+            
+            console.log('filter: ' + req.params.before);
             
             Photo.find(filter).limit(15).sort('-time').exec(function(err, found) {
                 res.send({ fotos: found });

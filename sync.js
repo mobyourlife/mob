@@ -41,7 +41,7 @@ var fetchPhotos = function(fanpage, albumid, direction, cursor) {
                 item.source = records.data[i].source;
                 item.time = records.data[i].updated_time;
                 
-                item.save(function(err) {
+                Photo.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
                     if (err)
                         throw err;
                 });

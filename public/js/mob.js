@@ -15,17 +15,43 @@ $(document).ready(function() {
     });
     
     var $fotos = $('div.container.fotos');
+    var $fotos_loading = false;
     
-    if ($fotos) {
-        $.get('/api/fotos', function(data) {
+    carregarFotos = function() {
+        var last = $fotos.find('.foto').last();
+        var compl = '';
+        
+        if (last.length == 1) {
+            console.log('last: [' + last + ']');
+            compl = '/' + last.data('imgtime');
+        }
+        
+        $.get('/api/fotos' + compl, function(data) {
             if (data) {
                 if (data.fotos) {
                     data.fotos.forEach(function(f) {
-                        $fotos.append('<div class="col-sm-4"><img src="' + f.source + '" alt="?"/></div>');
+                        if ($('.foto[data-imgid="' + f._id + '"]').length == 0) {
+                            $fotos.append('<div class="foto col-sm-4" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '"><img src="' + f.source + '" alt="?"/></div>');
+                        }
                     });
                 }
             }
-            console.log(data.fotos);
+            $fotos_loading = false;
+        });
+    }
+    
+    if ($fotos) {
+        carregarFotos();
+        
+        $(document).scroll(function() {
+            var diff = $(document).height() - $(window).scrollTop();
+            
+            if (diff < 650) {
+                if ($fotos_loading == false) {
+                    $fotos_loading = true;
+                    carregarFotos();
+                }
+            }
         });
     }
     

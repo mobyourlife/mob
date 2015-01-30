@@ -1,0 +1,17 @@
+extends none
+
+block content
+    div.form-horizontal
+        div.form-group
+            div.col-sm-3
+                label(for='dominio', control-label)
+                    | Vigência
+            div.col-sm-9.label-dominio
+                | #{moment(pagamento.vigencia.inicio).format('DD/MM/YYYY')} a #{moment(pagamento.vigencia.fim).format('DD/MM/YYYY')}
+                        
+        div.form-group
+            div.col-sm-3
+                label(for='dominio', control-label)
+                    | Valor
+            div.col-sm-9
+                | #{pagamento.simbolo} #{numeral(pagamento.preco).format('0.00').toString().replace('.', ',')}

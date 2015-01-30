@@ -1,6 +1,7 @@
 // load up libraries
 var moment = require('moment');
 var URL = require('url-parse');
+var numeral = require('numeral');
 
 // setup i18n
 moment.locale('pt-br');
@@ -475,9 +476,34 @@ module.exports = function(app, passport, FB) {
         }, function(userFanpage) {
             Domain.find({ '_id': req.params.id }, function(err, found) {
                 if (found) {
-                    res.render('user-opcoes-dominio', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+                    res.render('user-opcoes-dominio', { link: 'opcoes-dominio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
                 } else {
                     res.render('user-404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+                }
+            });
+        });
+    });
+    
+    // pagamento
+    app.get('/opcoes/pagamento', function(req, res) {
+        validateSubdomain(req.headers.host, res, function() {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            res.render('user-opcoes-pagamento', {
+                link: 'opcoes-pagamento',
+                auth: req.isAuthenticated(),
+                user: req.user,
+                fanpage: userFanpage,
+                moment: moment,
+                numeral: numeral,
+                pagamento: {
+                    vigencia: {
+                        inicio: moment(),
+                        fim: moment().add(1, 'years')
+                    },
+                    moeda: 'BRL',
+                    simbolo: 'R$',
+                    preco: 999.90
                 }
             });
         });

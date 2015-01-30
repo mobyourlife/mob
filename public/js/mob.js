@@ -198,4 +198,18 @@ $(document).ready(function() {
         });
         return false;
     }
+    
+    gotoPagamento = function() {
+        carregarModal('close', '/opcoes/pagamento', 'Opções &gt; Pagamento', function() {
+            //
+        }, function() {
+            // salvando
+        }, function() {
+            // fechando
+            gotoOpcoes();
+        }, function() {
+            // excluindo
+        });
+        return false;
+    }
 });

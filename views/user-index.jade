@@ -2,10 +2,10 @@ extends layout
 
 block content
     //- Jumbotron
-    div.jumbotron
-        div.container
-            h1 Bem-vindo ao seu site!
-            p #{fanpage.facebook.about}
+    if fanpage.facebook.about
+        div.jumbotron
+            div.container
+                p #{fanpage.facebook.about}
     
     div.container.feeds
         ul.timeline

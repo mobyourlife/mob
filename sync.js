@@ -18,7 +18,7 @@ mongoose.connect(configDB.url);
 
 // fetch photos function
 var fetchPhotos = function(fanpage, albumid, direction, cursor) {
-    var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time'] };
+    var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time', 'images'] };
     
     if (direction && cursor) {
         
@@ -41,6 +41,12 @@ var fetchPhotos = function(fanpage, albumid, direction, cursor) {
                 item.ref = fanpage;
                 item.source = records.data[i].source;
                 item.time = records.data[i].updated_time;
+                
+                if (records.data[i].images) {
+                    for (j = 0; j < records.data[i].images.length && records.data[i].images[j].width > 1000; j++) {
+                        item.source = records.data[i].images[j].source;
+                    }
+                }
                 
                 Photo.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
                     if (err)
@@ -72,7 +78,7 @@ var fetchAlbums = function(fanpage) {
 
 // fetch feed function
 var fetchFeed = function(fanpage, direction, cursor) {
-    var args = { locale: 'pt_BR', fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description'] };
+    var args = { locale: 'pt_BR', fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'object_id'] };
     
     if (direction && cursor) {
         
@@ -102,10 +108,31 @@ var fetchFeed = function(fanpage, direction, cursor) {
                 item.caption = records.data[i].caption;
                 item.description = records.data[i].description;
                 
-                Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
-                    if (err)
-                        throw err;
-                });
+                if (records.data[i].object_id) {
+                    FB.api(records.data[i].object_id, { locale: 'pt_BR', fields: ['source', 'images'] }, function(inner_object) {
+                        if (inner_object.source) {
+                            item.picture = inner_object.source;
+                        }
+                        
+                        if (inner_object.images) {
+                            for (j = 0; j < inner_object.images.length && inner_object.images[j].width > 1000; j++) {
+                                item.picture = inner_object.images[j].source;
+                            }
+                        }
+                        
+                        Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
+                            if (err)
+                                throw err;
+                        });
+                    });
+                }
+                else
+                {
+                    Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
+                        if (err)
+                            throw err;
+                    });
+                }
             }
 
             if (records.paging && records.paging.cursors) {

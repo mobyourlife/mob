@@ -21,7 +21,7 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
     var hostname = parsed.hostname;
     var subdomain = hostname.split('.')[0];
     
-    if (subdomain == 'www') {
+    if (hostname == 'www.mobyourlife.com.br') {
         callbackTop();
     } else {
         Domain.findOne({'_id': hostname }, function(err, found) {

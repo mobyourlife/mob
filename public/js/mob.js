@@ -213,7 +213,6 @@ $(document).ready(function() {
                 }
             ).always(function(res) {
                 if (res.status == 200) {
-                    alert('Você será redirecionado para o site do PagSeguro para realizar o pagamento!');
                     location.href = res.responseText;
                 } else {
                     alert('Falha ao tentar realizar o pagamento! Por favor tente novamente mais tarde!');

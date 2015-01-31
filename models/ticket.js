@@ -15,6 +15,7 @@ var ticketSchema = mongoose.Schema({
         reason: String
     },
     payment: {
+        value: Number,
         code: String,
         time: Date
     }

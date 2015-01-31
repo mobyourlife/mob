@@ -12,6 +12,7 @@ module.exports = function(user, fanpage, preco, sucesso, falha) {
     ticket.ref = fanpage;
     ticket.time = Date.now();
     ticket.time.validity = { months: 12, days: 0 };
+    ticket.payment.value = preco;
     
     ticket.save(function(err) {
         if (err) {
@@ -27,7 +28,7 @@ module.exports = function(user, fanpage, preco, sucesso, falha) {
         pag.addItem({
             id: 1,
             description: 'Site sincronizado com Facebook',
-            amount: numeral(preco).format('0.00').toString(),
+            amount: numeral(ticket.payment.value).format('0.00').toString(),
             quantity: 1,
             weight: 0
         });

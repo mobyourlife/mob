@@ -15,3 +15,18 @@ block content
                     | Valor
             div.col-sm-9
                 | R$ #{numeral(pagamento.preco).format('0.00').toString().replace('.', ',')}
+                        
+        div.form-group
+            div.col-sm-3
+                label(for='dominio', control-label)
+                    | Formas de pagamento
+            div.col-sm-9
+                ul
+                    li Cartão de crédito em até 10x sem juros
+                    li Boleto bancário
+                    li Débito online
+                    li Depósito bancário
+        
+        div.form-group
+            div.col-sm-12
+                | Ao clicar em &quot;Pagar&quot; você será redirecionado ao site do PagSeguro para realizar o pagamento. O seu site será liberado em até 24 horas após a confirmação do pagamento.

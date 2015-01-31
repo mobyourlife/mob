@@ -169,4 +169,12 @@ div.container.feeds div {
     width: 160px;
     height: 120px; }
 
+/* line 168, D:/Repos/mob/public/css/custom.scss */
+#toTop {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+  display: none; }
+
 /*# sourceMappingURL=custom.css.map */

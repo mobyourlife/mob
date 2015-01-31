@@ -74,7 +74,7 @@ $(document).ready(function() {
                             $item += '<div class="timeline-heading"><img src="' + f.picture + '" /></div>';
                         }
                         
-                        $item += '<div class="timeline-body"><p>' + (f.caption ? '<strong>' + f.caption + '</strong><br/>' : (f.story ? '<strong>' + f.story + '</strong><br/>' : '')) + (f.description ? f.description : '') + '</p></div>';
+                        $item += '<div class="timeline-body"><p>' + (f.name ? '<strong>' + f.name + '</strong><br/>' : (f.story ? '<strong>' + f.story + '</strong><br/>' : '')) + (f.description ? f.description : '') + '</p></div>';
                         
                         $item += '<div class="timeline-footer"><a><i class="glyphicon glyphicon-thumbs-up jump-5"></i></a><a><i class="glyphicon glyphicon-share"></i></a><a class="pull-right" href="' + f.link + '" target="_blank">Continuar Lendo</a></div>';
                         

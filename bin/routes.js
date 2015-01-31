@@ -13,6 +13,7 @@ var Owner              = require('../models/owner');
 var Domain             = require('../models/domain');
 var Photo              = require('../models/photo');
 var Feed               = require('../models/feed');
+var Ticket             = require('../models/ticket');
 
 // check if it's top domain or any subdomain
 validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
@@ -218,21 +219,22 @@ module.exports = function(app, passport, FB) {
                         newFanpage.creation.user = req.user;
                         
                         /* billing info */
+                        var ticket = new Ticket();
+                        ticket.time = Date.now();
+                        ticket.validity.months = 0;
+                        ticket.validity.days = 7;
+                        ticket.coupon.reason = 'signup_freebie';
+                        
                         newFanpage.billing.active = true;
                         newFanpage.billing.evaluation = true;
-                        var ticket = {
-                            time: moment(),
-                            validity: {
-                                months: 0,
-                                days: 7
-                            },
-                            payment_type: 'signup_coupon',
-                            paid: true
-                        };
                         newFanpage.billing.expiration = moment()
                             .add(ticket.validity.months, 'months')
                             .add(ticket.validity.days, 'days');
-                        newFanpage.billing.tickets.push(ticket);
+                        
+                        ticket.save(function(err) {
+                            if (err)
+                                throw err;
+                        });
                     }
 
                     // save the new fanpage to the database

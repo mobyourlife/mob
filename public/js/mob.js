@@ -32,8 +32,15 @@ $(document).ready(function() {
                 if (data.feeds) {
                     data.feeds.forEach(function(f) {
                         if (f.picture) {
+                            var $row = $feeds.find('div.row').last();
+                            
+                            if ($row.length == 0 || $row.find('div.feed').length >= 3) {
+                                $row = '<div class="row"/>';
+                                $feeds.append($row);
+                            }
+                            
                             if ($('.feed[data-feedid="' + f._id + '"]').length == 0) {
-                                $feeds.append('<div class="feed col-sm-4" data-feedid="' + f._id + '" data-feedtime="' + moment(f.time).unix() + '"><img src="' + f.picture + '" alt="?"/><br/>' + f.story +'</div>');
+                                $feeds.find('div.row').last().append('<div class="feed col-sm-4" data-feedid="' + f._id + '" data-feedtime="' + moment(f.time).unix() + '"><img src="' + f.picture + '" alt="?"/><br/>' + (f.story ? f.story : '') +'</div>');
                             }
                         }
                     });

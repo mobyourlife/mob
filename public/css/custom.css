@@ -160,16 +160,20 @@ div.container.fotos div {
     width: 320px;
     height: 240px; }
 
-/* line 157, D:/Repos/mob/public/css/custom.scss */
-div.container.feeds div {
-  margin-bottom: 2em;
-  text-align: center; }
-  /* line 161, D:/Repos/mob/public/css/custom.scss */
-  div.container.feeds div img {
-    width: 160px;
-    height: 120px; }
-
-/* line 168, D:/Repos/mob/public/css/custom.scss */
+/*
+div.container.feeds {
+    div {
+        margin-bottom: 2em;
+        text-align: center;
+        
+        img {
+            width: 160px;
+            height: 120px;
+        }
+    }
+}
+*/
+/* line 170, D:/Repos/mob/public/css/custom.scss */
 #toTop {
   position: fixed;
   bottom: 10px;

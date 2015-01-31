@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    moment.locale('pt-br');
+    
+    // back top button
     $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span> Voltar ao topo</div>');
     $(window).scroll(function () {
         if ($(this).scrollTop() != 0) {
@@ -12,6 +15,23 @@ $(document).ready(function() {
     return false;
     });
     
+    // timeline
+    var my_posts = $("[rel=tooltip]");
+
+    var size = $(window).width();
+    for(i=0;i<my_posts.length;i++) {
+        the_post = $(my_posts[i]);
+
+        if(the_post.hasClass('invert') && size >=767 ) {
+            the_post.tooltip({ placement: 'left'});
+            the_post.css("cursor","pointer");
+        } else {
+            the_post.tooltip({ placement: 'rigth'});
+            the_post.css("cursor","pointer");
+        }
+    }
+    
+    // apis
     $.ajax(
         {
             url: "http://www.mobyourlife.com.br/api/login",
@@ -28,12 +48,13 @@ $(document).ready(function() {
     });
     
     /* carregamento do feed */
-    var $feeds = $('div.container.feeds');
+    var $feeds = $('div.container.feeds > ul.timeline');
     var $feeds_loading = false;
     
     carregarFeeds = function() {
         var last = $feeds.find('.feed').last();
         var compl = '';
+        var even = true;
         
         if (last.length == 1) {
             console.log('last: [' + last + ']');
@@ -44,18 +65,24 @@ $(document).ready(function() {
             if (data) {
                 if (data.feeds) {
                     data.feeds.forEach(function(f) {
+                        $item = (even ? '<li>' : '<li class="timeline-inverted">');
+                        $item += '<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="' + moment(f.time).fromNow() + ' via Facebook" id=""></i></a></div>';
+                        
+                        $item += '<div class="timeline-panel">';
+                        
                         if (f.picture) {
-                            var $row = $feeds.find('div.row').last();
-                            
-                            if ($row.length == 0 || $row.find('div.feed').length >= 3) {
-                                $row = '<div class="row"/>';
-                                $feeds.append($row);
-                            }
-                            
-                            if ($('.feed[data-feedid="' + f._id + '"]').length == 0) {
-                                $feeds.find('div.row').last().append('<div class="feed col-sm-4" data-feedid="' + f._id + '" data-feedtime="' + moment(f.time).unix() + '"><img src="' + f.picture + '" alt="?"/><br/>' + (f.story ? f.story : '') +'</div>');
-                            }
+                            $item += '<div class="timeline-heading"><img src="' + f.picture + '" /></div>';
                         }
+                        
+                        $item += '<div class="timeline-body"><p>' + (f.story ? '<strong>' + f.story + '</strong><br/>' : '') + (f.description ? f.description : '') + '</p></div>';
+                        
+                        $item += '<div class="timeline-footer"><a><i class="glyphicon glyphicon-thumbs-up jump-5"></i></a><a><i class="glyphicon glyphicon-share"></i></a><a class="pull-right" href="' + f.link + '" target="_blank">Continuar Lendo</a></div>';
+                        
+                        $item += '</div>';
+                        $item += '</li>';
+                        
+                        even = !even;
+                        $feeds.append($item);
                     });
                 }
             }
@@ -72,7 +99,7 @@ $(document).ready(function() {
             if (diff < 650) {
                 if ($feeds_loading == false) {
                     $feeds_loading = true;
-                    carregarFeeds();
+                    //carregarFeeds();
                 }
             }
         });

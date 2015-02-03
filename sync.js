@@ -107,30 +107,33 @@ var fetchFeed = function(fanpage, direction, cursor) {
                 item.name = records.data[i].name;
                 item.caption = records.data[i].caption;
                 item.description = records.data[i].description;
+                item.object_id = records.data[i].object_id;
                 
-                if (records.data[i].object_id) {
-                    FB.api(records.data[i].object_id, { locale: 'pt_BR', fields: ['source', 'images'] }, function(inner_object) {
+                Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
+                    if (err)
+                        throw err;
+                });
+                
+                if (item.object_id) {
+                    FB.api(item.object_id, { locale: 'pt_BR', fields: ['source', 'images'] }, function(inner_object) {
+                        var picture = null;
+                        
                         if (inner_object.source) {
-                            item.picture = inner_object.source;
+                            picture = inner_object.source;
                         }
                         
                         if (inner_object.images) {
                             for (j = 0; j < inner_object.images.length && inner_object.images[j].width > 1000; j++) {
-                                item.picture = inner_object.images[j].source;
+                                picture = inner_object.images[j].source;
                             }
                         }
                         
-                        Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
-                            if (err)
-                                throw err;
-                        });
-                    });
-                }
-                else
-                {
-                    Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
-                        if (err)
-                            throw err;
+                        if (picture != null) {
+                            Feed.update({ object_id: inner_object.id }, { "picture": picture }, { upsert: true }, function(err) {
+                                if (err)
+                                    throw err;
+                            });
+                        }
                     });
                 }
             }

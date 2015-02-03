@@ -67,24 +67,26 @@ $(document).ready(function() {
             if (data) {
                 if (data.feeds) {
                     data.feeds.forEach(function(f) {
-                        $item = (even ? '<li>' : '<li class="timeline-inverted">');
-                        $item += '<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="' + moment(f.time).fromNow() + ' via Facebook" id=""></i></a></div>';
-                        
-                        $item += '<div class="timeline-panel">';
-                        
-                        if (f.picture) {
-                            $item += '<div class="timeline-heading"><img src="' + f.picture + '" /></div>';
+                        if ($('.feed[data-imgid="' + f._id + '"]').length == 0) {
+                            $item = (even ? '<li class="feed" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '">' : '<li class="timeline-inverted">');
+                            $item += '<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="' + moment(f.time).fromNow() + ' via Facebook" id=""></i></a></div>';
+
+                            $item += '<div class="timeline-panel">';
+
+                            if (f.picture) {
+                                $item += '<div class="timeline-heading"><img src="' + f.picture + '" /></div>';
+                            }
+
+                            $item += '<div class="timeline-body"><p>' + (f.name ? '<strong>' + f.name + '</strong><br/>' : (f.story ? '<strong>' + f.story + '</strong><br/>' : '')) + (f.description ? f.description : '') + '</p></div>';
+
+                            $item += '<div class="timeline-footer"><a><i class="glyphicon glyphicon-thumbs-up jump-5"></i></a><a><i class="glyphicon glyphicon-share"></i></a><a class="pull-right" href="' + f.link + '" target="_blank">Continuar Lendo</a></div>';
+
+                            $item += '</div>';
+                            $item += '</li>';
+
+                            even = !even;
+                            $feeds.find('li.clearfix').before($item);
                         }
-                        
-                        $item += '<div class="timeline-body"><p>' + (f.name ? '<strong>' + f.name + '</strong><br/>' : (f.story ? '<strong>' + f.story + '</strong><br/>' : '')) + (f.description ? f.description : '') + '</p></div>';
-                        
-                        $item += '<div class="timeline-footer"><a><i class="glyphicon glyphicon-thumbs-up jump-5"></i></a><a><i class="glyphicon glyphicon-share"></i></a><a class="pull-right" href="' + f.link + '" target="_blank">Continuar Lendo</a></div>';
-                        
-                        $item += '</div>';
-                        $item += '</li>';
-                        
-                        even = !even;
-                        $feeds.find('li.clearfix').before($item);
                     });
                     
                     arrange_timeline();
@@ -100,10 +102,10 @@ $(document).ready(function() {
         $(document).scroll(function() {
             var diff = $(document).height() - $(window).scrollTop();
             
-            if (diff < 650) {
+            if (diff < 1000) {
                 if ($feeds_loading == false) {
                     $feeds_loading = true;
-                    //carregarFeeds();
+                    carregarFeeds();
                 }
             }
         });
@@ -142,7 +144,7 @@ $(document).ready(function() {
         $(document).scroll(function() {
             var diff = $(document).height() - $(window).scrollTop();
             
-            if (diff < 650) {
+            if (diff < 1000) {
                 if ($fotos_loading == false) {
                     $fotos_loading = true;
                     carregarFotos();

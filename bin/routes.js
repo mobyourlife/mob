@@ -447,7 +447,7 @@ module.exports = function(app, passport, FB) {
             
             console.log('filter: ' + req.params.before);
             
-            Feed.find(filter).limit(15).sort('-time').exec(function(err, found) {
+            Feed.find(filter).limit(5).sort('-time').exec(function(err, found) {
                 res.send({ feeds: found });
             });
         });

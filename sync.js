@@ -78,17 +78,17 @@ var fetchAlbums = function(fanpage) {
 
 // fetch feed function
 var fetchFeed = function(fanpage, direction, cursor) {
-    var args = { locale: 'pt_BR', fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'object_id'] };
+    var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'object_id'] };
     
     if (direction && cursor) {
         
         switch (direction) {
-            case 'before':
-                args.before = cursor;
+            case 'since':
+                args.since = cursor;
                 break;
                 
-            case 'after':
-                args.after = cursor;
+            case 'until':
+                args.until = cursor;
                 break;
         }
     }
@@ -142,9 +142,13 @@ var fetchFeed = function(fanpage, direction, cursor) {
                 }
             }
 
-            if (records.paging && records.paging.cursors) {
-                if (records.paging.cursors.after) {
-                    fetchFeed(fanpage, 'after', records.paging.cursors.before);
+            if (records.paging) {
+                if (records.paging.next) {
+                    var args = /.*until=([0-9]+)/.exec(records.paging.next);
+                    
+                    if (args) {
+                        fetchFeed(fanpage, 'until', args[1]);
+                    }
                 }
             }
         }

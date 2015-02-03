@@ -96,6 +96,10 @@ var fetchFeed = function(fanpage, direction, cursor) {
     FB.api(fanpage.facebook.id + '/feed', args, function(records) {
         if (records && records.data) {
             for (i = 0; i < records.data.length; i++) {
+                if (records.data[i].type == 'status') {
+                    continue;
+                }
+                
                 var item = new Feed();
                 item._id = records.data[i].id;
                 item.ref = fanpage;

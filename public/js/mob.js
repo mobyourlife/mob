@@ -84,7 +84,7 @@ $(document).ready(function() {
                         $item += '</li>';
                         
                         even = !even;
-                        $feeds.prepend($item);
+                        $feeds.find('li.clearfix').before($item);
                     });
                     
                     arrange_timeline();

@@ -15,6 +15,19 @@ $(document).ready(function() {
     return false;
     });
     
+    // full screen images
+    $('body').append('<div id="fullscreen"><img/></div>');
+    $('div#fullscreen').hide();
+    
+    var fullScreen = function(img) {
+        if ($('div#fullscreen').css('display') == 'none') {
+            $('div#fullscreen > img').attr('src', img.attr('src'));
+            $('div#fullscreen').show();
+        } else {
+            $('div#fullscreen').hide();
+        }
+    }
+    
     // timeline
     var my_posts = $("[rel=tooltip]");
 
@@ -59,7 +72,6 @@ $(document).ready(function() {
         var even = true;
         
         if (last.length == 1) {
-            console.log('last: [' + last + ']');
             compl = '/' + last.data('imgtime');
         }
         
@@ -74,7 +86,7 @@ $(document).ready(function() {
                             $item += '<div class="timeline-panel">';
 
                             if (f.picture) {
-                                $item += '<div class="timeline-heading"><img src="' + f.picture + '" /></div>';
+                                $item += '<div class="timeline-heading"><img src="' + f.picture + '" onclick="fullScreen(this);"/></div>';
                             }
 
                             $item += '<div class="timeline-body"><p>' + (f.name ? '<strong>' + f.name + '</strong><br/>' : (f.story ? '<strong>' + f.story + '</strong><br/>' : '')) + (f.description ? f.description : '') + '</p></div>';
@@ -120,7 +132,6 @@ $(document).ready(function() {
         var compl = '';
         
         if (last.length == 1) {
-            console.log('last: [' + last + ']');
             compl = '/' + last.data('imgtime');
         }
         

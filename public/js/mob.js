@@ -88,7 +88,17 @@ $(document).ready(function() {
                             $item += '<div class="timeline-panel">';
 
                             if (f.picture) {
-                                $item += '<div class="timeline-heading"><img src="' + f.picture + '"/></div>';
+                                var $inside = '<img src="' + f.picture + '"/>';
+                                
+                                if (f.type == 'video') {
+                                    var $video = /(https?:\/\/.*\/)watch\?.*&?v=([a-zA-Z0-9]*)&?/.exec(f.link);
+                                    if ($video) {
+                                        var $uri = $video[1] + 'embed/' + $video[2];
+                                        $inside = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="' + $uri + '"></iframe></div>';
+                                    }
+                                }
+                                
+                                $item += '<div class="timeline-heading">' + $inside + '</div>';
                             }
 
                             $item += '<div class="timeline-body"><p>' + (f.story ? '<strong>' + f.story + '</strong><br/>' : '') + (f.name ? '<strong>' + f.name + '</strong><br/>' : '') + (f.caption ? f.caption + '<br/>' : '') + (f.description ? f.description : '') + '</p></div>';

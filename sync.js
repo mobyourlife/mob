@@ -78,6 +78,16 @@ var fetchAlbums = function(fanpage) {
 
 // fetch feed function
 var fetchFeed = function(fanpage, direction, cursor) {
+    var safe_image = function(url) {
+        var result = /\/safe_image\.php\?.*url=(.*\.[a-z]{3,4})/.exec(url);
+        
+        if (result) {
+            return unescape(result[1]);
+        }
+        
+        return url;
+    }
+    
     var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'object_id'] };
     
     if (direction && cursor) {
@@ -105,7 +115,7 @@ var fetchFeed = function(fanpage, direction, cursor) {
                 item.ref = fanpage;
                 item.time = records.data[i].updated_time;
                 item.story = records.data[i].story;
-                item.picture = records.data[i].picture;
+                item.picture = safe_image(records.data[i].picture);
                 item.link = records.data[i].link;
                 item.type = records.data[i].type;
                 item.name = records.data[i].name;
@@ -123,12 +133,12 @@ var fetchFeed = function(fanpage, direction, cursor) {
                         var picture = null;
                         
                         if (inner_object.source) {
-                            picture = inner_object.source;
+                            picture = safe_image(inner_object.source);
                         }
                         
                         if (inner_object.images) {
                             for (j = 0; j < inner_object.images.length && inner_object.images[j].width > 1000; j++) {
-                                picture = inner_object.images[j].source;
+                                picture = safe_image(inner_object.images[j].source);
                             }
                         }
                         

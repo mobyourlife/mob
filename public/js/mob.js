@@ -16,17 +16,19 @@ $(document).ready(function() {
     });
     
     // full screen images
-    $('body').append('<div id="fullscreen"><img/></div>');
+    $('body').append('<div id="fullscreen"></div>');
     $('div#fullscreen').hide();
     
     var fullScreen = function(img) {
         if ($('div#fullscreen').css('display') == 'none') {
-            $('div#fullscreen > img').attr('src', img.attr('src'));
+            $('div#fullscreen').css('background-image', 'url("' + $(this).attr('src') + '")');
             $('div#fullscreen').show();
         } else {
             $('div#fullscreen').hide();
         }
     }
+    
+    $('div#fullscreen').click(fullScreen);
     
     // timeline
     var my_posts = $("[rel=tooltip]");
@@ -80,13 +82,13 @@ $(document).ready(function() {
                 if (data.feeds) {
                     data.feeds.forEach(function(f) {
                         if ($('.feed[data-imgid="' + f._id + '"]').length == 0) {
-                            $item = (even ? '<li class="feed" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '">' : '<li class="timeline-inverted">');
+                            $item = '<li class="feed' + (!even ? ' timeline-inverted' : '') + '" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '">';
                             $item += '<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="' + moment(f.time).fromNow() + ' via Facebook" id=""></i></a></div>';
 
                             $item += '<div class="timeline-panel">';
 
                             if (f.picture) {
-                                $item += '<div class="timeline-heading"><img src="' + f.picture + '" onclick="fullScreen(this);"/></div>';
+                                $item += '<div class="timeline-heading"><img src="' + f.picture + '"/></div>';
                             }
 
                             $item += '<div class="timeline-body"><p>' + (f.name ? '<strong>' + f.name + '</strong><br/>' : (f.story ? '<strong>' + f.story + '</strong><br/>' : '')) + (f.description ? f.description : '') + '</p></div>';
@@ -98,6 +100,7 @@ $(document).ready(function() {
 
                             even = !even;
                             $feeds.find('li.clearfix').before($item);
+                            $('.feed[data-imgid="' + f._id + '"] img').click(fullScreen);
                         }
                     });
                     
@@ -141,6 +144,7 @@ $(document).ready(function() {
                     data.fotos.forEach(function(f) {
                         if ($('.foto[data-imgid="' + f._id + '"]').length == 0) {
                             $fotos.append('<div class="foto col-sm-4" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '"><img src="' + f.source + '" alt="?"/></div>');
+                            $('.foto[data-imgid="' + f._id + '"] img').click(fullScreen);
                         }
                     });
                 }

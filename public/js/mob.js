@@ -22,12 +22,19 @@ $(document).ready(function() {
     var fullScreen = function(img) {
         if ($('div#fullscreen').css('display') == 'none') {
             $('div#fullscreen').css('background-image', 'url("' + $(this).attr('src') + '")');
+            
+            if ($(this).data('video')) {
+                $('div#fullscreen').html('<div class="embed-half"><a class="closeFullScreen">&times;</a><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="' + $(this).data('video') + '"></iframe></div></div>');
+            } else {
+                $('div#fullscreen').html('<div class="embed-half"><a class="closeFullScreen">&times;</a></div>');
+            }
+            
             $('div#fullscreen').show();
         } else {
+            $('div#fullscreen').html('');
             $('div#fullscreen').hide();
         }
     }
-    
     $('div#fullscreen').click(fullScreen);
     
     // timeline
@@ -82,35 +89,35 @@ $(document).ready(function() {
                 if (data.feeds) {
                     data.feeds.forEach(function(f) {
                         if ($('.feed[data-imgid="' + f._id + '"]').length == 0) {
+                            var $gototext = 'Continuar Lendo';
+                            
                             $item = '<li class="feed' + (!even ? ' timeline-inverted' : '') + '" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '">';
                             $item += '<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="' + moment(f.time).fromNow() + ' via Facebook" id=""></i></a></div>';
 
                             $item += '<div class="timeline-panel">';
 
                             if (f.picture) {
-                                var $inside = '<img src="' + f.picture + '"/>';
+                                $item += '<div class="timeline-heading' + (f.type == 'video' ? ' timeline-video' : '') + '">';
+                                $item += '<img src="' + f.picture + '"/>';
                                 
                                 if (f.type == 'video') {
-                                    var $video = /(https?:\/\/.*\/)watch\?.*&?v=([a-zA-Z0-9]*)&?/.exec(f.link);
-                                    if ($video) {
-                                        var $uri = $video[1] + 'embed/' + $video[2];
-                                        $inside = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="' + $uri + '"></iframe></div>';
-                                    }
+                                    $item += '<a data-video="' + f.source + '"><i class="glyphicon glyphicon-play-circle"></i></a>';
+                                    $gototext = 'Assistir Vídeo';
                                 }
                                 
-                                $item += '<div class="timeline-heading">' + $inside + '</div>';
+                                $item += '</div>';
                             }
 
                             $item += '<div class="timeline-body"><p>' + (f.story ? '<strong>' + f.story + '</strong><br/>' : '') + (f.name ? '<strong>' + f.name + '</strong><br/>' : '') + (f.caption ? f.caption + '<br/>' : '') + (f.description ? f.description : '') + '</p></div>';
 
-                            $item += '<div class="timeline-footer"><a><i class="glyphicon glyphicon-thumbs-up jump-5"></i></a><a><i class="glyphicon glyphicon-share"></i></a><a class="pull-right" href="' + f.link + '" target="_blank">Continuar Lendo</a></div>';
+                            $item += '<div class="timeline-footer"><a><i class="glyphicon glyphicon-thumbs-up jump-5"></i></a><a><i class="glyphicon glyphicon-share"></i></a><a class="pull-right" href="' + f.link + '" target="_blank">' + $gototext + '</a></div>';
 
                             $item += '</div>';
                             $item += '</li>';
 
                             even = !even;
                             $feeds.find('li.clearfix').before($item);
-                            $('.feed[data-imgid="' + f._id + '"] img').click(fullScreen);
+                            $('.feed[data-imgid="' + f._id + '"] img, .feed[data-imgid="' + f._id + '"] a').click(fullScreen);
                         }
                     });
                     

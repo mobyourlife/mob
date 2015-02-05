@@ -10,6 +10,7 @@ var feedSchema = mongoose.Schema({
     time: Date,
     story: String,
     picture: String,
+    source: String,
     link: String,
     type: String,
     name: String,

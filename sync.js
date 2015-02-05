@@ -88,7 +88,7 @@ var fetchFeed = function(fanpage, direction, cursor) {
         return url;
     }
     
-    var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'object_id'] };
+    var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'object_id', 'source'] };
     
     if (direction && cursor) {
         
@@ -116,6 +116,7 @@ var fetchFeed = function(fanpage, direction, cursor) {
                 item.time = records.data[i].updated_time;
                 item.story = records.data[i].story;
                 item.picture = safe_image(records.data[i].picture);
+                item.source = records.data[i].source;
                 item.link = records.data[i].link;
                 item.type = records.data[i].type;
                 item.name = records.data[i].name;

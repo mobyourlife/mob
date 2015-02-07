@@ -103,10 +103,10 @@ $(document).ready(function() {
                             
                             if (f.picture) {
                                 $item += '<div class="timeline-heading' + (f.type == 'video' ? ' timeline-video' : '') + '">';
-                                $item += '<img src="' + f.picture + '"/>';
+                                $item += '<img src="' + (f.cdn ? f.cdn : f.picture) + '"/>';
                                 
                                 if (f.type == 'video') {
-                                    $item += '<a data-video="' + f.source + '"><i class="glyphicon glyphicon-play-circle"></i></a>';
+                                    $item += '<a data-video="' + (f.cdn ? f.cdn : f.source) + '"><i class="glyphicon glyphicon-play-circle"></i></a>';
                                     $gototext = 'Assistir Vídeo';
                                 }
                                 
@@ -165,7 +165,7 @@ $(document).ready(function() {
                 if (data.fotos) {
                     data.fotos.forEach(function(f) {
                         if ($('.foto[data-imgid="' + f._id + '"]').length == 0) {
-                            $fotos.append('<div class="foto col-sm-4" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '"><img src="' + f.source + '" alt="?"/></div>');
+                            $fotos.append('<div class="foto col-sm-4" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '"><img src="' + (f.cdn ? f.cdn : f.source) + '" alt="?"/></div>');
                             $('.foto[data-imgid="' + f._id + '"] img').click(fullScreen);
                         }
                     });

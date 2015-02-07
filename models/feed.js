@@ -16,7 +16,8 @@ var feedSchema = mongoose.Schema({
     name: String,
     caption: String,
     description: String,
-    object_id: String
+    object_id: String,
+    cdn: String
 });
 
 // export user model

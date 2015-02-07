@@ -6,6 +6,7 @@
     "start": "node ./bin/server.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.1.8",
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.8.1",
     "connect-flash": "~0.1.1",
@@ -25,6 +26,7 @@
     "passport": "~0.1.17",
     "passport-facebook": "~1.0.2",
     "passport-local": "~0.1.6",
+    "request": "^2.53.0",
     "serve-favicon": "~2.1.3",
     "url-parse": "^1.0.0"
   }

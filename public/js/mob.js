@@ -95,11 +95,6 @@ $(document).ready(function() {
                             $item += '<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="' + moment(f.time).fromNow() + ' via Facebook" id=""></i></a></div>';
 
                             $item += '<div class="timeline-panel">';
-
-                            /* item do tipo link com imagem na CDN do Facebook, sendo que geralmente deve vir direto do site linkado. aparentemente é um problema, portanto, omitimos a imagem para evitar links quebrados. */
-                            if (f.type == 'link' && /\.fbcdn\./.exec(f.picture)) {
-                                f.picture = null;
-                            }
                             
                             if (f.picture) {
                                 $item += '<div class="timeline-heading' + (f.type == 'video' ? ' timeline-video' : '') + '">';

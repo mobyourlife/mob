@@ -79,7 +79,7 @@ var fetchAlbums = function(fanpage) {
 // fetch feed function
 var fetchFeed = function(fanpage, direction, cursor) {
     var safe_image = function(url) {
-        var result = /\/safe_image\.php\?.*url=(.*\.[a-z]{3,4})/.exec(url);
+        var result = /\/safe_image\.php\?.*url=(.*)/.exec(url);
         
         if (result) {
             return unescape(result[1]);
@@ -130,7 +130,7 @@ var fetchFeed = function(fanpage, direction, cursor) {
                 });
                 
                 if (item.object_id) {
-                    FB.api(item.object_id, { locale: 'pt_BR', fields: ['source', 'images'] }, function(inner_object) {
+                    FB.api(item.object_id, { locale: 'pt_BR', fields: ['picture', 'source', 'images'] }, function(inner_object) {
                         var picture = null;
                         
                         if (inner_object.source) {

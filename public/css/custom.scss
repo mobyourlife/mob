@@ -245,3 +245,19 @@ div#fullscreen {
 }
 
 .lead { font-size: 33px;margin-bottom:0px; }
+
+div.faq
+{
+    & > section
+    {
+        & > h4
+        {
+        }
+
+        & > p
+        {
+            text-indent: 4em;
+            margin-bottom: 2em;
+        }
+    }
+}

@@ -118,6 +118,11 @@ module.exports = function(app, passport, FB) {
     app.get('/como-funciona', function(req, res) {
       res.render('como-funciona', { link: 'como-funciona', auth: req.isAuthenticated(), user: req.user });
     });
+    
+    // preços
+    app.get('/precos', function(req, res) {
+      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user });
+    });
                
     // dúvdas frequentes
     app.get('/duvidas-frequentes', function(req, res) {
@@ -504,7 +509,7 @@ module.exports = function(app, passport, FB) {
                         inicio: moment(),
                         fim: moment().add(1, 'years')
                     },
-                    preco: 999.90
+                    preco: 1399.90
                 }
             });
         });
@@ -515,7 +520,7 @@ module.exports = function(app, passport, FB) {
         validateSubdomain(req.headers.referer, res, function() {
             res.render('404', { link: 'pagseguro-pay', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
-            pagamento(req.user, userFanpage, 999.90,
+            pagamento(req.user, userFanpage, 1399.90,
                 function(uri) {
                     res.send(uri);
                 },
@@ -589,7 +594,7 @@ module.exports = function(app, passport, FB) {
         if (req.isAuthenticated()) {
             next();
         } else {
-            res.redirect('/');
+            res.redirect('/login');
         }
     }
 };

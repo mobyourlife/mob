@@ -243,4 +243,9 @@ div#fullscreen {
       right: 0;
       transform: translateY(-50%); }
 
+/* line 247, D:/Repos/mob/public/css/custom.scss */
+.lead {
+  font-size: 33px;
+  margin-bottom: 0px; }
+
 /*# sourceMappingURL=custom.css.map */

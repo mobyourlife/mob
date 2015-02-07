@@ -3,6 +3,7 @@ var request = require('request');
 var AWS = require('aws-sdk');
 
 // db collections
+var Fanpage = require('./models/fanpage');
 var Feed = require('./models/feed');
 var Photo = require('./models/photo');
 
@@ -58,6 +59,22 @@ up2cdn = function(uri, destination, callback) {
 
 // processes all pending images from the database
 cdn = function() {
+    Fanpage.find({ "facebook.cdn": null }, function(err, records) {
+        records.forEach(function(item) {
+            if (item.facebook.picture != null) {
+                var uri = item.facebook.picture;
+                var dest = 'fanpages/' + item.facebook.id;
+                up2cdn(uri, dest, function(cdnuri) {
+                    item.facebook.cdn = cdnuri;
+                    item.save(function(err) {
+                        if (err)
+                            throw err;
+                    });
+                });
+            }
+        });
+    });
+    
     Feed.find({ "cdn": null }, function(err, records) {
         records.forEach(function(item) {
             if (item.picture != null || item.source != null) {

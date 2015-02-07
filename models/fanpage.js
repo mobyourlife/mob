@@ -13,6 +13,7 @@ var fanpageSchema = mongoose.Schema({
         about: String,
         description: String,
         picture: String,
+        cdn: String,
         category: String,
         category_list: [{
             id: String,

@@ -101,7 +101,7 @@ $(document).ready(function() {
                                 $item += '<img src="' + (f.cdn ? f.cdn : f.picture) + '"/>';
                                 
                                 if (f.type == 'video') {
-                                    $item += '<a data-video="' + (f.cdn ? f.cdn : f.source) + '"><i class="glyphicon glyphicon-play-circle"></i></a>';
+                                    $item += '<a data-video="' + f.source + '"><i class="glyphicon glyphicon-play-circle"></i></a>';
                                     $gototext = 'Assistir Vídeo';
                                 }
                                 

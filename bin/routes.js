@@ -142,7 +142,7 @@ module.exports = function(app, passport, FB) {
     // FACEBOOK ROUTES =====================
     // =====================================
     app.get('/login', function(req, res) {
-        validateSubdomain(req.headers.referer, res, function() {
+        validateSubdomain(req.headers.referer ? req.headers.referer : req.headers.host, res, function() {
             res.redirect('/auth/facebook');
         }, function(userFanpage) {
             req.session.backto = req.headers.referer;
@@ -307,7 +307,7 @@ module.exports = function(app, passport, FB) {
                                     }
 
                                     // if successful, return a success message
-                                    res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, fanpage: newFanpage });
+                                    res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage });
                                 });
                             });
                         });

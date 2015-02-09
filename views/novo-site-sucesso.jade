@@ -12,18 +12,18 @@ block content
             div.well
                 div.row
                     div.col-sm-1
-                        img(src=fanpage.facebook.picture, alt=fanpage.facebook.name)
+                        img(src=newFanpage.facebook.picture, alt=newFanpage.facebook.name)
                     div.col-sm-8
                         h4
-                            strong #{fanpage.facebook.name}
-                        p #{fanpage.facebook.about}
+                            strong #{newFanpage.facebook.name}
+                        p #{newFanpage.facebook.about}
                     div.col-sm-3.space-vertical.space-right
                         div.row
-                            a.btn.btn-success.pull-right(href='http://' + fanpage._id + '.mobyourlife.com.br', target='_blank')
+                            a.btn.btn-success.pull-right(href='http://' + newFanpage._id + '.mobyourlife.com.br', target='_blank')
                                 span.fa.fa-external-link.jump-5
                                 | Acessar site
                         div.row
-                            a.btn.btn-default.pull-right(href=fanpage.facebook.link, target='_blank')
+                            a.btn.btn-default.pull-right(href=newFanpage.facebook.link, target='_blank')
                                 span.fa.fa-facebook.jump-5
                                 | Acessar fanpage
     

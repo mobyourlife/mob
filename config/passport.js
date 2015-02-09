@@ -1,6 +1,7 @@
 // config/passport.js
 
 // load all the things we need
+var FB = require('fb');
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 // load up the user model
@@ -44,12 +45,14 @@ module.exports = function(passport) {
 
     // facebook will send back the token and profile
     function(token, refreshToken, profile, done) {
+        
+        FB.setAccessToken(token);
 
         // asynchronous
         process.nextTick(function() {
 
             // find the user in the database based on their facebook id
-            User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+            User.findOne({ _id : profile.id }, function(err, user) {
 
                 // if there is an error, stop everything and return that
                 // ie an error connecting to the database
@@ -60,33 +63,51 @@ module.exports = function(passport) {
                 if (user) {
                     // update user access token in the database
                     user.facebook.token = token;
-                    user.save(function(err) {
-                        if (err)
-                            throw err;
+                    
+                    FB.api('/me/accounts', { locale: 'pt_BR', fields: ['id', 'name', 'access_token', 'category', 'category_list', 'perms'] }, function(records) {
+                        if (records) {
+                            user.fanpages = records.data;
+                        }
                         
-                        // user found, return that user
-                        return done(null, user);
+                        user.save(function(err) {
+                            if (err)
+                                throw err;
+
+                            // user found, return that user
+                            return done(null, user);
+                        });
                     });
                 } else {
                     // if there is no user found with that facebook id, create them
                     var newUser            = new User();
 
                     // set all of the facebook information in our user model
-                    newUser.facebook.id    = profile.id; // set the users facebook id                   
+                    newUser._id    = profile.id; // set the users facebook id                   
                     newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
                     newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                     newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                    
+                    FB.api('/me/accounts', { locale: 'pt_BR', fields: ['id', 'name', 'access_token', 'category', 'category_list', 'perms'] }, function(records) {
+                        console.log('records:');
+                        console.log(records);
+                        
+                        if (records) {
+                            newUser.fanpages = records.data;
+                        }
+                        
+                        console.log('newUser.fanpages:');
+                        console.log(newUser.fanpages);
+                        
+                        // save our user to the database
+                        newUser.save(function(err) {
+                            if (err)
+                                throw err;
 
-                    // save our user to the database
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-
-                        // if successful, return the new user
-                        return done(null, newUser);
+                            // if successful, return the new user
+                            return done(null, newUser);
+                        });
                     });
                 }
-
             });
         });
 

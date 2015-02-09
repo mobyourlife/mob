@@ -7,6 +7,7 @@ var mongoose = require('mongoose')
 
 // define the model schema
 var fanpageSchema = mongoose.Schema({
+    _id: String,
     facebook: {
         id: String,
         name: String,
@@ -16,7 +17,7 @@ var fanpageSchema = mongoose.Schema({
         cdn: String,
         category: String,
         category_list: [{
-            id: String,
+            _id: String,
             name: String
         }],
         is_verified: Boolean,
@@ -110,8 +111,7 @@ var fanpageSchema = mongoose.Schema({
         active: Boolean,
         evaluation: Boolean,
         expiration: Date
-    },
-    owners: [{ type: Schema.Types.ObjectId, ref: 'Owner' }]
+    }
 });
 
 // export user model

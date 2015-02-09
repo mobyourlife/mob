@@ -5,7 +5,7 @@ var mongoose = require('mongoose')
 
 // define the model schema
 var ticketSchema = mongoose.Schema({
-    ref: { type: Schema.Types.ObjectId, ref: 'Fanpage' },
+    ref: { type: String, ref: 'Fanpage' },
     time: Date,
     validity: {
         months: Number,

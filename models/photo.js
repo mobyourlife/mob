@@ -6,7 +6,7 @@ var mongoose = require('mongoose')
 // define the model schema
 var photoSchema = mongoose.Schema({
     _id: String,
-    ref: { type: Schema.Types.ObjectId, ref: 'Fanpage' },
+    ref: { type: String, ref: 'Fanpage' },
     source: String,
     time: Date,
     cdn: String

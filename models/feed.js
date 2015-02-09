@@ -6,7 +6,7 @@ var mongoose = require('mongoose')
 // define the model schema
 var feedSchema = mongoose.Schema({
     _id: String,
-    ref: { type: Schema.Types.ObjectId, ref: 'Fanpage' },
+    ref: { type: String, ref: 'Fanpage' },
     time: Date,
     story: String,
     picture: String,

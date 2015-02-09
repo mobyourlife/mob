@@ -6,13 +6,13 @@ var mongoose = require('mongoose')
 // define the model schema
 var domainSchema = mongoose.Schema({
     _id: String,
-    ref: { type: Schema.Types.ObjectId, ref: 'Fanpage' },
+    ref: { type: String, ref: 'Fanpage' },
     status: String,
     registrar: String,
     expiration: Boolean,
     creation: {
         time : Date,
-        user : { type: Schema.Types.ObjectId, ref: 'User' }
+        user : { type: String, ref: 'User' }
     },
     routes: [String]
 });

@@ -9,7 +9,6 @@ moment.locale('pt-br');
 
 // load up the models
 var Fanpage            = require('../models/fanpage');
-var Owner              = require('../models/owner');
 var Domain             = require('../models/domain');
 var Photo              = require('../models/photo');
 var Feed               = require('../models/feed');
@@ -171,33 +170,24 @@ module.exports = function(app, passport, FB) {
     
     // gerenciamento, página protegida
     app.get('/gerenciamento', isLoggedIn, function(req, res) {
-        Owner.findOne({ 'owner.$' : req.user.$ }, function(err, found) {
-            var ownedFanpages = Array();
-            
-            console.log('found:');
-            if (found) {
-                var ids = Array();
-                for (i = 0; i < found.fanpages.length; i++) {
-                    ids.push(found.fanpages[i].ref);
+        var ids = Array();
+        for (i = 0; i < req.user.fanpages.length; i++) {
+            ids.push(req.user.fanpages[i].id);
+        }
+
+        Fanpage.find({'_id': { $in: ids }}, function(err, records) {
+            ownedFanpages = records;
+
+            ownedFanpages.sort(function(a, b) {
+                if (a.facebook.name && b.facebook.name) {
+                    var x = a.facebook.name.toLowerCase(), y = b.facebook.name.toLowerCase();
+                    if (x < y) return -1;
+                    if (x > y) return 1;
                 }
-                
-                Fanpage.find({'_id': { $in: ids }}, function(err, records) {
-                    ownedFanpages = records;
-                
-                    ownedFanpages.sort(function(a, b) {
-                        if (a.facebook.name && b.facebook.name) {
-                            var x = a.facebook.name.toLowerCase(), y = b.facebook.name.toLowerCase();
-                            if (x < y) return -1;
-                            if (x > y) return 1;
-                        }
-                        return 0;
-                    });
-                    
-                    res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages });
-                });
-            } else {
-                res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages });
-            }
+                return 0;
+            });
+
+            res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages });
         });
     });
     
@@ -206,14 +196,14 @@ module.exports = function(app, passport, FB) {
         FB.setAccessToken(req.user.facebook.token);
         FB.api('/' + req.params.id, { locale: 'pt_BR', fields: ['id', 'name', 'about', 'link', 'picture', 'access_token'] }, function(records) {
             if (records) {
-                Fanpage.findOne({ 'facebook.id' : records.id }, function(err, found) {
+                Fanpage.findOne({ _id : records.id }, function(err, found) {
                     var newFanpage = null;
                     
                     if (found) {
                         newFanpage = found;
                     } else {
                         newFanpage = new Fanpage();
-                        newFanpage.facebook.id = records.id;
+                        newFanpage._id = records.id;
                         newFanpage.facebook.name = records.name;
                         newFanpage.facebook.about = records.about;
                         newFanpage.facebook.link = records.link;
@@ -255,61 +245,9 @@ module.exports = function(app, passport, FB) {
                         domain.save(function(err) {
                             if (err)
                                 throw err;
-
-                            // if successful, insert the fanpage into the owners collection
-                            Owner.findOne({ 'owner.$' : req.user.$ }, function(err, found) {
-                                var newOwnership = null;
-
-                                if (found) {
-                                    newOwnership = found;
-                                } else {
-                                    newOwnership = new Owner();
-                                    newOwnership.user = req.user;
-                                }
-
-                                // look if user already owns that page
-                                found = false;
-                                for (i = 0; i < newOwnership.fanpages.length; i++) {
-                                    if (newOwnership.fanpages[i].ref.equals(newFanpage._id)) {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-
-                                if (found === false) {
-                                    var inner = {
-                                        ref: newFanpage,
-                                        token: records.access_token
-                                    };
-                                    newOwnership.fanpages.push(inner);
-                                }
-
-                                // save the ownership to the database
-                                newOwnership.save(function(err) {
-                                    if (err)
-                                        throw err;
-
-                                    // insert the owner row in fanpages collection
-                                    var found = false;
-                                    for (i = 0; i < newFanpage.owners.length; i++) {
-                                        if (newFanpage.owners[i].equals(newOwnership._id)) {
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-
-                                    if (found === false) {
-                                        newFanpage.owners.push(newOwnership);
-                                        newFanpage.save(function(err) {
-                                            if (err)
-                                                throw err;
-                                        });
-                                    }
-
-                                    // if successful, return a success message
-                                    res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage });
-                                });
-                            });
+                            
+                            // if successful, return a success message
+                            res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage });
                         });
                     });
                 });

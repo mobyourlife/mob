@@ -12,7 +12,8 @@ var userSchema = mongoose.Schema({
         name: String
     },
     fanpages: [{
-        id: { type: String, ref: 'Fanpage' },
+        _id: false,
+        id: { type: String, required: true, index: true },
         name: String,
         access_token: String,
         category: String,

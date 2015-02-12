@@ -105,7 +105,7 @@ var fanpageSchema = mongoose.Schema({
     },
     creation: {
         time : Date,
-        user : { type: Schema.Types.ObjectId, ref: 'User' }
+        user : { type: String, ref: 'User' }
     },
     billing: {
         active: Boolean,

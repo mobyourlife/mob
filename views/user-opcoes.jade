@@ -35,6 +35,8 @@ block content
                         | #{moment(fanpage.billing.expiration).fromNow()}
                     span.input-group-addon.label-warning(style='cursor:pointer', onclick='gotoPagamento();')
                         i.fa.fa-dollar(style='color:#fff;width:20px')
+                a.pull-right(href='#', onclick='gotoPagamento(); return false;')
+                    | Efetuar pagamento
                         
         div.form-group
             div.col-sm-3

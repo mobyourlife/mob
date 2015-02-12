@@ -201,49 +201,6 @@ div#fullscreen {
     }
 }
 
-.timeline-video {
-    position: relative;
-    display: inline-block;
-    overflow: hidden;
-    background-color: #000;
-    
-    & > a {
-        display: block;
-        position: absolute;
-        top: -100%;
-        opacity: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        text-align: center;
-        font-size: 160px;
-        text-decoration: none;
-        color: #fff;
-        cursor: pointer;
-    }
-    
-    &:hover {
-        & > img {
-            opacity: 0.5;
-        }
-        
-        & > a {
-            opacity: 1;
-            top: 0;
-            z-index: 500;
-            color: #fff;
-            
-            & > i {
-                top: 50%;
-                position: absolute;
-                left: 0;
-                right: 0;
-                transform: translateY(-50%);
-            }
-        }
-    }
-}
-
 .lead { font-size: 33px;margin-bottom:0px; }
 
 div.faq

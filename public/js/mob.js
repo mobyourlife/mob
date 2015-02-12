@@ -22,13 +22,7 @@ $(document).ready(function() {
     var fullScreen = function(img) {
         if ($('div#fullscreen').css('display') == 'none') {
             $('div#fullscreen').css('background-image', 'url("' + $(this).attr('src') + '")');
-            
-            if ($(this).data('video')) {
-                $('div#fullscreen').html('<div class="embed-half"><a class="closeFullScreen">&times;</a><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="' + $(this).data('video') + '"></iframe></div></div>');
-            } else {
-                $('div#fullscreen').html('<div class="embed-half"><a class="closeFullScreen">&times;</a></div>');
-            }
-            
+            $('div#fullscreen').html('<div class="embed-half"><a class="closeFullScreen">&times;</a></div>');
             $('div#fullscreen').show();
         } else {
             $('div#fullscreen').html('');
@@ -97,12 +91,15 @@ $(document).ready(function() {
                             $item += '<div class="timeline-panel">';
                             
                             if (f.picture) {
-                                $item += '<div class="timeline-heading' + (f.type == 'video' ? ' timeline-video' : '') + '">';
-                                $item += '<img src="' + (f.cdn ? f.cdn : f.picture) + '"/>';
+                                $item += '<div class="timeline-heading">';
                                 
                                 if (f.type == 'video') {
-                                    $item += '<a data-video="' + f.source + '"><i class="glyphicon glyphicon-play-circle"></i></a>';
-                                    $gototext = 'Assistir Vídeo';
+                                    $video = f.link;
+                                    $video = $video.replace('youtube.com/watch?v=', 'youtube.com/v/');
+                                    $video = $video.replace('facebook.com/video.php?v=', 'facebook.com/video/embed?video_id=');
+                                    $item += '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="' + $video + '"></iframe></div>';
+                                } else {
+                                    $item += '<img src="' + (f.cdn ? f.cdn : f.picture) + '"/>';
                                 }
                                 
                                 $item += '</div>';

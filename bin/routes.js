@@ -3,6 +3,12 @@ var moment = require('moment');
 var URL = require('url-parse');
 var numeral = require('numeral');
 var pagamento = require('../bin/pagamento');
+var defaults = require(('../config/defaults');
+
+// setup environment
+var mobdef = {
+    isAdmin: false
+};
 
 // setup i18n
 moment.locale('pt-br');

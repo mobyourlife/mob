@@ -3,11 +3,16 @@ var moment = require('moment');
 var URL = require('url-parse');
 var numeral = require('numeral');
 var pagamento = require('../bin/pagamento');
-var defaults = require(('../config/defaults');
+var defaults = require('../config/defaults');
 
-// setup environment
-var mobdef = {
-    isAdmin: false
+// check if is admin
+var validateAdmin = function(user) {
+    for (f = 0; f < user.fanpages.length; f++) {
+        if (user.fanpages[f].id == defaults.fbadmin) {
+            return true;
+        }
+    }
+    return false;
 };
 
 // setup i18n
@@ -193,7 +198,8 @@ module.exports = function(app, passport, FB) {
                 return 0;
             });
 
-            res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages });
+            var isAdmin = validateAdmin(req.user);
+            res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages, isAdmin: isAdmin });
         });
     });
     

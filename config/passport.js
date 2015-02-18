@@ -88,15 +88,9 @@ module.exports = function(passport) {
                     newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
                     
                     FB.api('/me/accounts', { locale: 'pt_BR', fields: ['id', 'name', 'access_token', 'category', 'category_list', 'perms'] }, function(records) {
-                        console.log('records:');
-                        console.log(records);
-                        
                         if (records) {
                             newUser.fanpages = records.data;
                         }
-                        
-                        console.log('newUser.fanpages:');
-                        console.log(newUser.fanpages);
                         
                         // save our user to the database
                         newUser.save(function(err) {

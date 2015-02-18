@@ -4,6 +4,19 @@ var URL = require('url-parse');
 var numeral = require('numeral');
 var pagamento = require('../bin/pagamento');
 var defaults = require('../config/defaults');
+var sensitive = require('../config/sensitive');
+
+// helpers
+Number.prototype.formatMoney = function(c, d, t){
+var n = this, 
+    c = isNaN(c = Math.abs(c)) ? 2 : c, 
+    d = d == undefined ? "," : d, 
+    t = t == undefined ? "." : t, 
+    s = n < 0 ? "-" : "", 
+    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", 
+    j = (j = i.length) > 3 ? j % 3 : 0;
+   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
 
 // check if is admin
 var validateAdmin = function(user) {
@@ -131,7 +144,7 @@ module.exports = function(app, passport, FB) {
     
     // preços
     app.get('/precos', function(req, res) {
-      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user });
+      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney() });
     });
                
     // dúvdas frequentes
@@ -459,7 +472,7 @@ module.exports = function(app, passport, FB) {
                         inicio: moment(),
                         fim: moment().add(1, 'years')
                     },
-                    preco: 1399.90
+                    preco: sensitive.price
                 }
             });
         });
@@ -470,7 +483,7 @@ module.exports = function(app, passport, FB) {
         validateSubdomain(req.headers.referer, res, function() {
             res.render('404', { link: 'pagseguro-pay', auth: req.isAuthenticated(), user: req.user });
         }, function(userFanpage) {
-            pagamento(req.user, userFanpage, 1399.90,
+            pagamento(req.user, userFanpage, sensitive.price,
                 function(uri) {
                     res.send(uri);
                 },

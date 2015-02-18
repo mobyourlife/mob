@@ -192,10 +192,20 @@ module.exports = function(app, passport, FB) {
         failureRedirect : '/'
     }));
     
-    // administração, protegido a administradores da fanpage do Mob Your Life
+    // administração, página protegida a administradores da fanpage do Mob Your Life
     app.get('/admin', isLoggedIn, isAdmin, function(req, res) {
         Fanpage.find({}, function(err, records) {
             res.render('admin', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customers: records });
+        });
+    });
+    
+    app.get('/admin/:id(\\d+)', isLoggedIn, isAdmin, function(req, res) {
+        Fanpage.find({ _id: req.params.id }, function(err, records) {
+            if (records && records.length == 1) {
+                res.render('admin-customer', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: records[0] });
+            } else {
+                res.redirect('/admin');
+            }
         });
     });
     

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 Administração
+            p Administre os sites de clientes.
+    
+    div.container
+        div.col-sm-10.col-sm-offset-1
+            div.well
+                div.row
+                    div.col-sm-1
+                        img(src=customer.facebook.picture, alt=customer.facebook.name)
+                    div.col-sm-8
+                        h4
+                            strong #{customer.facebook.name}
+                        p #{customer.facebook.about}
+                    div.col-sm-3.space-vertical.space-right
+                        div.row
+                            a.btn.btn-primary.pull-right(href='/admin/' + customer._id)
+                                span.fa.fa-cog.jump-5
+                                | Administrar

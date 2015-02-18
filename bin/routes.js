@@ -289,17 +289,17 @@ module.exports = function(app, passport, FB) {
                 var pages_list = Array();
                 var ids_list = Array();
                 
-                records.data.forEach(function(p) {
+                for (r = 0; r < records.data.length; r++) {
                     var item = {
-                        id: p.id,
-                        name: p.name,
-                        about: p.about,
-                        link: p.link,
-                        picture: p.picture.data.url
+                        id: records.data[r].id,
+                        name: records.data[r].name,
+                        about: records.data[r].about,
+                        link: records.data[r].link,
+                        picture: records.data[r].picture.data.url
                     };
                     pages_list.push(item);
-                    ids_list.push(p.id);
-                });
+                    ids_list.push(records.data[r].id);
+                }
                 
                 pages_list.sort(function(a, b) {
                     var x = a.name.toLowerCase(), y = b.name.toLowerCase();
@@ -308,7 +308,7 @@ module.exports = function(app, passport, FB) {
                     return 0;
                 });
                 
-                Fanpage.find({'facebook.id': { $in: ids_list }}, function(err, records) {
+                Fanpage.find({ _id: { $in: ids_list } }, function(err, records) {
                     var built_list = Array();
                     
                     if (records) {
@@ -316,14 +316,12 @@ module.exports = function(app, passport, FB) {
                             var existe = false;
                             
                             for (j = 0; j < records.length; j++) {
-                                if (pages_list[i].id == records[j].facebook.id) {
-                                    console.log('Já existe ' + pages_list[i].name + '.');
+                                if (pages_list[i].id == records[j]._id) {
                                     existe = true;
                                 }
                             }
                             
                             if (existe === false) {
-                                console.log('Não existe ' + pages_list[i].name + '.');
                                 built_list.push(pages_list[i]);
                             }
                         }

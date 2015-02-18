@@ -192,6 +192,13 @@ module.exports = function(app, passport, FB) {
         failureRedirect : '/'
     }));
     
+    // administração, protegido a administradores da fanpage do Mob Your Life
+    app.get('/admin', isLoggedIn, isAdmin, function(req, res) {
+        Fanpage.find({}, function(err, records) {
+            res.render('admin', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customers: records });
+        });
+    });
+    
     // gerenciamento, página protegida
     app.get('/gerenciamento', isLoggedIn, function(req, res) {
         var ids = Array();
@@ -211,8 +218,7 @@ module.exports = function(app, passport, FB) {
                 return 0;
             });
 
-            var isAdmin = validateAdmin(req.user);
-            res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages, isAdmin: isAdmin });
+            res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages, isAdmin: validateAdmin(req.user) });
         });
     });
     
@@ -555,7 +561,20 @@ module.exports = function(app, passport, FB) {
         if (req.isAuthenticated()) {
             next();
         } else {
-            res.redirect('/login');
+            res.redirect('/');
+        }
+    }
+    
+    // middleware de administração
+    function isAdmin(req, res, next) {
+        if (req.isAuthenticated()) {
+            if (validateAdmin(req.user)) {
+                next();
+            } else {
+                res.redirect('/gerenciamento');
+            }
+        } else {
+            res.redirect('/');
         }
     }
 };

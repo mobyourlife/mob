@@ -705,9 +705,11 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     });
     
     app.use(function(req, res){
-        console.log('DEBUG:');
-        console.log(req.params);
-        res.render('404.jade');
+        validateSubdomain(req.headers.host, res, function() {
+            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user });
+        }, function(userFanpage) {
+            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+        });
     });
     
     // middleware de autenticação

@@ -39,6 +39,14 @@ var Feed               = require('../models/feed');
 var Ticket             = require('../models/ticket');
 var TextPage           = require('../models/textpage');
 
+var topMenu = [
+            { path: 'inicio', text: 'Início' },
+            { path: 'como-funciona', text: 'Como Funciona' },
+            { path: 'precos', text: 'Preços' },
+            { path: 'duvidas-frequentes', text: 'Dúvidas Frequentes' },
+            { path: 'contato', text: 'Contato' }
+        ];
+
 // check if it's top domain or any subdomain
 validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
     var parsed = new URL(uri);
@@ -46,13 +54,30 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
     var subdomain = hostname.split('.')[0];
     
     if (hostname == 'www.mobyourlife.com.br') {
-        callbackTop();
+        callbackTop(topMenu);
     } else {
         Domain.findOne({'_id': hostname }, function(err, found) {
             if (found) {
                 Fanpage.findOne({'_id': found.ref}, function(err, found) {
                     if (found) {
-                        callbackSubdomain(found);
+                        var fanpage = found;
+                        TextPage.find({ ref: fanpage._id }, function(err, found) {
+                            if (err)
+                                throw err;
+                            
+                            var menu = Array();
+                            menu.push({ path: 'inicio', text: 'Início' });
+                            menu.push({ path: 'sobre', text: 'Sobre' });
+                            
+                            for (i = 0; i < found.length; i++) {
+                                menu.push({ path: found[0].path, text: found[0].title });
+                            }
+                            
+                            menu.push({ path: 'fotos', text: 'Fotos' });
+                            menu.push({ path: 'contato', text: 'Contato' });
+                            
+                            callbackSubdomain(fanpage, menu);
+                        });
                     } else {
                         res.redirect('http://www.mobyourlife.com.br');
                     }
@@ -74,18 +99,18 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
 
     // início
     app.get('/inicio', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
-            res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
     });
 
     // sobre
     app.get('/sobre', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
             
             var fanpageInfo = [
                 { key: 'Sobre', value: userFanpage.facebook.about },
@@ -125,40 +150,40 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                 { key: 'Formas de pagamento', value: userFanpage.facebook.info.payment_options }
             ];
             
-            res.render('user-sobre', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, info: fanpageInfo });
+            res.render('user-sobre', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, info: fanpageInfo, menu: menu });
         });
     });
 
     // fotos
     app.get('/fotos', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
-            res.render('user-fotos', { link: 'fotos', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            res.render('user-fotos', { link: 'fotos', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
     });
     
     // como funciona
     app.get('/como-funciona', function(req, res) {
-      res.render('como-funciona', { link: 'como-funciona', auth: req.isAuthenticated(), user: req.user });
+      res.render('como-funciona', { link: 'como-funciona', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
     });
     
     // preços
     app.get('/precos', function(req, res) {
-      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney() });
+      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), menu: topMenu });
     });
                
     // dúvdas frequentes
     app.get('/duvidas-frequentes', function(req, res) {
-        res.render('duvidas-frequentes', { link: 'duvidas-frequentes', auth: req.isAuthenticated(), user: req.user });
+        res.render('duvidas-frequentes', { link: 'duvidas-frequentes', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
     });
     
     // contato
     app.get('/contato', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
-            res.render('user-contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            res.render('user-contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
     });
     
@@ -166,9 +191,9 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     // FACEBOOK ROUTES =====================
     // =====================================
     app.get('/login', function(req, res) {
-        validateSubdomain(req.headers.referer ? req.headers.referer : req.headers.host, res, function() {
+        validateSubdomain(req.headers.referer ? req.headers.referer : req.headers.host, res, function(menu) {
             res.redirect('/auth/facebook');
-        }, function(userFanpage) {
+        }, function(userFanpage, menu) {
             req.session.backto = req.headers.referer;
             res.redirect('/auth/facebook');
         });
@@ -196,7 +221,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     // administração, página protegida a administradores da fanpage do Mob Your Life
     app.get('/admin', isLoggedIn, isAdmin, function(req, res) {
         Fanpage.find({}, function(err, records) {
-            res.render('admin', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customers: records });
+            res.render('admin', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customers: records, menu: topMenu });
         });
     });
     
@@ -204,7 +229,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         Fanpage.find({ _id: req.params.id }, function(err, records) {
             if (records && records.length == 1) {
                 var customer = records[0];
-                res.render('admin-customer', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer });
+                res.render('admin-customer', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, menu: topMenu });
             } else {
                 res.redirect('/admin');
             }
@@ -216,7 +241,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
             if (records && records.length == 1) {
                 var customer = records[0];
                 TextPage.find({ ref: customer.id }, function(err, records) {
-                    res.render('admin-textos', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, textpages: records });
+                    res.render('admin-textos', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, textpages: records, menu: topMenu });
                 });
             } else {
                 res.redirect('/admin');
@@ -228,7 +253,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         Fanpage.find({ _id: req.params.id }, function(err, records) {
             if (records && records.length == 1) {
                 var customer = records[0];
-                res.render('admin-textos-nova', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken(), formdata: formdata });
+                res.render('admin-textos-nova', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken(), formdata: formdata, menu: topMenu });
             } else {
                 res.redirect('/admin');
             }
@@ -282,7 +307,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                 TextPage.find({ _id: req.params.textpageid }, function(err, records) {
                     if (records && records.length == 1) {
                         var formdata = records[0];
-                        res.render('admin-textos-editar', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken(), formdata: formdata });
+                        res.render('admin-textos-editar', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken(), formdata: formdata, menu: topMenu });
                     } else {
                         res.redirect('/admin/' + req.params.id + '/textos');
                     }
@@ -340,7 +365,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     app.get('/admin/:id(\\d+)/avancado', isLoggedIn, isAdmin, function(req, res) {
         Fanpage.find({ _id: req.params.id }, function(err, records) {
             if (records && records.length == 1) {
-                res.render('admin-avancado', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: records[0] });
+                res.render('admin-avancado', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: records[0], menu: topMenu });
             } else {
                 res.redirect('/admin');
             }
@@ -366,7 +391,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                 return 0;
             });
 
-            res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages, isAdmin: validateAdmin(req.user) });
+            res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages, isAdmin: validateAdmin(req.user), menu: topMenu });
         });
     });
     
@@ -426,7 +451,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                                 throw err;
                             
                             // if successful, return a success message
-                            res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage });
+                            res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage, menu: topMenu });
                         });
                     });
                 });
@@ -483,7 +508,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                         built_list = pages_list;
                     }
                     
-                    res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, pages: built_list });
+                    res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, pages: built_list, menu: topMenu });
                 });
             }
         });
@@ -556,16 +581,14 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     
     // api para consulta do feed
     app.get('/api/feeds/:before?', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
             var filter = { ref: userFanpage._id };
             
             if (req.params.before) {
                 filter.time = { $lte: moment.unix(req.params.before).format() };
             }
-            
-            console.log('filter: ' + req.params.before);
             
             Feed.find(filter).limit(5).sort('-time').exec(function(err, found) {
                 res.send({ feeds: found });
@@ -575,9 +598,9 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     
     // api para consulta das fotos
     app.get('/api/fotos/:before?', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
             var filter = { ref: userFanpage._id };
             
             if (req.params.before) {
@@ -594,14 +617,14 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     
     // opções do domínio
     app.get('/opcoes/dominio/:id', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
             Domain.find({ '_id': req.params.id }, function(err, found) {
                 if (found) {
-                    res.render('user-opcoes-dominio', { link: 'opcoes-dominio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+                    res.render('user-opcoes-dominio', { link: 'opcoes-dominio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
                 } else {
-                    res.render('user-404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+                    res.render('user-404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
                 }
             });
         });
@@ -609,9 +632,9 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     
     // pagamento
     app.get('/opcoes/pagamento', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
             res.render('user-opcoes-pagamento', {
                 link: 'opcoes-pagamento',
                 auth: req.isAuthenticated(),
@@ -625,16 +648,17 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                         fim: moment().add(1, 'years')
                     },
                     preco: sensitive.price
-                }
+                },
+                menu: menu
             });
         });
     });
     
     // realizar pagamento
     app.post('/pagseguro/pay', function(req, res) {
-        validateSubdomain(req.headers.referer, res, function() {
-            res.render('404', { link: 'pagseguro-pay', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
+        validateSubdomain(req.headers.referer, res, function(menu) {
+            res.render('404', { link: 'pagseguro-pay', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+        }, function(userFanpage, menu) {
             pagamento(req.user, userFanpage, sensitive.price,
                 function(uri) {
                     res.send(uri);
@@ -669,9 +693,9 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     
     // opções do site
     app.get('/opcoes', function(req, res) {
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
             Domain.find({ 'ref': userFanpage._id }, function(err, found) {
                 
                 var domains = found.sort(function(a, b) {
@@ -682,7 +706,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                     return 0;
                 });
                 
-                res.render('user-opcoes', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, domains: found, moment: moment });
+                res.render('user-opcoes', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, domains: found, moment: moment, menu: menu });
             });
         });
     });
@@ -705,10 +729,20 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     });
     
     app.use(function(req, res){
-        validateSubdomain(req.headers.host, res, function() {
-            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user });
-        }, function(userFanpage) {
-            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage });
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            var custompage = req.url.substr(1);
+            TextPage.find({ ref: userFanpage._id, path: custompage }, function(err, found) {
+                if (err)
+                    throw err;
+                
+                if (found && found.length == 1) {
+                    res.render('user-textpage', { link: custompage, auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, title: found[0].title, body: found[0].body });
+                } else {
+                    res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+                }
+            });
         });
     });
     

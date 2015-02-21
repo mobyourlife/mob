@@ -1,0 +1,34 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 Administração
+            p Administre os sites de clientes.
+    
+    div.container
+        div.col-sm-10.col-sm-offset-1
+            div.row
+                div.col-sm-1
+                    img(src=customer.facebook.picture, alt=customer.facebook.name)
+                div.col-sm-8
+                    h4
+                        strong #{customer.facebook.name}
+                div.col-sm-3.space-vertical.space-right
+                    div.row
+                        span.pull-right
+                            span.jump-5 Administração
+                            span.fa.fa-cog
+            hr
+            div.row
+                ul.nav.nav-tabs
+                    li
+                        a(href='/admin/' + customer.id) Visão Geral
+                    li
+                        a(href='/admin/' + customer.id + '/textos') Textos
+                    li.active
+                        a(href='/admin/' + customer.id + '/avancado') Avançado
+            div.row
+                h3 Avançado
+                p Modifique opções avançadas deste site.

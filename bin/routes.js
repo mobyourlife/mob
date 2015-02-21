@@ -37,6 +37,7 @@ var Domain             = require('../models/domain');
 var Photo              = require('../models/photo');
 var Feed               = require('../models/feed');
 var Ticket             = require('../models/ticket');
+var TextPage           = require('../models/textpage');
 
 // check if it's top domain or any subdomain
 validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
@@ -64,7 +65,7 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
 }
 
 // app/routes.js
-module.exports = function(app, passport, FB) {
+module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     
     // raiz
     app.get('/', function(req, res) {
@@ -202,11 +203,52 @@ module.exports = function(app, passport, FB) {
     app.get('/admin/:id(\\d+)', isLoggedIn, isAdmin, function(req, res) {
         Fanpage.find({ _id: req.params.id }, function(err, records) {
             if (records && records.length == 1) {
-                res.render('admin-customer', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: records[0] });
+                var customer = records[0];
+                res.render('admin-customer', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer });
             } else {
                 res.redirect('/admin');
             }
         });
+    });
+    
+    app.get('/admin/:id(\\d+)/textos', isLoggedIn, isAdmin, function(req, res) {
+        Fanpage.find({ _id: req.params.id }, function(err, records) {
+            if (records && records.length == 1) {
+                var customer = records[0];
+                TextPage.find({ ref: customer.id }, function(err, records) {
+                    res.render('admin-textos', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, textpages: records });
+                });
+            } else {
+                res.redirect('/admin');
+            }
+        });
+    });
+    
+    app.get('/admin/:id(\\d+)/textos/nova', isLoggedIn, isAdmin, csrfProtection, function(req, res) {
+        Fanpage.find({ _id: req.params.id }, function(err, records) {
+            if (records && records.length == 1) {
+                var customer = records[0];
+                res.render('admin-textos-nova', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken() });
+            } else {
+                res.redirect('/admin');
+            }
+        });
+    });
+    
+    app.get('/admin/:id(\\d+)/avancado', isLoggedIn, isAdmin, function(req, res) {
+        Fanpage.find({ _id: req.params.id }, function(err, records) {
+            if (records && records.length == 1) {
+                res.render('admin-avancado', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: records[0] });
+            } else {
+                res.redirect('/admin');
+            }
+        });
+    });
+    
+    app.post('/admin/:id(\\d+)/textos/nova', isLoggedIn, isAdmin, parseForm, csrfProtection, function(req, res) {
+        if (req.params.id == req.body.fbid) {
+            res.redirect('/admin/' + req.params.id + '/textos');
+        }
     });
     
     // gerenciamento, página protegida

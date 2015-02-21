@@ -1,0 +1,52 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 Administração
+            p Administre os sites de clientes.
+    
+    script(src='/ckeditor/ckeditor.js')
+    
+    div.container
+        div.col-sm-10.col-sm-offset-1
+            div.row
+                div.col-sm-1
+                    img(src=customer.facebook.picture, alt=customer.facebook.name)
+                div.col-sm-8
+                    h4
+                        strong #{customer.facebook.name}
+                div.col-sm-3.space-vertical.space-right
+                    div.row
+                        span.pull-right
+                            span.jump-5 Administração
+                            span.fa.fa-cog
+            hr
+            div.row
+                ul.nav.nav-tabs
+                    li
+                        a(href='/admin/' + customer.id) Visão Geral
+                    li.active
+                        a(href='/admin/' + customer.id + '/textos') Textos
+                    li
+                        a(href='/admin/' + customer.id + '/avancado') Avançado
+            div.row
+                h3 Nova página
+                p Crie uma nova página de texto.
+                form(method='post', action='/admin/' + customer.id + '/textos/nova')
+                    input(type='hidden', name='_csrf', value=csrfToken)
+                    input(type='hidden', name='fbid', value=customer.id)
+                    p
+                        label Caminho da página:
+                        input.form-control(name='path')
+                    p
+                        label Título da página:
+                        input.form-control(name='title')
+                    p
+                        label Conteúdo:
+                        textarea.ckeditor(name='body')
+                    p
+                        span.pull-right
+                            button.btn.btn-primary.jump-5(type='submit') Salvar
+                            a.btn.btn-default(href='/admin/' + customer.id + '/textos') Cancelar

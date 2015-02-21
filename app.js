@@ -6,6 +6,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var csrf = require('csurf');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
@@ -42,6 +43,10 @@ var configDB = require('./config/database');
 // connect to database
 mongoose.connect(configDB.url);
 
+// setup route middlewares
+var csrfProtection = csrf({ cookie: true });
+var parseForm = bodyParser.urlencoded({ extended: false });
+
 // setup passport
 app.use(cookieParser());
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch', store: new MongoStore({ mongooseConnection: mongoose.connection })})); // session secret and store
@@ -69,7 +74,7 @@ app.use(allowCrossDomain);
 require('./config/passport')(passport);
 
 // setup routes
-require('./bin/routes')(app, passport, FB); // load our routes and pass in our app fully configured passport
+require('./bin/routes')(app, passport, FB, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

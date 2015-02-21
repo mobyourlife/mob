@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 var Facebook = require('facebook-node-sdk');
 var FB = require('fb');
 
@@ -43,7 +44,7 @@ mongoose.connect(configDB.url);
 
 // setup passport
 app.use(cookieParser());
-app.use(session({secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({ secret: 'ilovescotchscotchyscotchscotch', store: new MongoStore({ mongooseConnection: mongoose.connection })})); // session secret and store
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessons
 app.use(flash()); // use connect-flash messages stored in session

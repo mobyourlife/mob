@@ -37,8 +37,9 @@ block content
                     ul
                         each p in textpages
                             li
-                                a(href='/admin/' + customer.id + '/textos/' + p._id)
+                                a(href='/admin/' + customer.id + '/textos/editar/' + p._id)
                                     | #{p.title}
+                    hr
                 p
                     a.btn.btn-primary(href='/admin/' + customer.id + '/textos/nova')
                         | Criar nova página

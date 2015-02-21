@@ -16,6 +16,7 @@
     "debug": "~2.0.0",
     "express": "~4.9.0",
     "express-session": "~1.0.0",
+    "express-validator": "^2.8.0",
     "facebook-node-sdk": "^0.2.0",
     "fb": "^0.7.0",
     "jade": "~1.6.0",

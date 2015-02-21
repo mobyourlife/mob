@@ -34,18 +34,28 @@ block content
             div.row
                 h3 Nova página
                 p Crie uma nova página de texto.
+                if formdata && formdata.errors
+                    div.alert.alert-danger
+                        p
+                            strong
+                                | Por favor verifique os seguintes campos:
+                        ul
+                        each e in formdata.errors
+                            li #{e.msg}
                 form(method='post', action='/admin/' + customer.id + '/textos/nova')
                     input(type='hidden', name='_csrf', value=csrfToken)
                     input(type='hidden', name='fbid', value=customer.id)
                     p
                         label Caminho da página:
-                        input.form-control(name='path')
+                        input.form-control(name='path', value=formdata ? formdata.path : '')
                     p
                         label Título da página:
-                        input.form-control(name='title')
+                        input.form-control(name='title', value=formdata ? formdata.title : '')
                     p
                         label Conteúdo:
                         textarea.ckeditor(name='body')
+                            if formdata
+                                | #{formdata.body}
                     p
                         span.pull-right
                             button.btn.btn-primary.jump-5(type='submit') Salvar

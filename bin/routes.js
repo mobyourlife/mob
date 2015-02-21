@@ -224,15 +224,55 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         });
     });
     
-    app.get('/admin/:id(\\d+)/textos/nova', isLoggedIn, isAdmin, csrfProtection, function(req, res) {
+    var adminTextosNova = function (req, res, formdata) {
         Fanpage.find({ _id: req.params.id }, function(err, records) {
             if (records && records.length == 1) {
                 var customer = records[0];
-                res.render('admin-textos-nova', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken() });
+                res.render('admin-textos-nova', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken(), formdata: formdata });
             } else {
                 res.redirect('/admin');
             }
         });
+    }
+    
+    app.get('/admin/:id(\\d+)/textos/nova', isLoggedIn, isAdmin, csrfProtection, function(req, res) {
+        adminTextosNova(req, res);
+    });
+    
+    app.post('/admin/:id(\\d+)/textos/nova', isLoggedIn, isAdmin, parseForm, csrfProtection, function(req, res) {
+        if (req.params.id == req.body.fbid) {
+            req.checkBody('path', 'Digite um caminho para esta página!').notEmpty();
+            req.checkBody('title', 'Digite um título para esta página!').notEmpty();
+            req.checkBody('body', 'Digite o conteúdo desta página!').notEmpty();
+            
+            var errors = req.validationErrors();
+            
+            if (errors) {
+                adminTextosNova(req, res, {
+                    path: req.body.path,
+                    title: req.body.title,
+                    body: req.body.body,
+                    errors: errors
+                });
+            } else {
+                Fanpage.find({ _id: req.params.id }, function(err, records) {
+                    if (records && records.length == 1) {
+                        var customer = records[0];
+                        var textpage = new TextPage();
+                        textpage.ref = customer;
+                        textpage.path = req.body.path;
+                        textpage.title = req.body.title;
+                        textpage.body = req.body.body;
+
+                        textpage.save(function(err, data) {
+                            if (err)
+                                throw err;
+                        });
+                    }
+                    res.redirect('/admin/' + req.params.id + '/textos');
+                });
+            }
+        }
     });
     
     app.get('/admin/:id(\\d+)/avancado', isLoggedIn, isAdmin, function(req, res) {
@@ -243,12 +283,6 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                 res.redirect('/admin');
             }
         });
-    });
-    
-    app.post('/admin/:id(\\d+)/textos/nova', isLoggedIn, isAdmin, parseForm, csrfProtection, function(req, res) {
-        if (req.params.id == req.body.fbid) {
-            res.redirect('/admin/' + req.params.id + '/textos');
-        }
     });
     
     // gerenciamento, página protegida

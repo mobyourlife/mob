@@ -108,7 +108,7 @@ $(document).ready(function() {
                                 $item += '</div>';
                             }
 
-                            $item += '<div class="timeline-body"><p>' + (f.type == 'photo' && f.story ? '<strong>' + f.story + '</strong><br/>' : '') + (f.type != 'photo' && f.name ? '<strong>' + f.name + '</strong><br/>' : '') + (f.type != 'link' && f.caption ? f.caption + '<br/>' : '') + (f.description ? f.description : '') + '</p></div>';
+                            $item += '<div class="timeline-body"><p>' + (f.type == 'photo' && f.story ? '<strong>' + f.story + '</strong><br/>' : '') + (f.type != 'photo' && f.name ? '<strong>' + f.name + '</strong><br/>' : '') + (f.type != 'link' && f.caption ? Autolinker ? Autolinker.link(f.caption) : f.caption + '<br/>' : '') + (f.description ? Autolinker ? Autolinker.link(f.description) : f.description : '') + '</p></div>';
 
                             $item += '<div class="timeline-footer"><a><i class="glyphicon glyphicon-thumbs-up jump-5"></i></a><a><i class="glyphicon glyphicon-share"></i></a><a class="pull-right" href="' + f.link + '" target="_blank">' + $gototext + '</a></div>';
 

@@ -98,6 +98,9 @@ $(document).ready(function() {
                                     $video = $video.replace('youtube.com/watch?v=', 'youtube.com/v/');
                                     $video = $video.replace('facebook.com/video.php?v=', 'facebook.com/video/embed?video_id=');
                                     $item += '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="' + $video + '"></iframe></div>';
+                                } else if (f.type == 'link') {
+                                    $gototext = 'Acessar Link';
+                                    $item += '<a href="' + f.link + '" target="_blank"><img src="' + (f.cdn ? f.cdn : f.picture) + '"/></a>';
                                 } else {
                                     $item += '<img src="' + (f.cdn ? f.cdn : f.picture) + '"/>';
                                 }
@@ -105,7 +108,7 @@ $(document).ready(function() {
                                 $item += '</div>';
                             }
 
-                            $item += '<div class="timeline-body"><p>' + (f.story ? '<strong>' + f.story + '</strong><br/>' : '') + (f.name ? '<strong>' + f.name + '</strong><br/>' : '') + (f.caption ? f.caption + '<br/>' : '') + (f.description ? f.description : '') + '</p></div>';
+                            $item += '<div class="timeline-body"><p>' + (f.type == 'photo' && f.story ? '<strong>' + f.story + '</strong><br/>' : '') + (f.type != 'photo' && f.name ? '<strong>' + f.name + '</strong><br/>' : '') + (f.type != 'link' && f.caption ? f.caption + '<br/>' : '') + (f.description ? f.description : '') + '</p></div>';
 
                             $item += '<div class="timeline-footer"><a><i class="glyphicon glyphicon-thumbs-up jump-5"></i></a><a><i class="glyphicon glyphicon-share"></i></a><a class="pull-right" href="' + f.link + '" target="_blank">' + $gototext + '</a></div>';
 
@@ -114,7 +117,10 @@ $(document).ready(function() {
 
                             even = !even;
                             $feeds.find('li.clearfix').before($item);
-                            $('.feed[data-imgid="' + f._id + '"] img, .feed[data-imgid="' + f._id + '"] a').click(fullScreen);
+                            
+                            if (f.type != 'link') {
+                                $('.feed[data-imgid="' + f._id + '"] img, .feed[data-imgid="' + f._id + '"] a').click(fullScreen);
+                            }
                         }
                     });
                     

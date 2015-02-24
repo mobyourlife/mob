@@ -273,7 +273,7 @@
 }
 }
 
-.timeline-heading > img {
+.timeline-heading > img, .timeline-heading > a > img {
     width: 540px;
     height: auto;
 }

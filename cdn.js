@@ -63,7 +63,7 @@ cdn = function() {
         records.forEach(function(item) {
             if (item.facebook.picture != null) {
                 var uri = item.facebook.picture;
-                var dest = 'fanpages/' + item.facebook.id;
+                var dest = 'fanpages/' + item._id;
                 up2cdn(uri, dest, function(cdnuri) {
                     item.facebook.cdn = cdnuri;
                     item.save(function(err) {

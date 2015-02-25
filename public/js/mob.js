@@ -60,7 +60,13 @@ $(document).ready(function() {
     ).done(function(res) {
         if (res.auth === true) {
             $('.loggedout').hide();
+            $('.isowner').hide();
             $('.loggedin').show();
+
+            if (res.isowner && res.isowner === true) {
+                $('.isowner').show();
+            }
+            
             $('.field-name').text(res.name);
         }
     });

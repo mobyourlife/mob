@@ -523,7 +523,27 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     // api para sincronização de login
     app.get('/api/login', function(req, res) {
         if (req.isAuthenticated()) {
-            res.send({ auth: true, name: req.user.facebook.name });
+            
+            var parsed = new URL(req.headers.referer);
+            Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
+                if (found) {
+                    Fanpage.findOne({ '_id': found.ref }, function(err, found) {
+                        if (found) {
+                            for (i = 0; i < req.user.fanpages.length; i++) {
+                                if (req.user.fanpages[i].id == found._id) {
+                                    res.send({ auth: true, name: req.user.facebook.name, isowner: true });
+                                    return;
+                                }
+                            }
+                        } else {
+                            res.send({ auth: true, name: req.user.facebook.name, isowner: false });
+                        }
+                    });
+                } else {
+                    res.send({ auth: true, name: req.user.facebook.name, isowner: false });
+                }
+            });
+            
             // res.send({auth: true, id: req.session.id, username: req.session.username, _csrf: req.session._csrf});
         } else {
             res.status(401).send({ auth: false });
@@ -606,8 +626,6 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
             if (req.params.before) {
                 filter.time = { $lte: moment.unix(req.params.before).format() };
             }
-            
-            console.log('filter: ' + req.params.before);
             
             Photo.find(filter).limit(15).sort('-time').exec(function(err, found) {
                 res.send({ fotos: found });

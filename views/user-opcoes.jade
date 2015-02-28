@@ -72,7 +72,8 @@ block content
                                     span.input-group-addon.label-success(style='cursor:pointer', onclick='gotoDominio("#{d.id}");')
                                         i.fa.fa-globe(style='color:#fff;width:20px')
                         
-                div.input-group(style='margin-bottom:8px')
-                    input.form-control(id='novodominio', name='novodominio', type='text')
-                    span.input-group-addon.label-info(style='cursor:pointer')
-                        i.fa.fa-plus(onclick='incluirDominio($("#novodominio"), "#{fanpage.id}", "/opcoes");', style='color:#fff;width:20px')
+                if domains.length < 2
+                    div.input-group(style='margin-bottom:8px')
+                        input.form-control(id='novodominio', name='novodominio', type='text')
+                        span.input-group-addon.label-info(style='cursor:pointer')
+                            i.fa.fa-plus(onclick='incluirDominio($("#novodominio"), "#{fanpage.id}", "/opcoes");', style='color:#fff;width:20px')

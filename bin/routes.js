@@ -107,6 +107,13 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
             res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
     });
+    
+    // botões de compartilhamento social
+    app.get('/share', function(req, res) {
+        console.log('link: ' + req.query.link);
+        console.log('label: ' + req.query.label);
+        res.render('share', { link: req.query.link, label: req.query.label });
+    });
 
     // sobre
     app.get('/sobre', function(req, res) {

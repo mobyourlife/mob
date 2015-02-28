@@ -67,7 +67,7 @@ module.exports = function() {
         var args = { locale: 'pt_BR', fields: ['id'] };
 
         FB.api(fanpage._id + '/albums', args, function(records) {
-            if (records) {
+            if (records && records.data) {
                 for (i = 0; i < records.data.length; i++) {
                     fetchPhotos(fanpage, records.data[i].id);
                 }
@@ -173,7 +173,11 @@ module.exports = function() {
                 fanpage.facebook.name = records.name;
                 fanpage.facebook.about = records.about;
                 fanpage.facebook.description = records.description;
-                fanpage.facebook.picture = records.picture.data.url;
+                
+                if (records.picture && records.picture.data) {
+                    fanpage.facebook.picture = records.picture.data.url;
+                }
+                
                 fanpage.facebook.category = records.category;
                 fanpage.facebook.category_list = records.category_list;
                 fanpage.facebook.is_verified = records.is_verified;

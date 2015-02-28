@@ -15,6 +15,8 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var Facebook = require('facebook-node-sdk');
 var FB = require('fb');
+var URL = require('url-parse');
+var Domain = require('./models/domain');
 
 // init the app
 var app = express();
@@ -22,16 +24,19 @@ var app = express();
 // enable cors
 var allowCrossDomain = function(req, res, next) {
     if (req.headers.origin) {
-        if(req.headers.origin.indexOf('.mobyourlife.com.br') !== -1) { /* DANGER! validate this the right way asap */
-            res.header('Access-Control-Allow-Credentials', true);
-            res.header('Access-Control-Allow-Origin', req.headers.origin)
-            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-            res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-            next();
-        } else {
-            console.log("Failed the CORS origin test: ", req.session.username)
-            res.send(401, {auth: false});
-        }
+        var parsed = new URL(req.headers.origin);
+        Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
+            console.log('found: ' + found);
+            if (found) {
+                res.header('Access-Control-Allow-Credentials', true);
+                res.header('Access-Control-Allow-Origin', req.headers.origin)
+                res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+                res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+                next();
+            } else {
+                res.status(401).send({ auth: false });
+            }
+        });
     } else {
         next();
     }

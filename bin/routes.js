@@ -5,6 +5,7 @@ var numeral = require('numeral');
 var pagamento = require('../bin/pagamento');
 var defaults = require('../config/defaults');
 var sensitive = require('../config/sensitive');
+var sync = require('../sync')();
 
 // helpers
 Number.prototype.formatMoney = function(c, d, t){
@@ -449,6 +450,8 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
                         domain.save(function(err) {
                             if (err)
                                 throw err;
+                            
+                            sync.syncFanpage(newFanpage);
                             
                             // if successful, return a success message
                             res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage, menu: topMenu });

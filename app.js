@@ -26,7 +26,6 @@ var allowCrossDomain = function(req, res, next) {
     if (req.headers.origin) {
         var parsed = new URL(req.headers.origin);
         Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
-            console.log('found: ' + found);
             if (found) {
                 res.header('Access-Control-Allow-Credentials', true);
                 res.header('Access-Control-Allow-Origin', req.headers.origin)

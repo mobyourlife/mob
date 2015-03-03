@@ -78,9 +78,12 @@ module.exports = function() {
     // fetch feed function
     var fetchFeed = function(fanpage, direction, cursor) {
         var safe_image = function(url) {
+            var cfs = /\/safe_image\.php\?.*url=(.*)(&cfs=1)/.exec(url);
             var result = /\/safe_image\.php\?.*url=(.*)/.exec(url);
 
-            if (result) {
+            if (cfs) {
+                return unescape(cfs[1]);
+            } else if (result) {
                 return unescape(result[1]);
             }
 

@@ -103,7 +103,6 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         validateSubdomain(req.headers.host, res, function(menu) {
             res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
-            sync.fetchFeed(userFanpage);
             res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
     });
@@ -120,7 +119,6 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         validateSubdomain(req.headers.host, res, function(menu) {
             res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
-            sync.fetchProfile(userFanpage);
             var fanpageInfo = [
                 { key: 'Sobre', value: userFanpage.facebook.about },
                 { key: 'Descrição', value: userFanpage.facebook.description },
@@ -168,7 +166,6 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         validateSubdomain(req.headers.host, res, function(menu) {
             res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
-            sync.fetchAlbums(userFanpage);
             res.render('user-fotos', { link: 'fotos', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
     });

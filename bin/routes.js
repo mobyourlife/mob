@@ -641,7 +641,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
             }
             
             Photo.find(filter).limit(15).sort('-time').exec(function(err, found) {
-                res.send(found);
+                res.send({ fotos: found });
             });
         });
     });

@@ -84,6 +84,8 @@ $(document).ready(function() {
             compl = '/' + last.data('imgtime');
         }
         
+        $feeds.activity();
+        
         $.get('/api/feeds' + compl, function(data) {
             if (data) {
                 var $items = $(data);
@@ -98,6 +100,7 @@ $(document).ready(function() {
                 }
                 arrange_timeline();
             }
+            $feeds.activity(false);
             $feeds_loading = false;
         });
     }
@@ -129,6 +132,8 @@ $(document).ready(function() {
             compl = '/' + last.data('imgtime');
         }
         
+        $fotos.activity();
+        
         $.get('/api/fotos' + compl, function(data) {
             if (data) {
                 if (data.fotos) {
@@ -140,6 +145,7 @@ $(document).ready(function() {
                     });
                 }
             }
+            $fotos.activity(false);
             $fotos_loading = false;
         });
     }

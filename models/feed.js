@@ -16,6 +16,7 @@ var feedSchema = mongoose.Schema({
     name: String,
     caption: String,
     description: String,
+    message: String,
     object_id: String,
     cdn: String
 });

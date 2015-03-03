@@ -86,66 +86,17 @@ $(document).ready(function() {
         
         $.get('/api/feeds' + compl, function(data) {
             if (data) {
-                if (data.feeds) {
-                    data.feeds.forEach(function(f) {
-                        if ($('.feed[data-imgid="' + f._id + '"]').length == 0) {
-                            var $gototext = 'Continuar Lendo';
-                            
-                            $item = '<li class="feed' + (!even ? ' timeline-inverted' : '') + '" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '">';
-                            $item += '<div class="timeline-badge primary"><a><i class="glyphicon glyphicon-record" rel="tooltip" title="' + moment(f.time).fromNow() + ' via Facebook" id=""></i></a></div>';
-
-                            $item += '<div class="timeline-panel">';
-                            
-                            if (f.picture) {
-                                $item += '<div class="timeline-heading">';
-                                
-                                if (f.type == 'video') {
-                                    $video = f.link;
-                                    $video = $video.replace('youtube.com/watch?v=', 'youtube.com/v/');
-                                    $video = $video.replace('facebook.com/video.php?v=', 'facebook.com/video/embed?video_id=');
-                                    $item += '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="' + $video + '"></iframe></div>';
-                                } else if (f.type == 'link') {
-                                    $gototext = 'Acessar Link';
-                                    $item += '<a href="' + f.link + '" target="_blank"><img src="' + (f.cdn ? f.cdn : f.picture) + '"/></a>';
-                                } else {
-                                    $item += '<img src="' + (f.cdn ? f.cdn : f.picture) + '"/>';
-                                }
-                                
-                                $item += '</div>';
-                            }
-
-                            $item += '<div class="timeline-body"><p>' + (f.type == 'photo' && f.story ? '<strong>' + f.story + '</strong><br/>' : '') + (f.type != 'photo' && f.name ? '<strong>' + f.name + '</strong><br/>' : '') + (f.type != 'link' && f.caption ? Autolinker ? Autolinker.link(f.caption) : f.caption + '<br/>' : '') + (f.description ? Autolinker ? Autolinker.link(f.description) : f.description : '') + '</p></div>';
-
-                            /*$item += '<div class="timeline-footer">';
-                            var $share = 'st_url="' + f.link + '"'; // st_title="Sharing is great!"';
-                            $item += '<span class="st_fblike_hcount" ' + $share + ' displayText="Facebook Like"></span>';
-                            $item += '<span class="st_facebook_hcount" ' + $share + ' displayText="Facebook"></span>';
-                            $item += '<span class="st_email_hcount" ' + $share + ' displayText="Email"></span>';
-                            $item += '<a class="pull-right" href="' + f.link + '" target="_blank">' + $gototext + '</a>';
-                            $item += '</div>';*/
-                            
-                            $item += '<div class="timeline-footer">';
-                            $item += '<iframe style="border-width: 0; width: 100%; height: 30px;" src="http://www.mobyourlife.com.br/share?link=' + f.link + '&label=' + $gototext + '"></iframe>';
-                            $item += '</div>';
-
-                            $item += '</div>';
-                            $item += '</li>';
-
-                            even = !even;
-                            $feeds.find('li.clearfix').before($item);
-                            
-                            if (f.type != 'link') {
-                                $('.feed[data-imgid="' + f._id + '"] img, .feed[data-imgid="' + f._id + '"] a').click(fullScreen);
-                            }
-                            
-                            $('a[data-action="share"]').click(function() {
-                                fbshare($(this).data('link'));
-                            });
+                var $items = $(data);
+                console.log($items);
+                for (i = 0; i < $items.length; i++) {
+                    if ($('li.feed[data-imgid="' + $($items[i]).data('imgid') + '"]').length == 0) {
+                        if ((($('li.feeed').length + i) % 2) != 0) {
+                            $($items[i]).addClass('timeline-inverted');
                         }
-                    });
-                    
-                    arrange_timeline();
+                        $feeds.find('li.clearfix').before($items[i]);
+                    }
                 }
+                arrange_timeline();
             }
             $feeds_loading = false;
         });

@@ -11,7 +11,7 @@ body {
   border-color: #e7e7e7; }
 
 /* line 13, D:/Repos/mob/public/css/custom.scss */
-.loggedin {
+.loggedin, .isowner {
   display: none; }
 
 /* line 17, D:/Repos/mob/public/css/custom.scss */
@@ -207,48 +207,11 @@ div#fullscreen {
     cursor: pointer; }
 
 /* line 204, D:/Repos/mob/public/css/custom.scss */
-.timeline-video {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  background-color: #000; }
-  /* line 210, D:/Repos/mob/public/css/custom.scss */
-  .timeline-video > a {
-    display: block;
-    position: absolute;
-    top: -100%;
-    opacity: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    text-align: center;
-    font-size: 160px;
-    text-decoration: none;
-    color: #fff;
-    cursor: pointer; }
-  /* line 226, D:/Repos/mob/public/css/custom.scss */
-  .timeline-video:hover > img {
-    opacity: 0.5; }
-  /* line 230, D:/Repos/mob/public/css/custom.scss */
-  .timeline-video:hover > a {
-    opacity: 1;
-    top: 0;
-    z-index: 500;
-    color: #fff; }
-    /* line 236, D:/Repos/mob/public/css/custom.scss */
-    .timeline-video:hover > a > i {
-      top: 50%;
-      position: absolute;
-      left: 0;
-      right: 0;
-      transform: translateY(-50%); }
-
-/* line 247, D:/Repos/mob/public/css/custom.scss */
 .lead {
   font-size: 33px;
   margin-bottom: 0px; }
 
-/* line 257, D:/Repos/mob/public/css/custom.scss */
+/* line 214, D:/Repos/mob/public/css/custom.scss */
 div.faq > section > p {
   text-indent: 4em;
   margin-bottom: 2em; }

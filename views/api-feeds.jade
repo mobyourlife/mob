@@ -1,0 +1,32 @@
+- var i = 1
+each f in feeds
+    - i++
+    li.feed(data-imgid=f.id, data-imgtime=f.unix)
+        div.timeline-badge.primary
+            a
+                i.glyphicon.glyphicon-record(rel='tooltip', title=f.fromNow + ' via Facebook')
+        div.timeline-panel
+            div.timeline-heading
+                case f.type
+                    when 'video'
+                        - var video = f.link
+                        - video = video.replace('youtube.com/watch?v=', 'youtube.com/v/')
+                        - video = video.replace('facebook.com/video.php?v=', 'facebook.com/video/embed?video_id=')
+                        div.embed-responsive.embed-responsive-16by9
+                            iframe.embed-responsive-item(src=video)
+                    default
+                        a(href=f.link, target='_blank')
+                            img(src=f.cdn ? f.cdn : f.picture)
+            div.timeline-body
+                p
+                    if f.name
+                        strong #{f.name}
+                        br
+                    if f.message
+                        - var message = f.message.replace('\n', '<br/>')
+                        span!= message
+                    if !f.message && f.description
+                        - var description = f.description.replace('\n', '<br/>')
+                        span!= description
+            div.timeline-footer
+                iframe(style='border-width: 0; width: 100%; height: 30px;', src='http://www.mobyourlife.com.br/share?link=' + f.link)

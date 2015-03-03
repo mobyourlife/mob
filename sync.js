@@ -87,7 +87,7 @@ module.exports = function() {
             return url;
         }
 
-        var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'object_id', 'source'] };
+        var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'message', 'object_id', 'source'] };
 
         if (direction && cursor) {
 
@@ -121,6 +121,7 @@ module.exports = function() {
                     item.name = records.data[i].name;
                     item.caption = records.data[i].caption;
                     item.description = records.data[i].description;
+                    item.message = records.data[i].message;
                     item.object_id = records.data[i].object_id;
 
                     Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {

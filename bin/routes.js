@@ -620,7 +620,11 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
             }
             
             Feed.find(filter).limit(5).sort('-time').exec(function(err, found) {
-                res.send({ feeds: found });
+                for (i = 0; i < found.length; i++) {
+                    found[i].unix = moment(found[i].time).unix();
+                    found[i].fromNow = moment(found[i].time).fromNow();
+                }
+                res.render('api-feeds', { feeds: found });
             });
         });
     });
@@ -637,7 +641,7 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
             }
             
             Photo.find(filter).limit(15).sort('-time').exec(function(err, found) {
-                res.send({ fotos: found });
+                res.send(found);
             });
         });
     });

@@ -770,6 +770,12 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         res.status(500).send();
     });
     
+    app.post('/realtime', function(req, res) {
+        console.log('Receiving realtime updates:');
+        console.log(req.body);
+        console.log('---');
+    });
+    
     /* erro 404 */
     
     app.use(function(req, res){

@@ -771,16 +771,19 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
 
             signedRequest.parse(function(errors, request) {
                 // check if request was valid
+                console.log('is valid:');
                 console.log(request.isValid());
 
                 // access errors
+                console.log('errors:');
                 console.log(errors);
 
                 // this is your data object
+                console.log('data:');
                 console.log(request.data);
                 
                 // render tab page
-                res.render('fbtab');
+                res.status(200).render('fbtab');
                 return;
             });
         }

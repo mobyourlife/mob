@@ -83,7 +83,7 @@ app.use(allowCrossDomain);
 require('./config/passport')(passport);
 
 // setup signed request
-fbSignedRequest.secret = auth.facebookAuth.clientSecret;
+SignedRequest.secret = auth.facebookAuth.clientSecret;
 
 // setup routes
 require('./bin/routes')(app, passport, FB, SignedRequest, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport

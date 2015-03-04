@@ -759,6 +759,11 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         res.render('tmpl-modal-close');
     });
     
+    /* abas do Facebook */
+    app.get('/fbtab/', function(req, res) {
+        res.render('fbtab');
+    });
+    
     /* atualizações em tempo real do Facebook */
     app.get('/realtime', function(req, res) {
         console.log('Realtime updates verification request received.');

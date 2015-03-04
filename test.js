@@ -1,8 +1,8 @@
 var FB = require('fb');
 var realtime = require('./realtime')();
 
-var pagetoken = 'CAACEdEose0cBAO1xgKccuZBEClmBoTp5LUu9WpbIppjUca8VyzqZCZCbVB3lTPuHMpHhZBiONUW6Owx8r2O24O5ZAWDNq8V1YoVZA1zPxg2xdMqspDfvHvxNpUUMVKd46Gw01QwcqOjq7slJvmVfDC84xfWUL8twmX8YkzvKNHPkKEjEo4SIYDPsNEIyEbE0XSPKw1uQV8LQZDZD';
-var pageid = 1524760321124861;
+var pagetoken = 'CAAJl90fLKOEBAP5ihessDSZB3FyZCgdWrT4ZCMh4VZAk9u2ZC411k6QZAI6USYwdzvYevQdYDwtu9N4orQNE9pFTpYPitp5rYbEb1C62Lnba7kqJCxpxEBDhvgmSs0MoZBkbLGjQPkEZCsflYkGTig1U4uTw2Habi8owZBGEVNHd8xxbCQNHXzFR0Nqst7ZB7B0RYZD';
+var pageid = 459027277572154;
 
 if (process.argv.length >= 3) {
     switch (process.argv[2]) {

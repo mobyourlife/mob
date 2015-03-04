@@ -761,12 +761,12 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
     
     /* abas do Facebook */
     app.get('/fbtab/', function(req, res) {
-        res.render('fbtab');
+        res.render('fbtab-home');
     });
     
     app.post('/fbtab/', function(req, res) {
         if (req.body.signed_request) {
-            res.status(200).render('fbtab');
+            res.status(200).render('fbtab-home');
             return;
             
             var request = req.body.signed_request;

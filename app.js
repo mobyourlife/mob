@@ -23,8 +23,12 @@ var app = express();
 
 // enable cors
 var allowCrossDomain = function(req, res, next) {
-    if (req.headers.origin) {
-        var parsed = new URL(req.headers.origin);
+    var allowed = ['s-static.ak.facebook.com'];
+    var parsed = new URL(req.headers.origin);
+    
+    if (!req.headers.origin || allowed.indexOf(parsed.hostname) != -1) {
+        next();
+    } else {
         Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
             if (found) {
                 res.header('Access-Control-Allow-Credentials', true);
@@ -33,11 +37,10 @@ var allowCrossDomain = function(req, res, next) {
                 res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
                 next();
             } else {
+                console.log('Falhou XSRF! ' + req.headers.origin);
                 res.status(401).send({ auth: false });
             }
         });
-    } else {
-        next();
     }
 }
 

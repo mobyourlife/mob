@@ -813,7 +813,7 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
         console.log('Receiving realtime updates:');
         console.log(req.body);
         console.log('---');
-        var update = new Realtime();
+        var update = new RealtimeUpdate();
         update.time = Date.now();
         update.data = req.body;
         update.save(function(err, data) {

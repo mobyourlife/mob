@@ -22,10 +22,6 @@ if (process.argv.length >= 3) {
                 realtime.setSubscription('page', 'description,feed', function(ret) {
                     console.log('setSubscription:');
                     console.log(ret);
-                    realtime.setSubscription('user', 'about,about_me,quotes', function(ret) {
-                        console.log('setSubscription:');
-                        console.log(ret);
-                    });
                 });
             });
             break;

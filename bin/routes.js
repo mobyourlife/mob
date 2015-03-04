@@ -91,7 +91,7 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
 }
 
 // app/routes.js
-module.exports = function(app, passport, FB, csrfProtection, parseForm) {
+module.exports = function(app, passport, FB, fbSignedRequest, csrfProtection, parseForm) {
     
     // raiz
     app.get('/', function(req, res) {
@@ -765,8 +765,26 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     });
     
     app.post('/fbtab/', function(req, res) {
-        console.log(req.body);
-        res.send();
+        if (req.body.signed_request) {
+            var request = req.body.signed_request;
+            var signedRequest = new SignedRequest(request);
+
+            signedRequest.parse(function(errors, request) {
+                // check if request was valid
+                console.log(request.isValid());
+
+                // access errors
+                console.log(errors);
+
+                // this is your data object
+                console.log(request.data);
+                
+                // render tab page
+                res.render('fbtab');
+                return;
+            });
+        }
+        res.status(400).send();
     });
     
     /* atualizações em tempo real do Facebook */

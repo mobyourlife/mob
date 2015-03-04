@@ -18,6 +18,7 @@
     "express-session": "~1.0.0",
     "express-validator": "^2.8.0",
     "facebook-node-sdk": "^0.2.0",
+    "facebook-signed-request": "0.0.2",
     "fb": "^0.7.0",
     "jade": "~1.6.0",
     "method-override": "~1.0.0",

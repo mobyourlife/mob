@@ -15,6 +15,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var Facebook = require('facebook-node-sdk');
 var FB = require('fb');
+var fbSignedRequest = require('facebook-signed-request');
 var URL = require('url-parse');
 var Domain = require('./models/domain');
 
@@ -37,7 +38,6 @@ var allowCrossDomain = function(req, res, next) {
                 res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
                 next();
             } else {
-                console.log('Falhou XSRF! ' + req.headers.origin);
                 res.status(401).send({ auth: false });
             }
         });
@@ -82,8 +82,11 @@ app.use(allowCrossDomain);
 // load passport
 require('./config/passport')(passport);
 
+// setup signed request
+fbSignedRequest.secret = auth.facebookAuth.clientSecret;
+
 // setup routes
-require('./bin/routes')(app, passport, FB, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport
+require('./bin/routes')(app, passport, FB, fbSignedRequest, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

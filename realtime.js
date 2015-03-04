@@ -22,6 +22,24 @@ module.exports = function() {
         });
     }
     
+    var addAppToPage = function(pageid, callback) {
+        FB.api('/' + pageid + '/tabs', 'post', {
+            app_id: auth.facebookAuth.clientID
+        }, function(res) {
+            if (callback) {
+                callback(res);
+            }
+        });
+    }
+    
+    var listPageTabs = function(pageid, callback) {
+        FB.api('/' + pageid + '/tabs', function(res) {
+            if (callback) {
+                callback(res);
+            }
+        });
+    }
+    
     var setSubscription = function(callback) {
         FB.api('/' + auth.facebookAuth.clientID + '/subscriptions', 'post', {
             object: 'page',
@@ -30,6 +48,16 @@ module.exports = function() {
             verify_token: '123456'
         }, function(res) {
             if(callback) {
+                callback(res);
+            }
+        });
+    }
+    
+    var removeSubscription = function(callback) {
+        FB.api('/' + auth.facebookAuth.clientID + '/subscriptions', 'delete', {
+            object: 'page'
+        }, function(res) {
+            if (callback) {
                 callback(res);
             }
         });
@@ -45,7 +73,10 @@ module.exports = function() {
 
     return {
         setAppAccessToken: setAppAccessToken,
+        addAppToPage: addAppToPage,
+        listPageTabs: listPageTabs,
         setSubscription: setSubscription,
+        removeSubscription: removeSubscription,
         listSubscriptions: listSubscriptions
     }
 }

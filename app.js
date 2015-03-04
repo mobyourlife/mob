@@ -15,7 +15,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var Facebook = require('facebook-node-sdk');
 var FB = require('fb');
-var fbSignedRequest = require('facebook-signed-request');
+var SignedRequest = require('facebook-signed-request');
 var URL = require('url-parse');
 var Domain = require('./models/domain');
 
@@ -86,7 +86,7 @@ require('./config/passport')(passport);
 fbSignedRequest.secret = auth.facebookAuth.clientSecret;
 
 // setup routes
-require('./bin/routes')(app, passport, FB, fbSignedRequest, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport
+require('./bin/routes')(app, passport, FB, SignedRequest, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -91,7 +91,7 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
 }
 
 // app/routes.js
-module.exports = function(app, passport, FB, fbSignedRequest, csrfProtection, parseForm) {
+module.exports = function(app, passport, FB, SignedRequest, csrfProtection, parseForm) {
     
     // raiz
     app.get('/', function(req, res) {

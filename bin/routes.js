@@ -759,6 +759,16 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         res.render('tmpl-modal-close');
     });
     
+    /* atualizações em tempo real do Facebook */
+    app.get('/realtime', function(req, res) {
+        console.log('Real time verification request:');
+        console.log(req.query);
+        console.log('---');
+        res.send(req.query.hub.challenge);
+    });
+    
+    /* erro 404 */
+    
     app.use(function(req, res){
         validateSubdomain(req.headers.host, res, function(menu) {
             res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, menu: menu });

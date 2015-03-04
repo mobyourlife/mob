@@ -764,6 +764,11 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
         res.render('fbtab');
     });
     
+    app.post('/fbtab/', function(req, res) {
+        console.log(req.body);
+        res.send();
+    });
+    
     /* atualizações em tempo real do Facebook */
     app.get('/realtime', function(req, res) {
         console.log('Realtime updates verification request received.');

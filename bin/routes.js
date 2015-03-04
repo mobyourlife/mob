@@ -39,6 +39,7 @@ var Photo              = require('../models/photo');
 var Feed               = require('../models/feed');
 var Ticket             = require('../models/ticket');
 var TextPage           = require('../models/textpage');
+var RealtimeUpdate     = require('../models/realtime');
 
 var topMenu = [
             { path: 'inicio', text: 'Início' },
@@ -812,6 +813,13 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
         console.log('Receiving realtime updates:');
         console.log(req.body);
         console.log('---');
+        var update = new Realtime();
+        update.time = Date.now();
+        update.data = req.body;
+        update.save(function(err, data) {
+            if (err)
+                throw err;
+        });
     });
     
     /* erro 404 */

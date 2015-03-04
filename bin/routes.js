@@ -820,6 +820,7 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
             if (err)
                 throw err;
         });
+        res.status(200).send();
     });
     
     /* erro 404 */

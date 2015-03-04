@@ -40,11 +40,11 @@ module.exports = function() {
         });
     }
     
-    var setSubscription = function(callback) {
+    var setSubscription = function(object, fields, callback) {
         FB.api('/' + auth.facebookAuth.clientID + '/subscriptions', 'post', {
-            object: 'page',
+            object: object,
             callback_url: auth.facebookAuth.realtimeURL,
-            fields: 'description',
+            fields: fields,
             verify_token: '123456'
         }, function(res) {
             if(callback) {
@@ -53,9 +53,9 @@ module.exports = function() {
         });
     }
     
-    var removeSubscription = function(callback) {
+    var removeSubscription = function(object, callback) {
         FB.api('/' + auth.facebookAuth.clientID + '/subscriptions', 'delete', {
-            object: 'page'
+            object: object
         }, function(res) {
             if (callback) {
                 callback(res);

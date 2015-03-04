@@ -766,6 +766,9 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
     
     app.post('/fbtab/', function(req, res) {
         if (req.body.signed_request) {
+            res.status(200).render('fbtab');
+            return;
+            
             var request = req.body.signed_request;
             var signedRequest = new SignedRequest(request);
 
@@ -786,8 +789,10 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
                 res.status(200).render('fbtab');
                 return;
             });
+        } else {
+            console.log('Facebook request was not signed.');
+            res.status(400).send();
         }
-        res.status(400).send();
     });
     
     /* atualizações em tempo real do Facebook */

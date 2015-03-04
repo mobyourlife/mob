@@ -761,8 +761,10 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     
     /* atualizações em tempo real do Facebook */
     app.get('/realtime', function(req, res) {
+        console.log('Realtime updates verification request received.');
         if (req.query['hub.mode'] === 'subscribe') {
             if (req.query['hub.verify_token'] === '123456') {
+                console.log('Challenge answered.');
                 res.send(req.query['hub.challenge']);
                 return;
             }

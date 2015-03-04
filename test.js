@@ -6,18 +6,18 @@ var pageid = 1524760321124861;
 
 if (process.argv.length >= 3) {
     switch (process.argv[2]) {
-            case 'tabs':
-                /* add app to page tabs */
-                FB.setAccessToken(pagetoken);
-                realtime.addAppToPage(pageid, function(res) {
-                    realtime.listPageTabs(pageid, function(tabs) {
-                        console.log(tabs);
-                    });
+        /* add app to page tabs */
+        case 'tabs':
+            FB.setAccessToken(pagetoken);
+            realtime.addAppToPage(pageid, function(res) {
+                realtime.listPageTabs(pageid, function(tabs) {
+                    console.log(tabs);
                 });
+            });
             break;
             
+        /* add subscriptions */
         case 'add':
-            /* add subscriptions */
             realtime.setAppAccessToken(function(token) {
                 realtime.setSubscription('page', 'description,feed', function(ret) {
                     console.log('setSubscription:');
@@ -30,6 +30,7 @@ if (process.argv.length >= 3) {
             });
             break;
         
+        /* list subscriptions */
         case 'list':
             realtime.setAppAccessToken(function(token) {
                 realtime.listSubscriptions(function(records) {
@@ -39,8 +40,8 @@ if (process.argv.length >= 3) {
             });
             break;
         
+        /* delete subscriptions */
         case 'rm':
-            /* delete subscriptions */
             realtime.setAppAccessToken(function(token) {
                 realtime.removeSubscription('page', function(ret) {
                     console.log('removeSubscription: ' + ret);

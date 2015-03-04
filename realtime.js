@@ -22,15 +22,13 @@ module.exports = function() {
         });
     }
     
-    var setSubscription = function() {
+    var setSubscription = function(callback) {
         FB.api('/' + auth.facebookAuth.clientID + '/subscriptions', 'post', {
             object: 'page',
             callback_url: auth.facebookAuth.realtimeURL,
             fields: 'description',
             verify_token: '123456'
         }, function(res) {
-            console.log(res);
-            
             if(callback) {
                 callback(res);
             }
@@ -39,8 +37,6 @@ module.exports = function() {
 
     var listSubscriptions = function(callback) {
         FB.api('/' + auth.facebookAuth.clientID + '/subscriptions', function(records) {
-            console.log(records);
-            
             if (callback) {
                 callback(records);
             }

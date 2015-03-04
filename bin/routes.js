@@ -761,10 +761,12 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     
     /* atualizações em tempo real do Facebook */
     app.get('/realtime', function(req, res) {
-        console.log('Real time verification request:');
-        console.log(req.query);
-        console.log('---');
-        res.send(req.query.hub.challenge);
+        if (req.query['hub.mode'] === 'subscribe') {
+            if (req.query['hub.verify_token'] === '123456') {
+                res.send(req.query['hub.challenge'];
+            }
+        }
+        res.status(500).send();
     });
     
     /* erro 404 */

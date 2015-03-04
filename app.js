@@ -25,25 +25,36 @@ var app = express();
 // enable cors
 var allowCrossDomain = function(req, res, next) {
     var allowed = ['s-static.ak.facebook.com'];
+    var current = new URL(req.url);
     
-    if (req.headers.origin) {
-        var parsed = new URL(req.headers.origin);
-    }
-    
-    if (!req.headers.origin || (parsed && allowed.indexOf(parsed.hostname) != -1)) {
+    if (current.pathname === '/realtime') {
+        console.log('Aceitando realtime updates!');
+        console.log('current:');
+        console.log(current);
+        console.log('origin:');
+        console.log(req.headers.origin);
+        console.log('---');
         next();
     } else {
-        Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
-            if (found) {
-                res.header('Access-Control-Allow-Credentials', true);
-                res.header('Access-Control-Allow-Origin', req.headers.origin)
-                res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-                res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-                next();
-            } else {
-                res.status(401).send({ auth: false });
-            }
-        });
+        if (req.headers.origin) {
+            var parsed = new URL(req.headers.origin);
+        }
+
+        if (!req.headers.origin || (parsed && allowed.indexOf(parsed.hostname) != -1)) {
+            next();
+        } else {
+            Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
+                if (found) {
+                    res.header('Access-Control-Allow-Credentials', true);
+                    res.header('Access-Control-Allow-Origin', req.headers.origin)
+                    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+                    res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+                    next();
+                } else {
+                    res.status(401).send({ auth: false });
+                }
+            });
+        }
     }
 }
 

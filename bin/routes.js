@@ -763,7 +763,8 @@ module.exports = function(app, passport, FB, csrfProtection, parseForm) {
     app.get('/realtime', function(req, res) {
         if (req.query['hub.mode'] === 'subscribe') {
             if (req.query['hub.verify_token'] === '123456') {
-                res.send(req.query['hub.challenge'];
+                res.send({ 'hub.challenge': req.query['hub.challenge'] });
+                return;
             }
         }
         res.status(500).send();

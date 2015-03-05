@@ -409,7 +409,7 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
         FB.api('/' + req.params.id, { locale: 'pt_BR', fields: ['id', 'name', 'about', 'link', 'picture', 'access_token'] }, function(records) {
             if (records) {
                 FB.setAccessToken(records.access_token);
-                FB.api('/v2.2/' + records.id + '/subscribed_apps', 'post', function(res) {
+                FB.api('/v2.2/' + records.id + '/subscribed_apps', 'post', function(ret) {
                     Fanpage.findOne({ _id : records.id }, function(err, found) {
                         var newFanpage = null;
 

@@ -70,6 +70,30 @@ module.exports = function() {
             }
         });
     }
+    
+    var subscribeApp = function(pageid, callback) {
+        FB.api('/v2.2/' + pageid + '/subscribed_apps', 'post', function(res) {
+            if (callback) {
+                callback(res);
+            }
+        });
+    }
+    
+    var unsubscribeApp = function(pageid, callback) {
+        FB.api('/v2.2/' + pageid + '/subscribed_apps', 'delete', function(res) {
+            if (callback) {
+                callback(res);
+            }
+        });
+    }
+    
+    var listApps = function(pageid, callback) {
+        FB.api('/v2.2/' + pageid + '/subscribed_apps', function(records) {
+            if (callback) {
+                callback(records);
+            }
+        });
+    }
 
     return {
         setAppAccessToken: setAppAccessToken,
@@ -77,6 +101,9 @@ module.exports = function() {
         listPageTabs: listPageTabs,
         setSubscription: setSubscription,
         removeSubscription: removeSubscription,
-        listSubscriptions: listSubscriptions
+        listSubscriptions: listSubscriptions,
+        subscribeApp: subscribeApp,
+        unsubscribeApp: unsubscribeApp,
+        listApps: listApps
     }
 }

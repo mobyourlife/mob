@@ -6,6 +6,7 @@ var mongoose = require('mongoose')
 // define the model schema
 var realtimeUpdateSchema = mongoose.Schema({
     time: Date,
+    updated: Boolean,
     data: Object
 });
 

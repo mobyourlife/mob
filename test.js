@@ -1,5 +1,6 @@
 var FB = require('fb');
 var auth = require('./config/auth');
+var RTU = require('./realtime')();
 
 var setAppAccessToken = function(callback) {
     FB.api('oauth/access_token', {
@@ -165,6 +166,11 @@ if (process.argv.length >= 3) {
                     console.log('removeSubscription: ' + ret);
                 });
             });
+            break;
+        
+        /* realtime updates */
+        case 'rtu':
+            RTU.syncPending();
             break;
     }
 }

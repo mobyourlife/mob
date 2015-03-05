@@ -408,60 +408,63 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
         FB.setAccessToken(req.user.facebook.token);
         FB.api('/' + req.params.id, { locale: 'pt_BR', fields: ['id', 'name', 'about', 'link', 'picture', 'access_token'] }, function(records) {
             if (records) {
-                Fanpage.findOne({ _id : records.id }, function(err, found) {
-                    var newFanpage = null;
-                    
-                    if (found) {
-                        newFanpage = found;
-                    } else {
-                        newFanpage = new Fanpage();
-                        newFanpage._id = records.id;
-                        newFanpage.facebook.name = records.name;
-                        newFanpage.facebook.about = records.about;
-                        newFanpage.facebook.link = records.link;
-                        newFanpage.facebook.picture = records.picture.data.url;
-                        
-                        /* creation info */
-                        newFanpage.creation.time = Date.now();
-                        newFanpage.creation.user = req.user;
-                        
-                        /* billing info */
-                        var ticket = new Ticket();
-                        ticket.time = Date.now();
-                        ticket.validity.months = 0;
-                        ticket.validity.days = 7;
-                        ticket.coupon.reason = 'signup_freebie';
-                        
-                        newFanpage.billing.active = true;
-                        newFanpage.billing.evaluation = true;
-                        newFanpage.billing.expiration = moment()
-                            .add(ticket.validity.months, 'months')
-                            .add(ticket.validity.days, 'days');
-                        
-                        ticket.save(function(err) {
-                            if (err)
-                                throw err;
-                        });
-                    }
+                FB.setAccessToken(records.access_token);
+                FB.api('/v2.2/' + records.id + '/subscribed_apps', 'post', function(res) {
+                    Fanpage.findOne({ _id : records.id }, function(err, found) {
+                        var newFanpage = null;
 
-                    // save the new fanpage to the database
-                    newFanpage.save(function(err) {
-                        if (err)
-                            throw err;
-                        
-                        // create default subdomain
-                        var domain = new Domain();
-                        domain._id = newFanpage._id + '.mobyourlife.com.br';
-                        domain.ref = newFanpage;
-                        
-                        domain.save(function(err) {
+                        if (found) {
+                            newFanpage = found;
+                        } else {
+                            newFanpage = new Fanpage();
+                            newFanpage._id = records.id;
+                            newFanpage.facebook.name = records.name;
+                            newFanpage.facebook.about = records.about;
+                            newFanpage.facebook.link = records.link;
+                            newFanpage.facebook.picture = records.picture.data.url;
+
+                            /* creation info */
+                            newFanpage.creation.time = Date.now();
+                            newFanpage.creation.user = req.user;
+
+                            /* billing info */
+                            var ticket = new Ticket();
+                            ticket.time = Date.now();
+                            ticket.validity.months = 0;
+                            ticket.validity.days = 7;
+                            ticket.coupon.reason = 'signup_freebie';
+
+                            newFanpage.billing.active = true;
+                            newFanpage.billing.evaluation = true;
+                            newFanpage.billing.expiration = moment()
+                                .add(ticket.validity.months, 'months')
+                                .add(ticket.validity.days, 'days');
+
+                            ticket.save(function(err) {
+                                if (err)
+                                    throw err;
+                            });
+                        }
+
+                        // save the new fanpage to the database
+                        newFanpage.save(function(err) {
                             if (err)
                                 throw err;
-                            
-                            sync.syncFanpage(newFanpage);
-                            
-                            // if successful, return a success message
-                            res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage, menu: topMenu });
+
+                            // create default subdomain
+                            var domain = new Domain();
+                            domain._id = newFanpage._id + '.mobyourlife.com.br';
+                            domain.ref = newFanpage;
+
+                            domain.save(function(err) {
+                                if (err)
+                                    throw err;
+
+                                sync.syncFanpage(newFanpage);
+
+                                // if successful, return a success message
+                                res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage, menu: topMenu });
+                            });
                         });
                     });
                 });

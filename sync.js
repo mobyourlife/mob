@@ -293,18 +293,23 @@ module.exports = function() {
         User.findOne({ '_id': fanpage.creation.user }, function(err, found) {
             var token = null;
 
-            for (i = 0; i < found.fanpages.length; i++) {
-                if (found.fanpages[i].id.localeCompare(fanpage._id) == 0) {
-                    token = found.fanpages[i].access_token;
-                    break;
+            if (found && found.fanpages && found.fanpages.length != 0) {
+                for (i = 0; i < found.fanpages.length; i++) {
+                    if (found.fanpages[i].id.localeCompare(fanpage._id) == 0) {
+                        token = found.fanpages[i].access_token;
+                        break;
+                    }
                 }
             }
 
-            FB.setAccessToken(token);
-
-            fetchProfile(fanpage);
-            fetchAlbums(fanpage);
-            fetchFeed(fanpage);
+            if (token) {
+                FB.setAccessToken(token);
+                fetchProfile(fanpage);
+                fetchAlbums(fanpage);
+                fetchFeed(fanpage);
+            } else {
+                console.log('Cannot find token for fanpage "' + fanpage._id + '" named "' + fanpage.facebook.name + '"...');
+            }
         });
     }
 

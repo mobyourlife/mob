@@ -546,6 +546,9 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                                     return;
                                 }
                             }
+                            
+                            /* não é o dono quem está acessando */
+                            res.send({ auth: true, name: req.user.facebook.name, isowner: false });
                         } else {
                             res.send({ auth: true, name: req.user.facebook.name, isowner: false });
                         }

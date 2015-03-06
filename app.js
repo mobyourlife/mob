@@ -24,7 +24,7 @@ var app = express();
 
 // enable cors
 var allowCrossDomain = function(req, res, next) {
-    var allowed = ['s-static.ak.facebook.com'];
+    var allowed = ['www.mobyourlife.com.br', 's-static.ak.facebook.com'];
     var current = new URL(req.url);
     
     if (current.pathname === '/realtime') {

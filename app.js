@@ -36,24 +36,28 @@ var allowCrossDomain = function(req, res, next) {
         console.log('---');
         next();
     } else {
-        if (req.headers.origin) {
+        var ref = req.headers.origin ? req.headers.origin : req.headers['referer']
+        
+        if (ref) {
             var parsed = new URL(req.headers.origin);
-        }
-
-        if (!req.headers.origin || (parsed && allowed.indexOf(parsed.hostname) != -1)) {
-            next();
+            
+            if (allowed.indexOf(parsed.hostname) != -1) {
+                next();
+            } else {
+                Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
+                    if (found) {
+                        res.header('Access-Control-Allow-Credentials', true);
+                        res.header('Access-Control-Allow-Origin', req.headers.origin)
+                        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+                        res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+                        next();
+                    } else {
+                        res.status(401).send({ auth: false });
+                    }
+                });
+            }
         } else {
-            Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
-                if (found) {
-                    res.header('Access-Control-Allow-Credentials', true);
-                    res.header('Access-Control-Allow-Origin', req.headers.origin)
-                    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-                    res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-                    next();
-                } else {
-                    res.status(401).send({ auth: false });
-                }
-            });
+            res.status(401).send({ auth: false });
         }
     }
 }

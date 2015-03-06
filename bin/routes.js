@@ -110,8 +110,6 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     // botões de compartilhamento social
     app.get('/share', function(req, res) {
-        console.log('link: ' + req.query.link);
-        console.log('label: ' + req.query.label);
         res.render('share', { link: req.query.link, label: req.query.label });
     });
 

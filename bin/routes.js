@@ -813,9 +813,6 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     });
     
     app.post('/realtime', function(req, res) {
-        console.log('Receiving realtime updates:');
-        console.log(req.body);
-        console.log('---');
         var update = new RealtimeUpdate();
         update.time = Date.now();
         update.data = req.body;

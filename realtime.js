@@ -157,7 +157,9 @@ module.exports = function() {
                 
                 switch (feed.type) {
                     case 'photo':
-                        fetchPhoto(token, page_id, feed.object_id, null, function() {
+                        fetchPhoto(token, page_id, feed.object_id, null, function(picture) {
+                            feed.picture = feed.source = picture;
+                            
                             Feed.update({ _id: feed._id }, feed.toObject(), { upsert: true }, function(err) {
                                 if (err)
                                     throw err;

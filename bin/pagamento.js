@@ -18,6 +18,7 @@ module.exports = function(user, fanpage, preco, sucesso, falha) {
         if (err) {
             falha();
             throw err;
+            return;
         }
         
         // moeda e referência
@@ -40,14 +41,15 @@ module.exports = function(user, fanpage, preco, sucesso, falha) {
         });
         
         // urls de retorno
-        pag.setRedirectURL('http://www.mobyourlife.com.br/pagseguro/callback');
-        pag.setNotificationURL('http://www.mobyourlife.com.br/pagseguro/notification');
+        pag.setRedirectURL('https://www.mobyourlife.com.br/pagseguro/callback');
+        pag.setNotificationURL('https://www.mobyourlife.com.br/pagseguro/notification');
         
         // envia os dados ao pagseguro
         pag.send(function(err, ret) {
             if (err) {
                 falha();
                 throw err;
+                return;
             }
             
             var regex = /<code>([a-zA-Z0-9]{32})<\/code>.*<date>(.*)<\/date>/;
@@ -61,6 +63,7 @@ module.exports = function(user, fanpage, preco, sucesso, falha) {
                     if (err) {
                         falha();
                         throw err;
+                        return;
                     }
                     
                     var uri = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' + ticket.payment.code;
@@ -68,6 +71,7 @@ module.exports = function(user, fanpage, preco, sucesso, falha) {
                 });
             } else {
                 falha();
+                return;
             }
         });
     });

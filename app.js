@@ -31,19 +31,13 @@ mongoose.connect(configDB.url);
 
 // enable cors
 var allowCrossDomain = function(req, res, next) {
-    var allowed = ['www.mobyourlife.com.br', 's-static.ak.facebook.com'];
+    var allowed = ['www.mobyourlife.com.br', 'www.facebook.com', 's-static.ak.facebook.com'];
     var current = new URL(req.url);
     
     if (current.pathname === '/realtime') {
-        console.log('Aceitando realtime updates!');
-        console.log('current:');
-        console.log(current);
-        console.log('origin:');
-        console.log(req.headers.origin);
-        console.log('---');
         next();
     } else {
-        var ref = req.headers.origin ? req.headers.origin : req.headers['referer']
+        var ref = req.headers.origin ? req.headers.origin : req.headers['referer'];
         
         if (ref) {
             var parsed = new URL(ref);

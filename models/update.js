@@ -1,10 +1,10 @@
-// app/models/realtime.js
+// app/models/update.js
 // load dependencies
 var mongoose = require('mongoose')
     , Schema = mongoose.Schema;
 
 // define the model schema
-var realtimeUpdateSchema = mongoose.Schema({
+var updateSchema = mongoose.Schema({
     time: Date,
     updated: Boolean,
     data: Object,
@@ -14,4 +14,4 @@ var realtimeUpdateSchema = mongoose.Schema({
 });
 
 // export realtime update model
-module.exports = mongoose.model('RealtimeUpdate', realtimeUpdateSchema);
+module.exports = mongoose.model('Update', updateSchema);

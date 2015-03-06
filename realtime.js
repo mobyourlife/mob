@@ -5,7 +5,7 @@ var FB = require('fb');
 var Feed = require('./models/feed');
 var Photo = require('./models/photo');
 var User = require('./models/user');
-var RealtimeUpdate = require('./models/realtime');
+var Update = require('./models/update');
 
 module.exports = function() {
     
@@ -13,15 +13,15 @@ module.exports = function() {
         var pending = Array();
         
         if (callback) {
-            RealtimeUpdate.find({ "updated": { '$ne': true } }).sort({ "data.entry.0.time": 1 }).exec(function(err, found) {
+            Update.find({ "updated": { '$ne': true } }).sort({ "data.entry.0.time": 1 }).exec(function(err, found) {
                 if (err)
                     throw err;
-
+                
                 if (found && found.length != 0) {
                     for (i = 0; i < found.length; i++) {
                         var row = found[i];
 
-                        if (row.object === 'page') {
+                        if (row.data.object === 'page') {
                             if (row.data.entry && row.data.entry != 0) {
                                 for (j = 0; j < row.data.entry.length; j++) {
                                     var entry = row.data.entry[j];
@@ -71,7 +71,7 @@ module.exports = function() {
     }
     
     var checkAsUpdated = function(rtu_id, callback) {
-        RealtimeUpdate.update({ _id: rtu_id }, { updated: true }, function(err) {
+        Update.update({ _id: rtu_id }, { updated: true }, function(err) {
             if (err)
                 throw err;
             
@@ -83,7 +83,7 @@ module.exports = function() {
     
     var checkAsError = function(rtu_id, msg, token, callback) {
         console.log('error: ' + msg);
-        RealtimeUpdate.update({ _id: rtu_id }, { updated: true, error_time: Date.now(), error_msg: msg, error_token: token }, function(err) {
+        Update.update({ _id: rtu_id }, { updated: true, error_time: Date.now(), error_msg: msg, error_token: token }, function(err) {
             if (err)
                 throw err;
             

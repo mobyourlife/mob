@@ -2,6 +2,11 @@ var FB = require('fb');
 var auth = require('./config/auth');
 var RTU = require('./realtime')();
 
+// connect to database
+var mongoose = require('mongoose');
+var configDB = require('./config/database');
+mongoose.connect(configDB.url);
+
 var setAppAccessToken = function(callback) {
     FB.api('oauth/access_token', {
         client_id: auth.facebookAuth.clientID,

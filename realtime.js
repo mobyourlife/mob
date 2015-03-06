@@ -208,6 +208,7 @@ module.exports = function() {
                             fetchFeed(token, item.page_id, item.value.post_id, item.rtu_id);
                             break;
                         
+                        case 'page.feed.remove.photo':
                         case 'page.feed.remove.post':
                             removeFeed(item.value.post_id, item.rtu_id);
                             break;

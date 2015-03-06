@@ -22,6 +22,13 @@ var Domain = require('./models/domain');
 // init the app
 var app = express();
 
+// get db config
+var auth = require('./config/auth');
+var configDB = require('./config/database');
+
+// connect to database
+mongoose.connect(configDB.url);
+
 // enable cors
 var allowCrossDomain = function(req, res, next) {
     var allowed = ['www.mobyourlife.com.br', 's-static.ak.facebook.com'];
@@ -61,13 +68,6 @@ var allowCrossDomain = function(req, res, next) {
         }
     }
 }
-
-// get db config
-var auth = require('./config/auth');
-var configDB = require('./config/database');
-
-// connect to database
-mongoose.connect(configDB.url);
 
 // realtime updates module
 var RTU = require('./realtime')();

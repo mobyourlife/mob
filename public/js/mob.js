@@ -52,7 +52,7 @@ $(document).ready(function() {
     // apis
     $.ajax(
         {
-            url: "http://www.mobyourlife.com.br/api/login",
+            url: "https://www.mobyourlife.com.br/api/login",
             type: "GET",
             dataType: 'json',
             xhrFields: { withCredentials: true }
@@ -208,7 +208,7 @@ $(document).ready(function() {
         } else {
             $.ajax(
                 {
-                    url: "http://www.mobyourlife.com.br/api/incluirdominio",
+                    url: "https://www.mobyourlife.com.br/api/incluirdominio",
                     type: "POST",
                     dataType: "json",
                     data: {
@@ -248,7 +248,7 @@ $(document).ready(function() {
             if (confirm('Deseja excluir o domínio "' + p_dominio + '"?')) {
                 $.ajax(
                     {
-                        url: "http://www.mobyourlife.com.br/api/excluirdominio",
+                        url: "https://www.mobyourlife.com.br/api/excluirdominio",
                         type: "POST",
                         dataType: 'json',
                         data: {
@@ -270,7 +270,7 @@ $(document).ready(function() {
             // salvando
             $.ajax(
                 {
-                    url: "http://www.mobyourlife.com.br/pagseguro/pay",
+                    url: "https://www.mobyourlife.com.br/pagseguro/pay",
                     type: "POST",
                     dataType: "json",
                     xhrFields: { withCredentials: true }

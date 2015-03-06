@@ -21,30 +21,26 @@ module.exports = function() {
                     for (i = 0; i < found.length; i++) {
                         var row = found[i];
 
-                        if (row.data.entry && row.data.entry != 0) {
-                            for (j = 0; j < row.data.entry.length; j++) {
-                                var entry = row.data.entry[j];
+                        if (row.object === 'page') {
+                            if (row.data.entry && row.data.entry != 0) {
+                                for (j = 0; j < row.data.entry.length; j++) {
+                                    var entry = row.data.entry[j];
 
-                                if (entry.changes && entry.changes.length != 0) {
-                                    for (k = 0; k < entry.changes.length; k++) {
-                                        var change = entry.changes[k];
-                                        var type = row.data.object + '.' + change.field + '.' + change.value.verb + '.' + change.value.item;
-                                        pending.push({
-                                            rtu_id: row.id,
-                                            type: type,
-                                            page_id: entry.id,
-                                            time: entry.time,
-                                            value: change.value
-                                        });
+                                    if (entry.changes && entry.changes.length != 0) {
+                                        for (k = 0; k < entry.changes.length; k++) {
+                                            var change = entry.changes[k];
+                                            var type = row.data.object + '.' + change.field + '.' + change.value.verb + '.' + change.value.item;
+                                            pending.push({
+                                                rtu_id: row.id,
+                                                type: type,
+                                                page_id: entry.id,
+                                                time: entry.time,
+                                                value: change.value
+                                            });
+                                        }
                                     }
-                                } else {
-                                    //console.log('No changes found for:');
-                                    //console.log(row.data);
                                 }
                             }
-                        } else {
-                            //console.log('No entries found for:');
-                            //console.log(row.data);
                         }
                     }
                 }

@@ -445,7 +445,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                         }
 
                         // save the new fanpage to the database
-                        newFanpage.save(function(err) {
+                        Fanpage.update({ _id: records.id }, newFanpage.toObject(), { upsert: true }, function(err) {
                             if (err)
                                 throw err;
 
@@ -454,7 +454,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                             domain._id = newFanpage._id + '.mobyourlife.com.br';
                             domain.ref = newFanpage;
 
-                            domain.save(function(err) {
+                            Domain.update({ _id: domain._id }, domain.toObject(), { upsert: true }, function(err) {
                                 if (err)
                                     throw err;
 

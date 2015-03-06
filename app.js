@@ -39,7 +39,7 @@ var allowCrossDomain = function(req, res, next) {
         var ref = req.headers.origin ? req.headers.origin : req.headers['referer']
         
         if (ref) {
-            var parsed = new URL(req.headers.origin);
+            var parsed = new URL(ref);
             
             if (allowed.indexOf(parsed.hostname) != -1) {
                 next();
@@ -57,7 +57,7 @@ var allowCrossDomain = function(req, res, next) {
                 });
             }
         } else {
-            res.status(401).send({ auth: false });
+            next();
         }
     }
 }

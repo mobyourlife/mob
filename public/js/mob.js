@@ -89,7 +89,6 @@ $(document).ready(function() {
         $.get('/api/feeds' + compl, function(data) {
             if (data) {
                 var $items = $(data);
-                console.log($items);
                 for (i = 0; i < $items.length; i++) {
                     if ($('li.feed[data-imgid="' + $($items[i]).data('imgid') + '"]').length == 0) {
                         if ((($('li.feeed').length + i) % 2) != 0) {

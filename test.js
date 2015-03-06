@@ -1,6 +1,7 @@
 var FB = require('fb');
 var auth = require('./config/auth');
 var RTU = require('./realtime')();
+var sync = require('./sync')();
 
 // connect to database
 var mongoose = require('mongoose');
@@ -183,6 +184,11 @@ if (process.argv.length >= 3) {
         /* realtime updates */
         case 'rtu':
             RTU.syncPending();
+            break;
+        
+        /* sync all */
+        case 'syncall':
+            sync.syncAll();
             break;
     }
 }

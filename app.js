@@ -53,7 +53,7 @@ var allowCrossDomain = function(req, res, next) {
                         res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
                         next();
                     } else {
-                        res.status(401).send({ auth: false });
+                        res.status(401).send();
                     }
                 });
             }

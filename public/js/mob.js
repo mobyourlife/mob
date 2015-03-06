@@ -58,7 +58,7 @@ $(document).ready(function() {
             xhrFields: { withCredentials: true }
         }
     ).done(function(res) {
-        if (res.auth === true) {
+        if (res.auth && res.auth === true) {
             $('.loggedout').hide();
             $('.isowner').hide();
             $('.loggedin').show();

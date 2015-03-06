@@ -7,7 +7,10 @@ var mongoose = require('mongoose')
 var realtimeUpdateSchema = mongoose.Schema({
     time: Date,
     updated: Boolean,
-    data: Object
+    data: Object,
+    error_msg: String,
+    error_time: Date,
+    error_token: String
 });
 
 // export realtime update model

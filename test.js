@@ -146,10 +146,10 @@ if (process.argv.length >= 3) {
                     console.log('setSubscription:');
                     console.log(ret);
                 });
-                setSubscription('user', 'about, about_me, activities, birthday, birthday_date, books, checkins, contact_email, current_location, email, email_hashes, events, feed, first_name, friends, has_added_app, hometown, hometown_location, interests, is_app_user, is_blocked, last_name, likes, link, locale, location, movies, music, name, photos, pic, picture, political_views, profile_blurb, profile_update_time, profile_url, proxied_email, quotes, timezone, television, tv, videos, website, status', function(ret) {
+                /*setSubscription('user', 'about, about_me, activities, birthday, birthday_date, books, checkins, contact_email, current_location, email, email_hashes, events, feed, first_name, friends, has_added_app, hometown, hometown_location, interests, is_app_user, is_blocked, last_name, likes, link, locale, location, movies, music, name, photos, pic, picture, political_views, profile_blurb, profile_update_time, profile_url, proxied_email, quotes, timezone, television, tv, videos, website, status', function(ret) {
                     console.log('setSubscription:');
                     console.log(ret);
-                });
+                });*/
             });
             break;
         

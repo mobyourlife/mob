@@ -66,7 +66,7 @@ var configDB = require('./config/database');
 mongoose.connect(configDB.url);
 
 // realtime updates module
-var RTU = require('./realtime');
+var RTU = require('./realtime')();
 
 // setup route middlewares
 var csrfProtection = csrf({ cookie: true });

@@ -33,9 +33,10 @@ mongoose.connect(configDB.url);
 var allowCrossDomain = function(req, res, next) {
     var allowed = ['www.mobyourlife.com.br', 'www.facebook.com', 's-static.ak.facebook.com'];
     var current = new URL(req.url);
+    var allow = false;
     
     if (current.pathname === '/realtime') {
-        next();
+        allow = true;
     } else {
         var ref = req.headers.origin ? req.headers.origin : req.headers['referer'];
         
@@ -43,23 +44,34 @@ var allowCrossDomain = function(req, res, next) {
             var parsed = new URL(ref);
             
             if (allowed.indexOf(parsed.hostname) != -1) {
-                next();
+                allow = true;
             } else {
-                Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
-                    if (found) {
-                        res.header('Access-Control-Allow-Credentials', true);
-                        res.header('Access-Control-Allow-Origin', 'http://' + found._id);
-                        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-                        res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-                        next();
-                    } else {
-                        res.status(401).send();
-                    }
-                });
+                var subdomain = /^.+\.mobyourlife\.com\.br$/.exec(parsed.hostname);
+                if (subdomain != null) {
+                    allow = true;
+                } else {
+                    Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
+                        if (found) {
+                            allow = true;
+                        }
+                    });
+                }
             }
         } else {
-            next();
+            allow = true;
         }
+    }
+    
+    if (allow === true) {
+        if (req.headers.origin) {
+            res.header('Access-Control-Allow-Credentials', true);
+            res.header('Access-Control-Allow-Origin', 'http://' + found._id);
+            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+        }
+        next();
+    } else {
+        res.status(401).send();
     }
 }
 

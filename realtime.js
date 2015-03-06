@@ -185,11 +185,26 @@ module.exports = function() {
     }
     
     var removeFeed = function(post_id, rtu_id) {
-        Feed.remove({ _id: post_id }, function(err) {
-            if (err)
-                throw err;
-            
-            checkAsUpdated(rtu_id);
+        var rmfeed = function() {
+            Feed.remove({ _id: post_id }, function(err) {
+                if (err)
+                    throw err;
+
+                checkAsUpdated(rtu_id);
+            });
+        }
+        
+        Feed.find({ _id: post_id }, function(found) {
+            if (found.type === 'photo') {
+                Photo.remove({ _id: found.object_id }, function(err) {
+                    if (err)
+                        throw err;
+                    
+                    rmfeed();
+                });
+            } else {
+                rmfeed();
+            }
         });
     }
     

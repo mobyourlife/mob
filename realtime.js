@@ -1,13 +1,6 @@
 var mongoose = require('mongoose');
 var FB = require('fb');
 
-// get db config
-var auth = require('./config/auth');
-var configDB = require('./config/database');
-
-// connect to database
-mongoose.connect(configDB.url);
-
 // init models
 var Feed = require('./models/feed');
 var Photo = require('./models/photo');

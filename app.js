@@ -65,6 +65,9 @@ var configDB = require('./config/database');
 // connect to database
 mongoose.connect(configDB.url);
 
+// realtime updates module
+var RTU = require('./realtime');
+
 // setup route middlewares
 var csrfProtection = csrf({ cookie: true });
 var parseForm = bodyParser.urlencoded({ extended: false });
@@ -100,7 +103,7 @@ require('./config/passport')(passport);
 SignedRequest.secret = auth.facebookAuth.clientSecret;
 
 // setup routes
-require('./bin/routes')(app, passport, FB, SignedRequest, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport
+require('./bin/routes')(app, RTU, passport, FB, SignedRequest, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

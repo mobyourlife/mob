@@ -92,7 +92,7 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
 }
 
 // app/routes.js
-module.exports = function(app, passport, FB, SignedRequest, csrfProtection, parseForm) {
+module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection, parseForm) {
     
     // raiz
     app.get('/', function(req, res) {
@@ -822,6 +822,8 @@ module.exports = function(app, passport, FB, SignedRequest, csrfProtection, pars
         update.save(function(err, data) {
             if (err)
                 throw err;
+            
+            RTU.syncPending();
         });
         res.status(200).send();
     });

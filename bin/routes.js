@@ -39,7 +39,7 @@ var Photo              = require('../models/photo');
 var Feed               = require('../models/feed');
 var Ticket             = require('../models/ticket');
 var TextPage           = require('../models/textpage');
-var RealtimeUpdate     = require('../models/realtime');
+var Update     = require('../models/updates');
 
 var topMenu = [
             { path: 'inicio', text: 'Início' },
@@ -813,7 +813,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     });
     
     app.post('/realtime', function(req, res) {
-        var update = new RealtimeUpdate();
+        var update = new Update();
         update.time = Date.now();
         update.data = req.body;
         update.save(function(err, data) {

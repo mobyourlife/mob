@@ -39,7 +39,7 @@ var Photo              = require('../models/photo');
 var Feed               = require('../models/feed');
 var Ticket             = require('../models/ticket');
 var TextPage           = require('../models/textpage');
-var Update     = require('../models/updates');
+var Update     = require('../models/update');
 
 var topMenu = [
             { path: 'inicio', text: 'Início' },

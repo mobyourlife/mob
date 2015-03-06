@@ -94,7 +94,7 @@ module.exports = function() {
     }
     
     var fetchPhoto = function(token, page_id, photo_id, rtu_id, callback) {
-        FB.api('/v2.2/' + photo_id, { access_token: token}, function(p) {
+        FB.api('/v2.2/' + photo_id, { access_token: token, locale: 'pt_BR' }, function(p) {
             if (p.error) {
                 checkAsError(rtu_id, p.error, token);
             } else {
@@ -132,7 +132,7 @@ module.exports = function() {
     }
     
     var fetchFeed = function(token, page_id, post_id, rtu_id) {
-        FB.api('/v2.2/' + post_id, { access_token: token, fields: ['id', 'updated_time', 'story', 'picture', 'source', 'link', 'type', 'name', 'caption', 'description', 'message', 'object_id'] }, function(f) {
+        FB.api('/v2.2/' + post_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'updated_time', 'story', 'picture', 'source', 'link', 'type', 'name', 'caption', 'description', 'message', 'object_id'] }, function(f) {
             if (f.error) {
                 checkAsError(rtu_id, f.error, token);
             } else {
@@ -162,6 +162,15 @@ module.exports = function() {
                         
                                 checkAsUpdated(rtu_id);
                             });
+                        });
+                        break;
+                    
+                    case 'status':
+                        Feed.update({ _id: feed._id }, feed.toObject(), { upsert: true }, function(err) {
+                            if (err)
+                                throw err;
+
+                            checkAsUpdated(rtu_id);
                         });
                         break;
                     

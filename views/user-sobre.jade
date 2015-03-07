@@ -30,13 +30,15 @@ block content
                 i.fa.fa-globe.fa-4x.text-primary
                 p
                     span
-                        | Localizada em:
+                        | Localização:
                     br
                     span.text-primary
                         strong #{fanpage.facebook.place.location.city}
         
         ol.breadcrumb
-            li.text-primary #{fanpage.facebook.category}
+            li
+                strong.text-primary #{fanpage.facebook.name}
+            li.text-info #{fanpage.facebook.category}
             each c in fanpage.facebook.category_list
                 li #{c.name}
         

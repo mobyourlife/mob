@@ -22,24 +22,24 @@ var proxy = httpProxy.createProxyServer({
 
 if (isHttps)
   https.createServer(options.https, function(req, res) {
-    console.log('Proxying https request at %s', new Date());
+    console.log('Proxying HTTPS request at %s', new Date());
     proxy.proxyRequest(req, res);
   }).listen(443, function(err) {
     if (err)
-      console.log('Error serving https proxy request: %s', req);
+      console.log('Error serving HTTPS proxy request: %s', req);
 
-    console.log('Created https proxy successfully.');
+    console.log('Created HTTPS proxy successfully.');
   });
 else
   http.createServer(options.https, function(req, res) {
-    console.log('Proxying http request at %s', new Date());
+    console.log('Proxying HTTP request at %s', new Date());
     console.log(req);
     proxy.proxyRequest(req, res);
   }).listen(80, function(err) {
     if (err)
-      console.log('Error serving http proxy request: %s', req);
+      console.log('Error serving HTTP proxy request: %s', req);
 
-    console.log('Created http proxy. Forwarding requests from %s to %s:%s', '80', proxy.target.host, proxy.target.port);
+    console.log('Created HTTP proxy successfully.');
   });
 
 require('./bin/server');

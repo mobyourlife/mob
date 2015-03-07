@@ -38,7 +38,7 @@ var allowCrossDomain = function(req, res, next) {
     if (current.pathname === '/realtime') {
         allow = true;
     } else {
-        var ref = req.headers.origin ? req.headers.origin : req.headers['referer'];
+        var ref = req.headers.origin ? req.headers.origin : req.headers.referer;
         
         if (ref) {
             var parsed = new URL(ref);
@@ -47,6 +47,7 @@ var allowCrossDomain = function(req, res, next) {
                 allow = true;
             } else {
                 var subdomain = /^.+\.mobyourlife\.com\.br$/.exec(parsed.hostname);
+                
                 if (subdomain != null) {
                     allow = true;
                 } else {
@@ -65,7 +66,7 @@ var allowCrossDomain = function(req, res, next) {
     if (allow === true) {
         if (req.headers.origin) {
             res.header('Access-Control-Allow-Credentials', true);
-            res.header('Access-Control-Allow-Origin', 'http://' + found._id);
+            res.header('Access-Control-Allow-Origin', req.headers.origin);
             res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
             res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
         }

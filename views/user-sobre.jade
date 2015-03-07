@@ -7,6 +7,45 @@ block content
             h1 Sobre
     
     div.container.space-rows
+        div.row
+            div.col-md-4.col-sm-4.col-xs-12.text-center
+                i.fa.fa-thumbs-o-up.fa-4x.text-primary
+                p
+                    span
+                        | Curtidas:
+                    br
+                    span.text-primary
+                        strong #{fanpage.facebook.stats.likes}
+            
+            div.col-md-4.col-sm-4.col-xs-12.text-center
+                i.fa.fa-building-o.fa-4x.text-primary
+                p
+                    span
+                        | Fundada em:
+                    br
+                    span.text-primary
+                        strong #{fanpage.facebook.info.company.founded}
+            
+            div.col-md-4.col-sm-4.col-xs-12.text-center
+                i.fa.fa-globe.fa-4x.text-primary
+                p
+                    span
+                        | Localizada em:
+                    br
+                    span.text-primary
+                        strong #{fanpage.facebook.place.location.city}
+        
+        ol.breadcrumb
+            li.text-primary #{fanpage.facebook.category}
+            each c in fanpage.facebook.category_list
+                li #{c.name}
+        
+        div(style='text-indent: 4em; text-align:justify;')
+            p #{fanpage.facebook.about}
+            p #{fanpage.facebook.description}
+        
+        hr
+        
         each i in info
             if i.value
                 div.row

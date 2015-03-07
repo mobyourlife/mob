@@ -218,13 +218,13 @@ module.exports = function() {
         });
     }
     
-    var fetchProfile = function(fanpage_id) {
-        Fanpage.find({ _id: fanpage_id }, function(err, found) {
+    var fetchProfile = function(fanpage_id, rtu_id) {
+        Fanpage.findOne({ _id: fanpage_id }, function(err, found) {
             if (err)
                 throw err;
             
-            if (found && found.length === 1) {
-                sync.fetchProfile(found[0], function() {
+            if (found) {
+                sync.fetchProfile(found, function() {
                     checkAsUpdated(rtu_id);
                 });
             }
@@ -253,7 +253,7 @@ module.exports = function() {
                             break;
                             
                         case 'page':
-                            fetchProfile(item.page_id);
+                            fetchProfile(item.page_id, item.rtu_id);
                             break;
                         
                         case 'page.feed.add.like':

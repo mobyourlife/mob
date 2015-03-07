@@ -188,7 +188,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             if (userFanpage.facebook.info.band && userFanpage.facebook.info.band.booking_agent) {
                 hotInfo.push({
                     icon: "fa-star-o",
-                    label: "Empre´sario",
+                    label: "Empresário",
                     value: userFanpage.facebook.info.band.booking_agent
                 });
             }

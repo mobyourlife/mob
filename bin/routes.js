@@ -44,7 +44,8 @@ var Update     = require('../models/update');
 
 var topMenu = [
             { path: 'inicio', text: 'Início' },
-            { path: 'como-funciona', text: 'Como Funciona' },
+            { path: 'apresentacao', text: 'Apresentação' },
+            //{ path: 'como-funciona', text: 'Como Funciona' },
             { path: 'precos', text: 'Preços' },
             { path: 'duvidas-frequentes', text: 'Dúvidas Frequentes' },
             { path: 'contato', text: 'Contato' }
@@ -250,6 +251,11 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
         }, function(userFanpage, menu) {
             res.render('user-fotos', { link: 'fotos', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
+    });
+    
+    // apresentação
+    app.get('/apresentacao', function(req, res) {
+      res.render('apresentacao', { link: 'apresentacao', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
     });
     
     // como funciona

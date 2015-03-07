@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var FB = require('fb');
+var sync = require('./sync')();
 
 // init models
 var Feed = require('./models/feed');
@@ -29,7 +30,13 @@ module.exports = function() {
                                     if (entry.changes && entry.changes.length != 0) {
                                         for (k = 0; k < entry.changes.length; k++) {
                                             var change = entry.changes[k];
-                                            var type = row.data.object + '.' + change.field + '.' + change.value.verb + '.' + change.value.item;
+                                            var type = row.data.object;
+                                            
+                                            if (change.value) {
+                                                type +=  '.' + change.field;
+                                                type += '.' + change.value.verb + '.' + change.value.item;
+                                            }
+                                            
                                             pending.push({
                                                 rtu_id: row.id,
                                                 type: type,
@@ -210,6 +217,14 @@ module.exports = function() {
         });
     }
     
+    var fetchProfile = function(fanpage_id) {
+        Fanpage.find({ _id: fanpage_id }, function(err, found) {
+            if (found) {
+                sync.fetchProfile(found);
+            }
+        });
+    }
+    
     var ignore = function(rtu_id) {
         checkAsUpdated(rtu_id, null);
     }
@@ -228,6 +243,10 @@ module.exports = function() {
                         case 'page.feed.remove.photo':
                         case 'page.feed.remove.post':
                             removeFeed(item.value.post_id, item.rtu_id);
+                            break;
+                            
+                        case 'page':
+                            fetchProfile(item.page_id);
                             break;
                         
                         case 'page.feed.add.like':

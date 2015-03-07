@@ -3,6 +3,7 @@ var FB = require('fb');
 var sync = require('./sync')();
 
 // init models
+var Fanpage = require('./models/fanpage');
 var Feed = require('./models/feed');
 var Photo = require('./models/photo');
 var User = require('./models/user');
@@ -219,14 +220,20 @@ module.exports = function() {
     
     var fetchProfile = function(fanpage_id) {
         Fanpage.find({ _id: fanpage_id }, function(err, found) {
-            if (found) {
-                sync.fetchProfile(found);
+            if (err)
+                throw err;
+            
+            if (found && found.length === 1) {
+                sync.fetchProfile(found[0], function() {
+                    checkAsUpdated(rtu_id);
+                });
             }
         });
     }
+
     
     var ignore = function(rtu_id) {
-        checkAsUpdated(rtu_id, null);
+        checkAsUpdated(rtu_id);
     }
     
     var syncPending = function() {

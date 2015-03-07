@@ -156,7 +156,62 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 { key: 'Formas de pagamento', value: userFanpage.facebook.info.payment_options }
             ];
             
-            res.render('user-sobre', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, info: fanpageInfo, menu: menu });
+            /* quadros de hot info */
+            var hotInfo = Array();
+            
+            /* curtidas */
+            hotInfo.push({
+                icon: "fa-thumbs-o-up",
+                label: "Curtidas",
+                value: userFanpage.facebook.stats.likes
+            });
+            
+            /* fundação da empresa */
+            if (userFanpage.facebook.info.company && userFanpage.facebook.info.company.founded) {
+                hotInfo.push({
+                    icon: "fa-building-o",
+                    label: "Fundação",
+                    value: userFanpage.facebook.info.company.founded
+                });
+            }
+            
+            /* gravadora da banda */
+            if (userFanpage.facebook.info.band && userFanpage.facebook.info.band.record_label) {
+                hotInfo.push({
+                    icon: "fa-flag-o",
+                    label: "Gravadora",
+                    value: userFanpage.facebook.info.band.record_label
+                });
+            }
+            
+            /* diretor do filme */
+            if (userFanpage.facebook.info.film && userFanpage.facebook.info.film.directed_by) {
+                hotInfo.push({
+                    icon: "fa-eye",
+                    label: "Diretor",
+                    value: userFanpage.facebook.info.film.directed_by
+                });
+            }
+            
+            /* localização */
+            if (userFanpage.facebook.place && userFanpage.facebook.place.location && userFanpage.facebook.place.location.city) {
+                hotInfo.push({
+                    icon: "fa-globe",
+                    label: "Localização",
+                    value: userFanpage.facebook.place.location.city
+                });
+            }
+            
+            /* determina o estilo das hot infos */
+            if (hotInfo.length === 1) {
+                var hotInfoClass = 'col-md-12 col-sm-12 col-xs-12';
+            } else if (hotInfo.length === 2) {
+                var hotInfoClass = 'col-md-6 col-sm-6 col-xs-12';
+            } else {
+                var hotInfoClass = 'col-md-4 col-sm-4 col-xs-12';
+            }
+            
+            res.render('user-sobre', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, hotInfo: hotInfo, hotInfoClass: hotInfoClass, info: fanpageInfo, menu: menu });
         });
     });
 

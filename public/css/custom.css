@@ -33,7 +33,7 @@ body {
     vertical-align: middle; }
 
 /* line 37, D:/Repos/mob/public/css/custom.scss */
-.jumbotron {
+.jumbotron-mob {
   background-color: #009fe3;
   background-image: url(../img/jumbg.jpg);
   background-repeat: repeat;

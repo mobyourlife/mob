@@ -293,7 +293,7 @@ $(document).ready(function() {
     
     var currentTheme = null;
     
-    $('button.theme-preview').click(function() {
+    $('.theme-preview').click(function() {
         if(!currentTheme) {
             currentTheme = $('#mob-theme').attr('href');
         }

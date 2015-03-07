@@ -8,7 +8,10 @@ var mongoose = require('mongoose')
 // define the model schema
 var fanpageSchema = mongoose.Schema({
     _id: String,
-    theme: String,
+    theme: {
+        css: String,
+        navbar: String
+    },
     facebook: {
         id: String,
         name: String,

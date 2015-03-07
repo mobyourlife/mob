@@ -79,6 +79,13 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
                             menu.push({ path: 'fotos', text: 'Fotos' });
                             menu.push({ path: 'contato', text: 'Contato' });
                             
+                            if(!fanpage.theme) {
+                                fanpage.theme = {
+                                    css: themes[0].css,
+                                    navbar: themes[0].navbar
+                                };
+                            }
+                            
                             callbackSubdomain(fanpage, menu);
                         });
                     } else {
@@ -125,12 +132,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             }
             
             if (permit) {
-                var currentTheme = themes[0].css;
-                if (userFanpage.theme) {
-                    currentTheme = userFanpage.theme;
-                }
-                
-                res.render('user-aparencia', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, themes: themes, currentTheme: currentTheme, csrfToken: req.csrfToken(), callback: req.headers.referer });
+                res.render('user-aparencia', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, themes: themes, csrfToken: req.csrfToken(), callback: req.headers.referer });
             } else {
                 res.render('404', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
             }
@@ -143,12 +145,22 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             res.render('404', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu, isowner) {
             userFanpage.theme = req.body.theme;
-            userFanpage.save(function(err) {
-                if (err)
-                    throw err;
-                
-                res.redirect(req.body.callback ? req.body.callback : '/');
-            });
+            
+            for (i = 0; i < themes.length; i++) {
+                if (themes[i].css.localeCompare(req.body.theme) === 0) {
+                    userFanpage.theme = {
+                        css: themes[i].css,
+                        navbar: themes[i].navbar
+                    };
+                    userFanpage.save(function(err) {
+                        if (err)
+                            throw err;
+
+                        res.redirect(req.body.callback ? req.body.callback : '/');
+                    });
+                    return;
+                }
+            }
         });
     });
     

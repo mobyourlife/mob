@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron
+        div.container
+            h1 Aparência
+    
+    div.container
+        form(action='/aparencia', method='POST')
+            input(type='hidden', name='_csrf', value=csrfToken)
+            input(type='hidden', name='callback', value=callback)
+            div.row
+                each t in themes
+                    div.col-md-4.col-sm-6.col-xs-12.text-center.theme-box(data-theme=t.name, data-css=t.css)
+                        p
+                            img.img-responsive(src=t.img)
+                        p
+                            strong #{t.name}
+                        p
+                            button.btn.btn-info.theme-preview
+                                i.fa.fa-search.jump-5
+                                span Testar
+                            button.btn.btn-primary.theme-apply(type='submit', name='theme', value=t.css)
+                                i.fa.fa-save.jump-5
+                                span Salvar

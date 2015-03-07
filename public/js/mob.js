@@ -290,4 +290,20 @@ $(document).ready(function() {
         });
         return false;
     }
+    
+    var currentTheme = null;
+    
+    $('button.theme-preview').click(function() {
+        if(!currentTheme) {
+            currentTheme = $('#mob-theme').attr('href');
+        }
+        
+        var $theme = $(this).parent().parent();
+        $('#mob-theme').attr('href', $theme.data('css'));
+    });
+    
+    $('.mob-theme').click(function() {
+        alert($(this).data('css'));
+        return false;
+    });
 });

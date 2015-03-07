@@ -5,6 +5,7 @@ var numeral = require('numeral');
 var pagamento = require('../bin/pagamento');
 var defaults = require('../config/defaults');
 var sensitive = require('../config/sensitive');
+var themes = require('../config/themes');
 var sync = require('../sync')();
 
 // helpers
@@ -105,6 +106,49 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
             res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+        });
+    });
+
+    // aparência
+    app.get('/aparencia', csrfProtection, function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            var permit = false;
+            
+            if (req.headers.referer) {
+                var referer = new URL(req.headers.referer);
+                var current = req.headers.host;
+                if (current.localeCompare(referer.hostname) === 0) {
+                    permit = true;
+                }
+            }
+            
+            if (permit) {
+                var currentTheme = themes[0].css;
+                if (userFanpage.theme) {
+                    currentTheme = userFanpage.theme;
+                }
+                
+                res.render('user-aparencia', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, themes: themes, currentTheme: currentTheme, csrfToken: req.csrfToken(), callback: req.headers.referer });
+            } else {
+                res.render('404', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+            }
+        });
+    });
+    
+    
+    app.post('/aparencia', parseForm, csrfProtection, function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            userFanpage.theme = req.body.theme;
+            userFanpage.save(function(err) {
+                if (err)
+                    throw err;
+                
+                res.redirect(req.body.callback ? req.body.callback : '/');
+            });
         });
     });
     

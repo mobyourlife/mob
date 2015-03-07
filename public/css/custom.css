@@ -216,4 +216,11 @@ div.faq > section > p {
   text-indent: 4em;
   margin-bottom: 2em; }
 
+/* line 222, D:/Repos/mob/public/css/custom.scss */
+.theme-box {
+  margin-bottom: 2em; }
+  /* line 225, D:/Repos/mob/public/css/custom.scss */
+  .theme-box button {
+    margin: 0 5px; }
+
 /*# sourceMappingURL=custom.css.map */

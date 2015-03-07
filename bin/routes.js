@@ -118,43 +118,6 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
         validateSubdomain(req.headers.host, res, function(menu) {
             res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
-            var fanpageInfo = [
-                { key: 'Sobre', value: userFanpage.facebook.about },
-                { key: 'Descrição', value: userFanpage.facebook.description },
-                { key: 'Categoria', value: userFanpage.facebook.category, list: userFanpage.facebook.category_list }, // category list
-                { key: 'Curtidas', value: userFanpage.facebook.stats.likes },
-                { key: 'Informações gerais', value: userFanpage.facebook.info.general_info },
-                
-                /* bands */
-                { key: 'Membros da banda', value: userFanpage.facebook.info.band.band_members },
-                { key: 'Empresário', value: userFanpage.facebook.info.band.booking_agent },
-                { key: 'Contato da imprensa', value: userFanpage.facebook.info.band.press_contact },
-                { key: 'Cidade de origem', value: userFanpage.facebook.info.band.hometown },
-                { key: 'Gravadora', value: userFanpage.facebook.info.band.record_label },
-                
-                /* companies */
-                { key: 'Visão geral', value: userFanpage.facebook.info.company.company_overview },
-                { key: 'Fundada em', value: userFanpage.facebook.info.company.founded },
-                { key: 'Missão', value: userFanpage.facebook.info.company.mission },
-                
-                /* films */
-                { key: 'Dirigido por', value: userFanpage.facebook.info.film.directed_by },
-                
-                /* restaurants and night life */
-                { key: 'Trajes', value: userFanpage.facebook.info.foodnight.attire },
-                { key: 'Gerente geral', value: userFanpage.facebook.info.foodnight.general_manager },
-                { key: 'Faixa de preço', value: userFanpage.facebook.info.foodnight.price_range },
-                
-                /* restaurants */
-                { key: 'Serviços', value: userFanpage.facebook.info.foodnight.restaurant.services },
-                { key: 'Especialidades', value: userFanpage.facebook.info.foodnight.restaurant.specialties },
-                
-                /* personalities */
-                { key: 'Aniversário', value: userFanpage.facebook.info.personality.birthday },
-                
-                /* payment options */
-                { key: 'Formas de pagamento', value: userFanpage.facebook.info.payment_options }
-            ];
             
             /* quadros de hot info */
             var hotInfo = Array();
@@ -220,7 +183,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 var hotInfoClass = 'col-md-4 col-sm-4 col-xs-12';
             }
             
-            res.render('user-sobre', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, hotInfo: hotInfo, hotInfoClass: hotInfoClass, info: fanpageInfo, menu: menu });
+            res.render('user-sobre', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, hotInfo: hotInfo, hotInfoClass: hotInfoClass, menu: menu });
         });
     });
 

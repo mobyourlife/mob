@@ -29,18 +29,3 @@ block content
         div(style='text-indent: 4em; text-align:justify;')
             p #{fanpage.facebook.about}
             p #{fanpage.facebook.description}
-        
-        hr
-        
-        each i in info
-            if i.value
-                div.row
-                    div.col-sm-3
-                        p.pull-right
-                            strong #{i.key}:
-                    div.col-sm-9
-                        | #{i.value}
-                        if i.list
-                            ul
-                            each l in i.list
-                                li #{l.name}

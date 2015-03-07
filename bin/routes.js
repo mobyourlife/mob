@@ -184,6 +184,15 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 });
             }
             
+            /* empresário */
+            if (userFanpage.facebook.info.band && userFanpage.facebook.info.band.booking_agent) {
+                hotInfo.push({
+                    icon: "fa-star-o",
+                    label: "Empre´sario",
+                    value: userFanpage.facebook.info.band.booking_agent
+                });
+            }
+            
             /* diretor do filme */
             if (userFanpage.facebook.info.film && userFanpage.facebook.info.film.directed_by) {
                 hotInfo.push({

@@ -2,6 +2,9 @@ doctype html
 html
     head
         link(rel='stylesheet', href='/css/bootstrap.min.css')
+        if fanpage && fanpage.theme
+            link(rel='stylesheet', href=fanpage.theme.css, id='mob-theme')
+            link(rel='stylesheet', href=fanpage.theme.custom, id='mob-theme')
         script(src='/js/facebook.sdk.js')
         script.
             function fbshare(link) {
@@ -10,7 +13,7 @@ html
                     href: link,
                 }, function(response){});
             }
-body(style='background-color: #f4f4f4;')
+body.timeline-footer-bg
 
     div.pull-right
         a.btn.btn-primary.btn-sm(href='#', onclick='fbshare("' + link + '"); return false;', style='margin-right: 10px;')

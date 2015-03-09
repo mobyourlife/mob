@@ -167,7 +167,11 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     // botões de compartilhamento social
     app.get('/share', function(req, res) {
-        res.render('share', { link: req.query.link, label: req.query.label });
+        validateSubdomain(req.headers.referer, res, function(menu) {
+            res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            res.render('share', { link: req.query.link, label: req.query.label, fanpage: userFanpage });
+        });
     });
 
     // sobre

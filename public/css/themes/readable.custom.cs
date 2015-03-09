@@ -1,0 +1,3 @@
+.timeline-footer-bg {
+    background-color: #f7f7f7;
+}

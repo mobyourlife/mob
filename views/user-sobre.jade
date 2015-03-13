@@ -1,10 +1,8 @@
 extends layout
 
 block content
-    //- Jumbotron
-    div.jumbotron
-        div.container
-            h1 Sobre
+    - var title = 'Sobre';
+    include user-jumbotron
     
     div.container.space-rows
         if hotInfo && hotInfo.length != 0

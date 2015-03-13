@@ -1,11 +1,7 @@
 extends layout
 
 block content
-    //- Jumbotron
-    if fanpage.facebook.about
-        div.jumbotron
-            div.container
-                p #{fanpage.facebook.about}
+    include user-jumbotron
     
     div.container.feeds
         ul.timeline

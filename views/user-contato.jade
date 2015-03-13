@@ -1,10 +1,8 @@
 extends layout
 
 block content
-    //- Jumbotron
-    div.jumbotron
-        div.container
-            h1 Contato
+    - var title = 'Contato';
+    include user-jumbotron
 
     div.container
         div.row

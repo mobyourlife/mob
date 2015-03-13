@@ -1,10 +1,7 @@
 extends layout
 
 block content
-    //- Jumbotron
-    div.jumbotron
-        div.container
-            h1 #{title}
+    include user-jumbotron
 
     div.container
         !{body}

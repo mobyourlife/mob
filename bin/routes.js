@@ -173,7 +173,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             res.render('404', { link: 'upload-cover', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
             var form = new formidable.IncomingForm(), height = 0, cover = null;
-            form.uploadDir = './uploads';
+            form.uploadDir = './public/uploads';
             form.keepExtensions = true;
 
             form
@@ -188,7 +188,9 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                     }
                 })
                 .on('end', function() {
-                    Fanpage.update({ _id: userFanpage._id }, { cover: { path: cover.path, height: height } }, { upsert: true}, function(err) {
+                    var patharr = cover.path.split('\\');
+                    var path = patharr[patharr.length - 1];
+                    Fanpage.update({ _id: userFanpage._id }, { cover: { path: path, height: height } }, { upsert: true}, function(err) {
                         if (err)
                             throw err;
                         

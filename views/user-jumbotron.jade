@@ -1,0 +1,9 @@
+//- Jumbotron
+if fanpage.facebook.about
+    div.jumbotron(style=fanpage.cover ? 'background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;' : '')
+        if title
+            div.container
+                p #{title}
+        else if !fanpage.cover
+            div.container
+                p #{fanpage.facebook.about}

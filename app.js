@@ -17,6 +17,8 @@ var Facebook = require('facebook-node-sdk');
 var FB = require('fb');
 var SignedRequest = require('facebook-signed-request');
 var URL = require('url-parse');
+var moment = require('moment');
+
 var Domain = require('./models/domain');
 
 // init the app
@@ -115,6 +117,18 @@ require('./config/passport')(passport);
 
 // setup signed request
 SignedRequest.secret = auth.facebookAuth.clientSecret;
+
+// global variables
+var cachever = moment().unix();
+
+app.use(function(req, res, next) {
+    res.locals = {
+        cache: {
+            version: cachever
+        }
+    }
+    next();
+});
 
 // setup routes
 require('./bin/routes')(app, RTU, passport, FB, SignedRequest, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport

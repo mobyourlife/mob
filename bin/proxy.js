@@ -7,8 +7,8 @@ var isHttps = true; // do you want a https proxy?
 
 var options = {
   https: {
-    key: fs.readFileSync('cert.key'),
-    cert: fs.readFileSync('cert.pem')
+    key: fs.readFileSync('./config/cert.key'),
+    cert: fs.readFileSync('./config/cert.pem')
   }
 };
 
@@ -41,5 +41,3 @@ else
 
     console.log('Created HTTP proxy successfully.');
   });
-
-require('./bin/server');

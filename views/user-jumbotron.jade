@@ -4,6 +4,6 @@ if fanpage.facebook.about
         if title
             div.container
                 h1 #{title}
-        else if !fanpage.cover
+        else if !fanpage.cover || fanpage.cover == 'null'
             div.container
                 h2 #{fanpage.facebook.about}

@@ -247,7 +247,7 @@ $(document).ready(function() {
         $('.jumbotron').css('background-image', 'url("' + url + '")');
         
         if (!$('.jumbotron').hasClass('adjustable')) {
-            $('.jumbotron').empty().append('<div id="adjustable"><a id="resizeCover" class="btn btn-info fa-2x glyphicon glyphicon-resize-vertical"></a> <a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk"></a></div>');
+            $('.jumbotron').empty().append('<div id="adjustable"><a id="resizeCover" class="btn btn-info fa-2x glyphicon glyphicon-resize-vertical"></a> <a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk"></a>  <a id="cancelCover" class="btn btn-danger fa-2x resize glyphicon glyphicon-remove"></a></div>');
             $('.jumbotron').addClass('adjustable');
             
             $('#resizeCover').mousedown(function(event) {
@@ -272,11 +272,36 @@ $(document).ready(function() {
                 $('#coverHeight').val($('.jumbotron').height());
                 $('#formCover').submit();
             });
+            
+            $('#cancelCover').click(function() {
+                location.reload();
+            });
         }
     }
     
     gotoFotoCapa = function() {
         $('#btnChangeCover').click();
+        return false;
+    }
+    
+    removerFotoCapa = function() {
+        $('.jumbotron').css('background-image', '');
+        
+        if (!$('.jumbotron').hasClass('adjustable')) {
+            $('.jumbotron').empty().append('<div id="adjustable"><a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk"></a> <a id="cancelCover" class="btn btn-danger fa-2x resize glyphicon glyphicon-remove"></a></div>');
+            $('.jumbotron').addClass('adjustable');
+
+            $('#saveCover').click(function() {
+                $('.jumbotron').empty().activity();
+                $('#coverHeight').val(0);
+                $('#formCover').submit();
+            });
+            
+            $('#cancelCover').click(function() {
+                location.reload();
+            });
+        }
+        
         return false;
     }
     

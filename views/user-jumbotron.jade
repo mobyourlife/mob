@@ -1,9 +1,14 @@
 //- Jumbotron
-if fanpage.facebook.about
-    div.jumbotron(style=fanpage.cover ? 'background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;' : '')
+if fanpage.cover && fanpage.cover.path
+    div.jumbotron(style='background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;')
+else
+    div.jumbotron
         if title
             div.container
                 h1 #{title}
-        else if !fanpage.cover || fanpage.cover == 'null'
+        else if fanpage.facebook.about
             div.container
                 h2 #{fanpage.facebook.about}
+        else if fanpage.facebook.description
+            div.container
+                h2 #{fanpage.facebook.description}

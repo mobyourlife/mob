@@ -81,7 +81,7 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                                         span.fa.fa-picture-o.jump-5
                                         span.modal-title
                                             | Foto de capa
-                                if fanpage.cover && fanpage.cover != 'null'
+                                if fanpage.cover && fanpage.cover.path
                                     li.isowner.dropdown-submenu
                                         a(href='/remover-foto-de-capa', onclick='return removerFotoCapa();')
                                             span.fa.fa-remove.jump-5

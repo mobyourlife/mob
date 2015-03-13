@@ -119,16 +119,18 @@ require('./config/passport')(passport);
 SignedRequest.secret = auth.facebookAuth.clientSecret;
 
 // global variables
-var cachever = moment().unix();
+if (app.get('env') === 'production') {
+    var cachever = moment().unix();
 
-app.use(function(req, res, next) {
-    res.locals = {
-        cache: {
-            version: cachever
+    app.use(function(req, res, next) {
+        res.locals = {
+            cache: {
+                version: cachever
+            }
         }
-    }
-    next();
-});
+        next();
+    });
+}
 
 // setup routes
 require('./bin/routes')(app, RTU, passport, FB, SignedRequest, csrfProtection, parseForm); // load our routes and pass in our app fully configured passport

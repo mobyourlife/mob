@@ -291,7 +291,11 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             res.render('404', { link: 'upload-cover', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
             var form = new formidable.IncomingForm(), height = 0, cover = null;
-            form.uploadDir = './public/uploads';
+            if (app.get('env') === 'development') {
+                form.uploadDir = './public/uploads';
+            } else {
+                form.uploadDir = '/var/www/mob/public/uploads';
+            }
             form.keepExtensions = true;
 
             form
@@ -306,7 +310,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                     }
                 })
                 .on('end', function() {
-                    var patharr = cover.path.split('\\');
+                    var patharr = cover.path.indexOf('\\') != -1 ? cover.path.split('\\') : cover.path.split('/');
                     var path = patharr[patharr.length - 1];
                     Fanpage.update({ _id: userFanpage._id }, { cover: height != 0 ? { path: path, height: height } : null }, { upsert: true}, function(err) {
                         if (err)

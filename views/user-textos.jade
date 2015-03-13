@@ -6,7 +6,10 @@ block content
     
     div.container
         div.row
-            if textpages.length != 0
+            if textpages.length == 0
+                h4 Nenhuma página estática existente!
+                p Clique no botão abaixo para criar uma nova.
+            else
                 h4 Modifique uma página existente:
                 ul
                     each p in textpages

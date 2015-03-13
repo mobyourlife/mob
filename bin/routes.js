@@ -10,6 +10,7 @@ var defaults = require('../config/defaults');
 var sensitive = require('../config/sensitive');
 var themes = require('../config/themes');
 var sync = require('../sync')();
+var helpers = require('./helpers')();
 
 // helpers
 Number.prototype.formatMoney = function(c, d, t){
@@ -162,6 +163,123 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                         res.redirect(req.body.callback ? req.body.callback : '/');
                     });
                     return;
+                }
+            }
+        });
+    });
+    
+    // páginas estáticas
+    
+    app.get('/paginas-estaticas', function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'paginas-estaticas', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            TextPage.find({ ref: userFanpage._id }, function(err, records) {
+                res.render('user-textos', { fanpage: userFanpage, textpages: records, menu: menu });
+            });
+        });
+    });
+    
+    var adminTextosNova = function (req, res, formdata) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'paginas-estaticas', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            res.render('user-textos-nova', { fanpage: userFanpage, csrfToken: req.csrfToken(), formdata: formdata, menu: menu });
+        });
+    }
+    
+    app.get('/paginas-estaticas/nova', csrfProtection, function(req, res) {
+        adminTextosNova(req, res);
+    });
+    
+    app.post('/paginas-estaticas/nova', parseForm, csrfProtection, function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'paginas-estaticas', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            if (userFanpage._id == req.body.fbid) {
+                req.checkBody('title', 'Digite um título para esta página!').notEmpty();
+                req.checkBody('body', 'Digite o conteúdo desta página!').notEmpty();
+                var path = helpers.formatAsPath(req.body.title);
+
+                var errors = req.validationErrors();
+
+                if (errors) {
+                    adminTextosNova(req, res, {
+                        path: path,
+                        title: req.body.title,
+                        body: req.body.body,
+                        errors: errors
+                    });
+                } else {
+                    var textpage = new TextPage();
+                    textpage.ref = userFanpage;
+                    textpage.path = path;
+                    textpage.title = req.body.title;
+                    textpage.body = req.body.body;
+
+                    textpage.save(function(err, data) {
+                        if (err)
+                            throw err;
+                    });
+                    
+                    res.redirect('/paginas-estaticas');
+                }
+            }
+        });
+    });
+    
+    var adminTextosEditar = function (req, res, formdata) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'paginas-estaticas', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            TextPage.find({ _id: req.params.textpageid }, function(err, records) {
+                if (records && records.length == 1) {
+                    var formdata = records[0];
+                    res.render('user-textos-editar', { fanpage: userFanpage, csrfToken: req.csrfToken(), formdata: formdata, menu: menu });
+                } else {
+                    res.redirect('/paginas-estaticas');
+                }
+            });
+        });
+    }
+    
+    app.get('/paginas-estaticas/editar/:textpageid', csrfProtection, function(req, res) {
+        adminTextosEditar(req, res);
+    });
+    
+    app.post('/paginas-estaticas/editar/:textpageid', parseForm, csrfProtection, function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'paginas-estaticas', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            if (userFanpage._id == req.body.fbid) {
+                req.checkBody('title', 'Digite um título para esta página!').notEmpty();
+                req.checkBody('body', 'Digite o conteúdo desta página!').notEmpty();
+                var path = helpers.formatAsPath(req.body.title);
+
+                var errors = req.validationErrors();
+
+                if (errors) {
+                    adminTextosEditar(req, res, {
+                        path: path,
+                        title: req.body.title,
+                        body: req.body.body,
+                        errors: errors
+                    });
+                } else {
+                    TextPage.find({ _id: req.params.textpageid }, function(err, records) {
+                        var textpage = records[0];
+                        textpage.ref = userFanpage;
+                        textpage.path = path;
+                        textpage.title = req.body.title;
+                        textpage.body = req.body.body;
+
+                        textpage.save(function(err, data) {
+                            if (err)
+                                throw err;
+                        });
+
+                        res.redirect('/paginas-estaticas');
+                    });
                 }
             }
         });
@@ -369,132 +487,6 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 res.redirect('/admin');
             }
         });
-    });
-    
-    app.get('/admin/:id(\\d+)/textos', isLoggedIn, isAdmin, function(req, res) {
-        Fanpage.find({ _id: req.params.id }, function(err, records) {
-            if (records && records.length == 1) {
-                var customer = records[0];
-                TextPage.find({ ref: customer.id }, function(err, records) {
-                    res.render('admin-textos', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, textpages: records, menu: topMenu });
-                });
-            } else {
-                res.redirect('/admin');
-            }
-        });
-    });
-    
-    var adminTextosNova = function (req, res, formdata) {
-        Fanpage.find({ _id: req.params.id }, function(err, records) {
-            if (records && records.length == 1) {
-                var customer = records[0];
-                res.render('admin-textos-nova', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken(), formdata: formdata, menu: topMenu });
-            } else {
-                res.redirect('/admin');
-            }
-        });
-    }
-    
-    app.get('/admin/:id(\\d+)/textos/nova', isLoggedIn, isAdmin, csrfProtection, function(req, res) {
-        adminTextosNova(req, res);
-    });
-    
-    app.post('/admin/:id(\\d+)/textos/nova', isLoggedIn, isAdmin, parseForm, csrfProtection, function(req, res) {
-        if (req.params.id == req.body.fbid) {
-            req.checkBody('path', 'Digite um caminho para esta página!').notEmpty();
-            req.checkBody('title', 'Digite um título para esta página!').notEmpty();
-            req.checkBody('body', 'Digite o conteúdo desta página!').notEmpty();
-            
-            var errors = req.validationErrors();
-            
-            if (errors) {
-                adminTextosNova(req, res, {
-                    path: req.body.path,
-                    title: req.body.title,
-                    body: req.body.body,
-                    errors: errors
-                });
-            } else {
-                Fanpage.find({ _id: req.params.id }, function(err, records) {
-                    if (records && records.length == 1) {
-                        var customer = records[0];
-                        var textpage = new TextPage();
-                        textpage.ref = customer;
-                        textpage.path = req.body.path;
-                        textpage.title = req.body.title;
-                        textpage.body = req.body.body;
-
-                        textpage.save(function(err, data) {
-                            if (err)
-                                throw err;
-                        });
-                    }
-                    res.redirect('/admin/' + req.params.id + '/textos');
-                });
-            }
-        }
-    });
-    
-    var adminTextosEditar = function (req, res, formdata) {
-        Fanpage.find({ _id: req.params.id }, function(err, records) {
-            if (records && records.length == 1) {
-                var customer = records[0];
-                TextPage.find({ _id: req.params.textpageid }, function(err, records) {
-                    if (records && records.length == 1) {
-                        var formdata = records[0];
-                        res.render('admin-textos-editar', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customer: customer, csrfToken: req.csrfToken(), formdata: formdata, menu: topMenu });
-                    } else {
-                        res.redirect('/admin/' + req.params.id + '/textos');
-                    }
-                });
-            } else {
-                res.redirect('/admin');
-            }
-        });
-    }
-    
-    app.get('/admin/:id(\\d+)/textos/editar/:textpageid', isLoggedIn, isAdmin, csrfProtection, function(req, res) {
-        adminTextosEditar(req, res);
-    });
-    
-    app.post('/admin/:id(\\d+)/textos/editar/:textpageid', isLoggedIn, isAdmin, parseForm, csrfProtection, function(req, res) {
-        if (req.params.id == req.body.fbid) {
-            req.checkBody('path', 'Digite um caminho para esta página!').notEmpty();
-            req.checkBody('title', 'Digite um título para esta página!').notEmpty();
-            req.checkBody('body', 'Digite o conteúdo desta página!').notEmpty();
-            
-            var errors = req.validationErrors();
-            
-            if (errors) {
-                adminTextosEditar(req, res, {
-                    path: req.body.path,
-                    title: req.body.title,
-                    body: req.body.body,
-                    errors: errors
-                });
-            } else {
-                Fanpage.find({ _id: req.params.id }, function(err, records) {
-                    if (records && records.length == 1) {
-                        var customer = records[0];
-                        TextPage.find({ _id: req.params.textpageid }, function(err, records) {
-                            if (records && records.length == 1) {
-                                var textpage = records[0];
-                                textpage.ref = customer;
-                                textpage.path = req.body.path;
-                                textpage.title = req.body.title;
-                                textpage.body = req.body.body;
-
-                                textpage.save(function(err, data) {
-                                    if (err)
-                                        throw err;
-                                });
-                            }
-                        });
-                    }
-                    res.redirect('/admin/' + req.params.id + '/textos');
-                });
-            }
-        }
     });
     
     app.get('/admin/:id(\\d+)/avancado', isLoggedIn, isAdmin, function(req, res) {

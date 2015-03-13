@@ -1,0 +1,33 @@
+extends layout
+
+block content
+    - var title = 'Nova página estática';
+    include user-jumbotron
+    
+    script(src='/ckeditor/ckeditor.js')
+    
+    div.container
+        div.row
+            if formdata && formdata.errors
+                div.alert.alert-danger
+                    p
+                        strong
+                            | Por favor verifique os seguintes campos:
+                    ul
+                    each e in formdata.errors
+                        li #{e.msg}
+            form(method='post', action='/paginas-estaticas/nova')
+                input(type='hidden', name='_csrf', value=csrfToken)
+                input(type='hidden', name='fbid', value=fanpage.id)
+                p
+                    label Título da página:
+                    input.form-control(name='title', value=formdata ? formdata.title : '')
+                p
+                    label Conteúdo:
+                    textarea.ckeditor(name='body')
+                        if formdata
+                            | #{formdata.body}
+                p
+                    span.pull-right
+                        button.btn.btn-primary.jump-5(type='submit') Salvar
+                        a.btn.btn-default(href='/paginas-estaticas') Cancelar

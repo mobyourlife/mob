@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    - var title = 'Páginas estáticas';
+    include user-jumbotron
+    
+    div.container
+        div.row
+            if textpages.length != 0
+                h4 Modifique uma página existente:
+                ul
+                    each p in textpages
+                        li
+                            a(href='/paginas-estaticas/editar/' + p._id)
+                                | #{p.title}
+                hr
+            p
+                a.btn.btn-primary(href='/paginas-estaticas/nova')
+                    i.fa.fa-plus.jump-5
+                    span Criar nova página

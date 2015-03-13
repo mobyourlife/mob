@@ -12,6 +12,10 @@ var fanpageSchema = mongoose.Schema({
         css: String,
         navbar: String
     },
+    cover: {
+        path: String,
+        height: Number
+    },
     facebook: {
         id: String,
         name: String,

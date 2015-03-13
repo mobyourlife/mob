@@ -34,6 +34,22 @@ body {
     }
 }
 
+.jumbotron {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.adjustable {
+    width: 100%;
+    text-align: center;
+    
+    a {
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
+
 .jumbotron-mob {
     background-color: #009fe3;
     background-image: url(../img/jumbg.jpg);

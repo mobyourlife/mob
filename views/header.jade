@@ -71,16 +71,21 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                                         a(href='/validar-conteudo')
                                             span.fa.fa-download.jump-5
                                             | Moderação
-                                li.isowner
-                                    a(href='/opcoes', onclick='return gotoOpcoes();')
-                                        span.fa.fa-cog.jump-5
-                                        span.modal-title
-                                            | Opções
                                 li.isowner.dropdown-submenu
                                     a(href='/aparencia')
                                         span.fa.fa-paint-brush.jump-5
                                         span.modal-title
                                             | Aparência
+                                li.isowner.dropdown-submenu
+                                    a(href='/foto-de-capa', onclick='return gotoFotoCapa();')
+                                        span.fa.fa-picture-o.jump-5
+                                        span.modal-title
+                                            | Foto de capa
+                                li.isowner
+                                    a(href='/opcoes', onclick='return gotoOpcoes();')
+                                        span.fa.fa-cog.jump-5
+                                        span.modal-title
+                                            | Opções
                                 li.isowner.divider
                                 li.isowner
                                     a(href='http://www.mobyourlife.com.br/gerenciamento')

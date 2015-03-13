@@ -2,6 +2,9 @@
 var moment = require('moment');
 var URL = require('url-parse');
 var numeral = require('numeral');
+var formidable = require('formidable');
+var util = require('util');
+
 var pagamento = require('../bin/pagamento');
 var defaults = require('../config/defaults');
 var sensitive = require('../config/sensitive');
@@ -140,7 +143,6 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
         });
     });
     
-    
     app.post('/aparencia', parseForm, csrfProtection, function(req, res) {
         validateSubdomain(req.headers.host, res, function(menu) {
             res.render('404', { link: 'aparencia', auth: req.isAuthenticated(), user: req.user, menu: menu });
@@ -162,6 +164,38 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                     return;
                 }
             }
+        });
+    });
+    
+    // enviar foto de capa
+    app.post('/api/upload-cover', function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'upload-cover', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            var form = new formidable.IncomingForm(), height = 0, cover = null;
+            form.uploadDir = './uploads';
+            form.keepExtensions = true;
+
+            form
+                .on('field', function(field, value) {
+                    if (field === 'height') {
+                        height = value;
+                    }
+                })
+                .on('file', function(field, file) {
+                    if (field === 'cover') {
+                        cover = file;
+                    }
+                })
+                .on('end', function() {
+                    Fanpage.update({ _id: userFanpage._id }, { cover: { path: cover.path, height: height } }, { upsert: true}, function(err) {
+                        if (err)
+                            throw err;
+                        
+                        res.redirect(req.headers.referer);
+                    });
+                });
+            form.parse(req);
         });
     });
     

@@ -235,6 +235,53 @@ $(document).ready(function() {
         return false;
     }
     
+    // alterar foto de capa
+    $('body').append('<form id="formCover" method="POST" enctype="multipart/form-data" action="/api/upload-cover"><input id="btnChangeCover" style="display: none;" type="file" name="cover" onchange="loadCoverPhoto(event);"/><input id="coverHeight" type="hidden" name="height" value="0"></form>');
+    
+    var $resizing = false;
+    var $origin_y = 0;
+    var $origin_h = 0;
+    
+    loadCoverPhoto = function(event) {
+        var url = URL.createObjectURL(event.target.files[0]);
+        $('.jumbotron').css('background-image', 'url("' + url + '")');
+        
+        if (!$('.jumbotron').hasClass('adjustable')) {
+            $('.jumbotron').empty().append('<div id="adjustable"><a id="resizeCover" class="btn btn-info fa-2x glyphicon glyphicon-resize-vertical"></a> <a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk"></a></div>');
+            $('.jumbotron').addClass('adjustable');
+            
+            $('#resizeCover').mousedown(function(event) {
+                $resizing = true;
+                $origin_y = event.clientY;
+                $origin_h = $('.jumbotron').height();
+            });
+            
+            $('body').mouseup(function(event) {
+                $resizing = false;
+            });
+            
+            $('body').mousemove(function(event) {
+                if ($resizing === true) {
+                    dif = event.clientY - $origin_y;
+                    $('.jumbotron').height($origin_h + dif);
+                }
+            });
+
+            $('#saveCover').click(function() {
+                $('.jumbotron').empty().activity();
+                $('#coverHeight').val($('.jumbotron').height());
+                $('#formCover').submit();
+            });
+        }
+    }
+    
+    gotoFotoCapa = function() {
+        $('#btnChangeCover').click();
+        return false;
+    }
+    
+    // etc
+    
     gotoDominio = function(p_dominio) {
         carregarModal('delete-close', '/opcoes/dominio/' + p_dominio, 'Opções &gt; Domínio', function() {
             $('.label-dominio').html(p_dominio);

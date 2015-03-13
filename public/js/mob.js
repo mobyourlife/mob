@@ -269,7 +269,7 @@ $(document).ready(function() {
 
             $('#saveCover').click(function() {
                 $('.jumbotron').empty().activity();
-                $('#coverHeight').val($('.jumbotron').height());
+                $('#coverHeight').val(parseInt($('.jumbotron').css('height')));
                 $('#formCover').submit();
             });
             

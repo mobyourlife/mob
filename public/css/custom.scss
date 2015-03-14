@@ -186,8 +186,6 @@ div.space-rows > div.row {
 div.container.fotos {
     div.foto-container {
         margin-bottom: 2em;
-        width: 320px;
-        height: 240px;
         cursor: pointer;
     }
     
@@ -198,6 +196,11 @@ div.container.fotos {
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+        
+        img {
+            width: 100%;
+            height: auto;
+        }
     }
 }
 

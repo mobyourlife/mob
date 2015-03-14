@@ -222,8 +222,12 @@ $(document).ready(function() {
     }
     
     incluirDominio = function(p_dominio, p_fanpageid, p_link) {
+        var forbidden = /^.*\.mobyourlife\.com/;
+        
         if (p_dominio.length == 0) {
             alert('Digite o nome de domínio desejado!');
+        } else if(forbidden.exec(p_dominio.val())) {
+            alert('Nome de domínio não permitido!');
         } else {
             $.ajax(
                 {

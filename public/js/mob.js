@@ -64,7 +64,9 @@ $(document).ready(function() {
             $('.loggedin').show();
 
             if (res.isowner && res.isowner === true) {
+                console.log('Sou o dono!');
                 $('.isowner').show();
+                $('.isnotowner').hide();
             }
             
             $('.field-name').text(res.name);
@@ -72,7 +74,8 @@ $(document).ready(function() {
     });
     
     /* carregamento do feed */
-    var $feeds = $('div.container.feeds > ul.timeline');
+    var $container = $('div.container.feeds');
+    var $feeds = $container.find('ul.timeline');
     var $feeds_loading = false;
     
     carregarFeeds = function() {
@@ -84,7 +87,7 @@ $(document).ready(function() {
             compl = '/' + last.data('imgtime');
         }
         
-        $feeds.activity();
+        $container.activity();
         
         $.get('/api/feeds' + compl, function(data) {
             if (data) {
@@ -98,13 +101,19 @@ $(document).ready(function() {
                     }
                 }
                 arrange_timeline();
+                $('.page-rows').show();
             }
-            $feeds.activity(false);
+            $container.activity(false);
             $feeds_loading = false;
+            
+            if ($('li.feed').length === 0) {
+                $('.page-rows').hide();
+                $('.page-empty').show();
+            }
         });
     }
     
-    if ($feeds) {
+    if ($feeds.length != 0) {
         carregarFeeds();
         
         $(document).scroll(function() {
@@ -143,13 +152,19 @@ $(document).ready(function() {
                         }
                     });
                 }
+                $('.page-rows').show();
             }
             $fotos.activity(false);
             $fotos_loading = false;
+            
+            if ($('div.foto-container').length === 0) {
+                $('.page-rows').hide();
+                $('.page-empty').show();
+            }
         });
     }
     
-    if ($fotos) {
+    if ($fotos.length != 0) {
         carregarFotos();
         
         $(document).scroll(function() {

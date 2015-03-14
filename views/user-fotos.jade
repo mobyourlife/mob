@@ -5,3 +5,22 @@ block content
     include user-jumbotron
     
     div.container.fotos
+        div.page-empty.text-center
+            div.isowner
+                p
+                    img(src='/img/sad.png', alt='Ah não!')
+                h2 Nenhuma foto!
+                p Este site está tão triste sem nenhuma foto! Que tal publicar a sua primeira agora?
+                p
+                    a.btn.btn-primary.btn-lg(href='https://www.facebook.com/' + fanpage.id, target='_blank')
+                        span.fa.fa-facebook.jump-5
+                        span Publique com o Facebook
+            div.isnotowner
+                p
+                    img(src='/img/happy.png', alt='Olá!')
+                h2 Seja bem-vindo!
+                p Parece que este site é novo e ainda não tem nenhuma foto. Volte mais tarde para conferir as novidades!
+                p
+                    a.btn.btn-primary.btn-lg(href='https://www.facebook.com/' + fanpage.id, target='_blank')
+                        span.fa.fa-facebook.jump-5
+                        span Curta-nos no Facebook

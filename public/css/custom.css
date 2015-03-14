@@ -262,4 +262,8 @@ div.faq > section > p {
   .theme-box button {
     margin: 0 5px; }
 
+/* line 280, D:/Repos/mob/public/css/custom.scss */
+.page-empty, .page-rows {
+  display: none; }
+
 /*# sourceMappingURL=custom.css.map */

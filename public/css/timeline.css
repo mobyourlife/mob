@@ -273,6 +273,6 @@
 }
 
 .timeline-heading > img, .timeline-heading > a > img {
-    width: 540px;
+    width: 100%;
     height: auto;
 }

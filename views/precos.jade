@@ -9,98 +9,124 @@ block content
 
     div.container
         div.row
-            div.col-md-4
+            div.col-xs-10.col-xs-offset-1.col-md-4.col-md-offset-0
                 div.panel.panel-warning
                     div.panel-heading
                         h4.text-center
-                            | AVALIAÇÃO
+                            span AVALIAÇÃO
                     div.panel-body.text-center
                         p.lead
                             strong
-                                | 7 dias grátis
+                                span 7 dias grátis
                         p
-                            | sem nenhuma restrição de uso!
+                            span sem nenhuma restrição de uso!
                     ul.list-group.list-group-flush
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Integração total com Facebook
+                            span Hospedagem incluída!
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Atualização automática do site
+                            span Subdomínio de teste
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Teste quantos sites quiser
+                            span Integração total com Facebook
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Suporte de dúvidas pré-compra
+                            span Atualizações automáticas via Facebook
+                        li.list-group-item
+                            i.glyphicon.glyphicon-ok.jump-5
+                            span Teste quantos sites quiser
+                        li.list-group-item
+                            i.glyphicon.glyphicon-ok.jump-5
+                            span Suporte de dúvidas pré-compra
+                        li.list-group-item
+                            i.glyphicon.glyphicon-ok.jump-5
+                            span Sem restrições no período de teste
                     div.panel-footer
-                        a.btn.btn-lg.btn-block.btn-warning(href='/gerenciamento')
-                            | TESTE AGORA!
-                            
-            div.col-md-4
+                        a.btn.btn-lg.btn-block.btn-warning(href='/login')
+                            span TESTE AGORA!
+                        
+            div.col-xs-10.col-xs-offset-1.col-md-4.col-md-offset-0
                 div.panel.panel-info
                     div.panel-heading
                         h4.text-center
-                            | 1º ANO
+                            span 1º ANO
                     div.panel-body.text-center
                         p.lead
                             strong
-                                | R$ #{price} / ano
+                                span R$ #{monthly} / mês
+                                    sup *
                         p
-                            | em até 12x sem juros!
+                            span *plano anual em 12 vezes sem juros
                     ul.list-group.list-group-flush
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Integração total com Facebook
+                            span Hospedagem incluída!
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Atualização automática do site
+                            span Domínio próprio incluído!
+                                sup **
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Preço válido para 1 site
+                            span Integração total com Facebook
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Suporte disponível em horário comercial
+                            span Atualizações automáticas via Facebook
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Garantia vitalícia
+                            span Preço válido para 1 site
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Atualizações gratuitas
+                            span Suporte disponível em horário comercial
+                        li.list-group-item
+                            i.glyphicon.glyphicon-ok.jump-5
+                            span Garantia vitalícia
                     div.panel-footer
-                        a.btn.btn-lg.btn-block.btn-info(href='/gerenciamento')
-                            | ASSINE AGORA!
-                            
-            div.col-md-4
+                        a.btn.btn-lg.btn-block.btn-info(href='/login')
+                            span ASSINE AGORA!
+                        
+            div.col-xs-10.col-xs-offset-1.col-md-4.col-md-offset-0
                 div.panel.panel-success
                     div.panel-heading
                         h4.text-center
-                            | DEMAIS ANOS
+                            span 2º ANO EM DIANTE
                     div.panel-body.text-center
                         p.lead
                             strong
-                                | R$ 69,90 / mês
+                                span R$ 69,90 / mês
                         p
-                            | apenas a partir do 2º ano de uso!
+                            span apenas a partir do 2º ano de uso!
                     ul.list-group.list-group-flush
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Integração total com Facebook
+                            span Hospedagem incluída!
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Atualização automática do site
+                            span Domínio próprio incluído!
+                                sup **
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Preço válido para 1 site
+                            span Integração total com Facebook
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Suporte disponível em horário comercial
+                            span Atualizações automáticas via Facebook
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Garantia vitalícia
+                            span Preço válido para 1 site
                         li.list-group-item
                             i.glyphicon.glyphicon-ok.jump-5
-                            | Atualizações gratuitas
+                            span Suporte disponível em horário comercial
+                        li.list-group-item
+                            i.glyphicon.glyphicon-ok.jump-5
+                            span Garantia vitalícia
                     div.panel-footer
-                        a.btn.btn-lg.btn-block.btn-success(href='/gerenciamento')
-                            | ASSINE AGORA!
+                        a.btn.btn-lg.btn-block.btn-success(href='/login')
+                            span ASSINE AGORA!
+    
+    div.container
+        div.row
+            hr
+            p
+                strong Observações:
+            p * O valor de R$ #{monthly} por mês se refere ao plano anual no valor total de R$ #{price} parcelado em 12 vezes sem juros.
+            p ** Domínio próprio incluído para as extensões: .com.br, .com, .net e .org. Consulte-nos para outras opções.

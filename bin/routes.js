@@ -51,7 +51,7 @@ var topMenu = [
             { path: 'apresentacao', text: 'Apresentação' },
             //{ path: 'como-funciona', text: 'Como Funciona' },
             { path: 'precos', text: 'Preços' },
-            { path: 'duvidas-frequentes', text: 'Dúvidas Frequentes' },
+            { path: 'duvidas-frequentes', text: 'Dúvidas' },
             { path: 'contato', text: 'Contato' }
         ];
 
@@ -427,7 +427,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     // preços
     app.get('/precos', function(req, res) {
-      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), menu: topMenu });
+      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), monthly: ((sensitive.price / 12).formatMoney()), menu: topMenu });
     });
                
     // dúvdas frequentes

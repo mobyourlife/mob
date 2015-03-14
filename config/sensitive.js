@@ -1,4 +1,4 @@
 // config/defaults.js
 module.exports = {
-    'price': 1299.90
+    'price': 999.90
 };

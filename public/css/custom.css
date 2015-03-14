@@ -209,10 +209,6 @@ div.container.fotos div.foto {
   display: none; }
 
 /* line 215, D:/Repos/mob/public/css/custom.scss */
-img {
-  cursor: pointer; }
-
-/* line 219, D:/Repos/mob/public/css/custom.scss */
 div#fullscreen {
   position: fixed;
   top: 0;
@@ -225,18 +221,18 @@ div#fullscreen {
   background-size: contain;
   background-position: center; }
 
-/* line 232, D:/Repos/mob/public/css/custom.scss */
+/* line 228, D:/Repos/mob/public/css/custom.scss */
 .embed-half {
   width: 100vw;
   height: 100vh; }
-  /* line 236, D:/Repos/mob/public/css/custom.scss */
+  /* line 232, D:/Repos/mob/public/css/custom.scss */
   .embed-half > div {
     width: 80vw;
     height: 80vh;
     max-width: 80vw;
     max-height: 80vh;
     margin: 0 auto; }
-  /* line 244, D:/Repos/mob/public/css/custom.scss */
+  /* line 240, D:/Repos/mob/public/css/custom.scss */
   .embed-half > a.closeFullScreen {
     position: fixed;
     top: 0px;
@@ -246,23 +242,23 @@ div#fullscreen {
     text-decoration: none;
     cursor: pointer; }
 
-/* line 255, D:/Repos/mob/public/css/custom.scss */
+/* line 251, D:/Repos/mob/public/css/custom.scss */
 .lead {
   font-size: 33px;
   margin-bottom: 0px; }
 
-/* line 265, D:/Repos/mob/public/css/custom.scss */
+/* line 261, D:/Repos/mob/public/css/custom.scss */
 div.faq > section > p {
   margin-bottom: 2em; }
 
-/* line 272, D:/Repos/mob/public/css/custom.scss */
+/* line 268, D:/Repos/mob/public/css/custom.scss */
 .theme-box {
   margin-bottom: 2em; }
-  /* line 275, D:/Repos/mob/public/css/custom.scss */
+  /* line 271, D:/Repos/mob/public/css/custom.scss */
   .theme-box button {
     margin: 0 5px; }
 
-/* line 280, D:/Repos/mob/public/css/custom.scss */
+/* line 276, D:/Repos/mob/public/css/custom.scss */
 .page-empty, .page-rows {
   display: none; }
 

@@ -574,6 +574,9 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                             if (err)
                                 throw err;
 
+                            // start syncing fanpage's current data
+                            sync.syncFanpage(newFanpage);
+
                             // create default subdomain
                             var domain = new Domain();
                             domain._id = newFanpage._id + '.mobyourlife.com.br';
@@ -583,10 +586,11 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                                 if (err)
                                     throw err;
 
-                                sync.syncFanpage(newFanpage);
-
-                                // if successful, return a success message
-                                res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage, menu: topMenu });
+                                // if successful, redirects to new website
+                                var goto = 'http://' + domain._id;
+                                res.redirect(goto);
+                                
+                                //res.render('novo-site-sucesso', { auth: req.isAuthenticated(), user: req.user, newFanpage: newFanpage, menu: topMenu });
                             });
                         });
                     });

@@ -68,14 +68,14 @@ body {
 /* line 79, D:/Repos/mob/public/css/custom.scss */
 .btn-xl, .btn-group-xl > .btn {
   padding: 10px 16px;
-  font-size: 24px;
+  font-size: 1em;
   line-height: 1.5;
   border-radius: 6px; }
 
 /* line 86, D:/Repos/mob/public/css/custom.scss */
 .btn-xxl, .btn-group-xxl > .btn {
   padding: 10px 16px;
-  font-size: 28px;
+  font-size: 1.8em;
   line-height: 1.6;
   border-radius: 6px; }
 

@@ -2,7 +2,7 @@
 each f in feeds
     - i++
     li.feed(data-imgid=f.id, data-imgtime=f.unix)
-        div.timeline-badge.primary
+        div.timeline-badge.primary.hidden-xs
             a
                 i.glyphicon.glyphicon-record(rel='tooltip', title=f.fromNow + ' via Facebook')
         div.timeline-panel

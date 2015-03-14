@@ -247,7 +247,7 @@ $(document).ready(function() {
         $('.jumbotron').css('background-image', 'url("' + url + '")');
         
         if (!$('.jumbotron').hasClass('adjustable')) {
-            $('.jumbotron').empty().append('<div id="adjustable"><a id="resizeCover" class="btn btn-info fa-2x glyphicon glyphicon-resize-vertical"></a> <a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk"></a>  <a id="cancelCover" class="btn btn-danger fa-2x resize glyphicon glyphicon-remove"></a></div>');
+            $('.jumbotron').empty().append('<div id="adjustable"><a id="resizeCover" class="btn btn-info fa-2x glyphicon glyphicon-resize-vertical" title="Clique e arraste para redimensionar"></a> <a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk" title="Salvar a capa atual"></a>  <a id="cancelCover" class="btn btn-danger fa-2x resize glyphicon glyphicon-remove" title="Cancelar"></a></div>');
             $('.jumbotron').addClass('adjustable');
             
             $('#resizeCover').mousedown(function(event) {

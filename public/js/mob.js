@@ -21,7 +21,7 @@ $(document).ready(function() {
     
     var fullScreen = function(img) {
         if ($('div#fullscreen').css('display') == 'none') {
-            $('div#fullscreen').css('background-image', 'url("' + $(this).attr('src') + '")');
+            $('div#fullscreen').css('background-image', 'url("' + $(this).data('imgsrc') + '")');
             $('div#fullscreen').html('<div class="embed-half"><a class="closeFullScreen">&times;</a></div>');
             $('div#fullscreen').show();
         } else {
@@ -124,7 +124,7 @@ $(document).ready(function() {
     var $fotos_loading = false;
     
     carregarFotos = function() {
-        var last = $fotos.find('.foto').last();
+        var last = $fotos.find('.foto-container').last();
         var compl = '';
         
         if (last.length == 1) {
@@ -137,9 +137,9 @@ $(document).ready(function() {
             if (data) {
                 if (data.fotos) {
                     data.fotos.forEach(function(f) {
-                        if ($('.foto[data-imgid="' + f._id + '"]').length == 0) {
-                            $fotos.append('<div class="foto col-sm-4" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '"><img src="' + (f.cdn ? f.cdn : f.source) + '" alt="?"/></div>');
-                            $('.foto[data-imgid="' + f._id + '"] img').click(fullScreen);
+                        if ($('.foto-container[data-imgid="' + f._id + '"]').length == 0) {
+                            $fotos.append('<div class="foto-container col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '" data-imgsrc="' + (f.cdn ? f.cdn : f.source) + '"><div class="foto" style="background-image: url(\'' + (f.cdn ? f.cdn : f.source) + '\');"></div></div>');
+                            $('.foto-container[data-imgid="' + f._id + '"]').click(fullScreen);
                         }
                     });
                 }

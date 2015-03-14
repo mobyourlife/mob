@@ -184,13 +184,20 @@ div.space-rows > div.row {
 }
 
 div.container.fotos {
-    div {
+    div.foto-container {
         margin-bottom: 2em;
-        
-        img {
-            width: 320px;
-            height: 240px;
-        }
+        width: 320px;
+        height: 240px;
+        cursor: pointer;
+    }
+    
+    div.foto {
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 }
 

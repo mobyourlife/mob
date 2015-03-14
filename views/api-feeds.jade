@@ -10,7 +10,7 @@ each f in feeds
                 case f.type
                     when 'video'
                         - var video = f.link
-                        - video = video.replace('youtube.com/watch?v=', 'youtube.com/v/')
+                        - video = video.replace('youtube.com/watch?v=', 'youtube.com/embed/')
                         - video = video.replace('facebook.com/video.php?v=', 'facebook.com/video/embed?video_id=')
                         div.embed-responsive.embed-responsive-16by9
                             iframe.embed-responsive-item(src=video)

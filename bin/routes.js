@@ -48,7 +48,7 @@ var Update     = require('../models/update');
 
 var topMenu = [
             { path: 'inicio', text: 'Início' },
-            { path: 'apresentacao', text: 'Apresentação' },
+            { path: 'conheca', text: 'Conheça' },
             //{ path: 'como-funciona', text: 'Como Funciona' },
             { path: 'precos', text: 'Preços' },
             { path: 'duvidas-frequentes', text: 'Dúvidas' },
@@ -416,8 +416,8 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     });
     
     // apresentação
-    app.get('/apresentacao', function(req, res) {
-      res.render('apresentacao', { link: 'apresentacao', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+    app.get('/conheca', function(req, res) {
+      res.render('conheca', { link: 'conheca', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
     });
     
     // como funciona
@@ -427,7 +427,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     // preços
     app.get('/precos', function(req, res) {
-      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), monthly: ((sensitive.price / 12).formatMoney()), menu: topMenu });
+      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), monthly: ((sensitive.price / 12).formatMoney()), maint_fees: sensitive.maint_fees.formatMoney(), menu: topMenu });
     });
                
     // dúvdas frequentes

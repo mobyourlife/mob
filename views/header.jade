@@ -1,4 +1,4 @@
-- var themeNavBar = (fanpage && fanpage.theme && fanpage.theme.navbar ? fanpage.theme.navbar : 'navbar-mob')
+- var themeNavBar = (fanpage ? (fanpage && fanpage.theme && fanpage.theme.navbar ? fanpage.theme.navbar : 'navbar-default') : 'navbar-default navbar-mob')
 div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
     div.container
         div.navbar-header

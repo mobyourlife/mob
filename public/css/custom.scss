@@ -5,9 +5,27 @@ body {
     padding-bottom: 20px;
     overflow-y: scroll;
 }
+
 .navbar-mob {
     background-color: #fff;
     border-color: #e7e7e7;
+    
+    ul.navbar-nav {
+        & > li {
+            & > a {
+                color: #337ab7;
+            }
+            
+            &:hover {
+                background-color: #4fc1f1;
+                color: #fff;
+                
+                & > a {
+                    color: #fff;
+                }
+            }
+        }
+    }
 }
 
 .loggedin, .isowner {
@@ -81,15 +99,6 @@ body {
     background-color: #f58634;
     border-color: #f1b88f;
     color: #fff;
-}
-
-ul.navbar-nav li.active {
-	background-color: #4fc1f1;
-	color: #fff;
-}
-
-ul.navbar-nav li.active a {
-	color: #fff;
 }
 
 .jump-5 {

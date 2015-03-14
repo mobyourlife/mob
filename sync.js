@@ -15,7 +15,7 @@ var configDB = require('./config/database');
 
 module.exports = function() {
     // fetch photos function
-    var fetchPhotos = function(fanpage, albumid, direction, cursor) {
+    var fetchPhotos = function(fanpage, albumid, direction, cursor, last) {
         var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time', 'images'] };
 
         if (direction && cursor) {
@@ -34,6 +34,11 @@ module.exports = function() {
         FB.api(albumid + '/photos', args, function(records) {
             if (records && records.data) {
                 for (i = 0; i < records.data.length; i++) {
+                    /* a paginação está se repetindo, então aborta */
+                    if (last && last != null && last == records.data[i].id) {
+                        return;
+                    }
+                    
                     var item = new Photo();
                     item._id = records.data[i].id;
                     item.ref = fanpage;
@@ -45,6 +50,8 @@ module.exports = function() {
                             item.source = records.data[i].images[j].source;
                         }
                     }
+                    
+                    last = item._id;
 
                     Photo.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
                         if (err)
@@ -54,7 +61,7 @@ module.exports = function() {
 
                 if (records.paging && records.paging.cursors) {
                     if (records.paging.cursors.after) {
-                        fetchPhotos(fanpage, albumid, 'after', records.paging.cursors.before);
+                        fetchPhotos(fanpage, albumid, 'after', records.paging.cursors.before, last);
                     }
                 }
             }
@@ -76,7 +83,7 @@ module.exports = function() {
     }
 
     // fetch feed function
-    var fetchFeed = function(fanpage, direction, cursor) {
+    var fetchFeed = function(fanpage, direction, cursor, last) {
         var safe_image = function(url) {
             var cfs = /\/safe_image\.php\?.*url=(.*)(&cfs=1)/.exec(url);
             var result = /\/safe_image\.php\?.*url=(.*)/.exec(url);
@@ -111,6 +118,11 @@ module.exports = function() {
                     if (records.data[i].type == 'status') {
                         continue;
                     }
+                    
+                    /* a paginação está se repetindo, então aborta */
+                    if (last && last != null && last == records.data[i].id) {
+                        return;
+                    }
 
                     var item = new Feed();
                     item._id = records.data[i].id;
@@ -127,33 +139,36 @@ module.exports = function() {
                     item.message = records.data[i].message;
                     item.object_id = records.data[i].object_id;
 
+                    last = item._id;
+                    
                     Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
                         if (err)
                             throw err;
-                    });
+                        
 
-                    if (item.object_id) {
-                        FB.api(item.object_id, { locale: 'pt_BR', fields: ['picture', 'source', 'images'] }, function(inner_object) {
-                            var picture = null;
+                        if (item.object_id) {
+                            FB.api(item.object_id, { locale: 'pt_BR', fields: ['picture', 'source', 'images'] }, function(inner_object) {
+                                var picture = null;
 
-                            if (inner_object.source) {
-                                picture = safe_image(inner_object.source);
-                            }
-
-                            if (inner_object.images) {
-                                for (j = 0; j < inner_object.images.length && inner_object.images[j].width > 1000; j++) {
-                                    picture = safe_image(inner_object.images[j].source);
+                                if (inner_object.source) {
+                                    picture = safe_image(inner_object.source);
                                 }
-                            }
 
-                            if (picture != null) {
-                                Feed.update({ object_id: inner_object.id }, { "picture": picture }, { upsert: true }, function(err) {
-                                    if (err)
-                                        throw err;
-                                });
-                            }
-                        });
-                    }
+                                if (inner_object.images) {
+                                    for (j = 0; j < inner_object.images.length && inner_object.images[j].width > 1000; j++) {
+                                        picture = safe_image(inner_object.images[j].source);
+                                    }
+                                }
+
+                                if (picture != null) {
+                                    Feed.update({ object_id: inner_object.id }, { "picture": picture }, { upsert: true }, function(err) {
+                                        if (err)
+                                            throw err;
+                                    });
+                                }
+                            });
+                        }
+                    });
                 }
 
                 if (records.paging) {
@@ -161,7 +176,7 @@ module.exports = function() {
                         var args = /.*until=([0-9]+)/.exec(records.paging.next);
 
                         if (args) {
-                            fetchFeed(fanpage, 'until', args[1]);
+                            fetchFeed(fanpage, 'until', args[1], last);
                         }
                     }
                 }
@@ -276,7 +291,7 @@ module.exports = function() {
                     fanpage.facebook.info.payment_options.visa = records.payment_options.visa;
                 }
 
-                fanpage.save(function(err) {
+                Fanpage.update({ _id: records.id }, fanpage.toObject(), { upsert: true }, function(err) {
                     if (err)
                         throw err;
                     

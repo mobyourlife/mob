@@ -23,6 +23,23 @@ var n = this,
     j = (j = i.length) > 3 ? j % 3 : 0;
    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
  };
+    
+var validarTituloPagina = function() {
+    var paginasReservadas = ['inicio', 'sobre', 'fotos', 'contato', 'aparencia', 'foto-de-capa', 'remover-foto-de-capa', 'opcoes', 'gerenciamento', 'login', 'logon', 'logout', 'logoff', 'entrar', 'sair'];
+
+    if (!errors)
+        errors = [];
+
+    if (paginasReservadas.indexOf(path) != -1) {
+        errors.push({
+            param: 'title',
+            msg: 'Este título de página não é permitido pois é um nome reservado pelo sistema!',
+            value: req.body.title
+        });
+    }
+
+    return errors;
+}
 
 // check if is admin
 var validateAdmin = function(user) {
@@ -202,8 +219,9 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 var path = helpers.formatAsPath(req.body.title);
 
                 var errors = req.validationErrors();
+                errors = validarTituloPagina();
 
-                if (errors) {
+                if (errors && errors.length != 0) {
                     adminTextosNova(req, res, {
                         path: path,
                         title: req.body.title,
@@ -257,6 +275,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 var path = helpers.formatAsPath(req.body.title);
 
                 var errors = req.validationErrors();
+                errors = validarTituloPagina();
 
                 if (errors) {
                     adminTextosEditar(req, res, {
@@ -282,6 +301,19 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                     });
                 }
             }
+        });
+    });
+    
+    app.post('/paginas-estaticas/excluir/:textpageid', function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'paginas-estaticas', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            TextPage.remove({ _id: req.params.textpageid }, function(err) {
+                if (err)
+                    throw err;
+
+                res.redirect('/paginas-estaticas');
+            });
         });
     });
     

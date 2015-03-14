@@ -401,4 +401,11 @@ $(document).ready(function() {
         alert($(this).data('css'));
         return false;
     });
+    
+    excluirPaginaTexto = function() {
+        if (confirm("Deseja excluir esta página estática?\n\nEsta ação é irreversível!")) {
+            $('form').attr('action', '/paginas-estaticas/excluir/' + $('input[name="id"]').val());
+            $('form').submit();
+        }
+    }
 });

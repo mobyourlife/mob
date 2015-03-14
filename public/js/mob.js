@@ -64,7 +64,6 @@ $(document).ready(function() {
             $('.loggedin').show();
 
             if (res.isowner && res.isowner === true) {
-                console.log('Sou o dono!');
                 $('.isowner').show();
                 $('.isnotowner').hide();
             }
@@ -101,7 +100,6 @@ $(document).ready(function() {
                     }
                 }
                 arrange_timeline();
-                $('.page-rows').show();
             }
             $container.activity(false);
             $feeds_loading = false;
@@ -109,6 +107,9 @@ $(document).ready(function() {
             if ($('li.feed').length === 0) {
                 $('.page-rows').hide();
                 $('.page-empty').show();
+            } else {
+                $('.page-rows').show();
+                $('.page-empty').hide();
             }
         });
     }
@@ -160,6 +161,9 @@ $(document).ready(function() {
             if ($('div.foto-container').length === 0) {
                 $('.page-rows').hide();
                 $('.page-empty').show();
+            } else {
+                $('.page-rows').show();
+                $('.page-empty').hide();
             }
         });
     }

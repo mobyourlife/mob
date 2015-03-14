@@ -4,8 +4,8 @@ block content
     - var title = 'Fotos';
     include user-jumbotron
     
-    div.container.fotos
-        div.page-empty.text-center
+    div.container.page-empty
+        div.text-center
             div.isowner
                 p
                     img(src='/img/sad.png', alt='Ah não!')
@@ -24,3 +24,5 @@ block content
                     a.btn.btn-primary.btn-lg(href='https://www.facebook.com/' + fanpage.id, target='_blank')
                         span.fa.fa-facebook.jump-5
                         span Curta-nos no Facebook
+    
+    div.container.page-rows.fotos

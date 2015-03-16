@@ -75,6 +75,19 @@ module.exports = function() {
         });
     }
     
+    var safe_image = function(url) {
+        var cfs = /\/safe_image\.php\?.*url=(.*)(&cfs=1)/.exec(url);
+        var result = /\/safe_image\.php\?.*url=(.*)/.exec(url);
+
+        if (cfs) {
+            return unescape(cfs[1]);
+        } else if (result) {
+            return unescape(result[1]);
+        }
+
+        return url;
+    }
+    
     var downloadPhoto = function() {
     }
     
@@ -110,10 +123,10 @@ module.exports = function() {
                 photo._id = p.id;
                 photo.ref = page_id;
                 photo.time = p.updated_time;
-                photo.source = p.source;
+                photo.source = safe_image(p.source);
 
                 if (p.images && p.images.length != 0) {
-                    photo.source = p.images[0].source;
+                    photo.source = safe_image(p.images[0].source);
                 }
 
                 Photo.update({ _id: photo._id }, photo.toObject(), { upsert: true }, function(err) {
@@ -149,8 +162,8 @@ module.exports = function() {
                 feed.ref = page_id;
                 feed.time = f.updated_time;
                 feed.story = f.story;
-                feed.picture = f.picture;
-                feed.source = f.source;
+                feed.picture = safe_image(f.picture);
+                feed.source = safe_image(f.source);
                 feed.link = f.link;
                 feed.type = f.type;
                 feed.name = f.name;
@@ -162,7 +175,7 @@ module.exports = function() {
                 switch (feed.type) {
                     case 'photo':
                         fetchPhoto(token, page_id, feed.object_id, null, function(picture) {
-                            feed.picture = feed.source = picture;
+                            feed.picture = safe_image(feed.source = picture);
                             
                             Feed.update({ _id: feed._id }, feed.toObject(), { upsert: true }, function(err) {
                                 if (err)

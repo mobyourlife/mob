@@ -545,16 +545,20 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
         Fanpage.find({'_id': { $in: ids }}, function(err, records) {
             ownedFanpages = records;
 
-            ownedFanpages.sort(function(a, b) {
-                if (a.facebook.name && b.facebook.name) {
-                    var x = a.facebook.name.toLowerCase(), y = b.facebook.name.toLowerCase();
-                    if (x < y) return -1;
-                    if (x > y) return 1;
-                }
-                return 0;
-            });
+            if (ownedFanpages && ownedFanpages.length === 0) {
+                res.redirect('/novo-site');
+            } else {
+                ownedFanpages.sort(function(a, b) {
+                    if (a.facebook.name && b.facebook.name) {
+                        var x = a.facebook.name.toLowerCase(), y = b.facebook.name.toLowerCase();
+                        if (x < y) return -1;
+                        if (x > y) return 1;
+                    }
+                    return 0;
+                });
 
-            res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages, isAdmin: validateAdmin(req.user), menu: topMenu });
+                res.render('gerenciamento', { auth: req.isAuthenticated(), user: req.user, fanpages: ownedFanpages, isAdmin: validateAdmin(req.user), menu: topMenu });
+            }
         });
     });
     

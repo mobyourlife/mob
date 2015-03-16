@@ -5,36 +5,46 @@ block content
     div.jumbotron.jumbotron-mob
         div.container
             h1 #{title}
-            p Escolha uma de suas páginas para criar um site sincronizado com o Facebook.
+            p Escolha uma de suas fanpages para criar o seu novo site.
     
-    if pages.length == 0
-        div.row
-            div.col-sm-3.col-sm-offset-1
-                img(src='/img/none.png', alt='Nenhuma fanpage disponível!')
-            div.col-sm-7.space-right
-                    h2
-                        strong Não há nenhuma fanpage disponível!
-                    p Talvez você já tenha criado sites para todas as suas fanpages, ou não tem permissão na fanpage desejada.
-                    p
-                        a.btn.btn-info.btn-lg.space-top(href='/gerenciamento')
-                            | Voltar para o gerenciamento
-    else
-        each p in pages
+    div.container
+        if pages.length == 0
+            div.row
+                div.col-sm-3.col-sm-offset-1
+                    p.text-center
+                        img.hidden-sm(src='/img/none.png', alt='Nenhuma fanpage disponível!')
+                        img.visible-sm(src='/img/none-sm.png', alt='Nenhuma fanpage disponível!')
+                div.col-sm-7.space-right
+                        h2
+                            strong Não há nenhuma fanpage disponível!
+                        if user.fanpages && user.fanpages.length != 0
+                            p Você já criou sites para todas as suas fanpages! Mas você pode criar uma nova fanpage se desejar.
+                        else
+                            p Você não tem nenhuma fanpage! Que tal criar uma agora?
+                        p
+                            a.btn.btn-primary.btn-lg.space-top(href='https://www.facebook.com/pages/create/?ref_type=bookmark', target='_blank')
+                                span.fa.fa-facebook.jump-5
+                                span Criar nova fanpage
+                            br
+                            a.btn.btn-default.btn.space-top(href='/gerenciamento')
+                                | Voltar para o gerenciamento
+        else
+            each p in pages
+                div.container
+                    div.col-xs-12
+                        div.well
+                            div.row
+                                div.col-xs-2.text-center
+                                    img(src=p.picture, alt=p.name)
+                                div.col-xs-6
+                                    h4
+                                        strong #{p.name}
+                                div.col-xs-4.space-vertical.space-right
+                                    div.row
+                                        a.btn.btn-success.pull-right(href='/novo-site/' + p.id)
+                                            span.fa.fa-external-link.jump-5
+                                            | Criar novo site
             div.container
                 div.col-xs-12
-                    div.well
-                        div.row
-                            div.col-xs-2.text-center
-                                img(src=p.picture, alt=p.name)
-                            div.col-xs-6
-                                h4
-                                    strong #{p.name}
-                            div.col-xs-4.space-vertical.space-right
-                                div.row
-                                    a.btn.btn-success.pull-right(href='/novo-site/' + p.id)
-                                        span.fa.fa-external-link.jump-5
-                                        | Criar novo site
-        div.container
-            div.col-xs-12
-                a.btn.btn-default.btn-lg.pull-right(href='/gerenciamento')
-                    | Cancelar
+                    a.btn.btn-default.btn-lg.pull-right(href='/gerenciamento')
+                        | Cancelar

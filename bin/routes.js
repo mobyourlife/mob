@@ -489,8 +489,10 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     });
     
     app.get('/login/callback', function(req, res) {
-        if (req.session.backto) {
-            res.redirect(req.session.backto);
+        if (req.session.backto && req.session.backto != null) {
+            var goto = req.session.backto;
+            req.session.backto = null;
+            res.redirect(goto);
         } else {
             res.redirect('/gerenciamento');
         }

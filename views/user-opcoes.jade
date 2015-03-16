@@ -14,7 +14,7 @@ block content
                 label(for='dominio', control-label)
                     | Estado do site
             div.col-sm-9
-                div.input-group(style='margin-bottom:8px')
+                div.input-group
                     span.form-control
                         if fanpage.billing.evaluation === true
                             | Avaliação
@@ -22,8 +22,8 @@ block content
                             | Ativo
                         else
                             | Inativo
-                    span.input-group-addon.label-success(style='cursor:pointer')
-                        i.fa.fa-check(style='color:#fff;width:20px')
+                    span.input-group-addon.label-default
+                        i.fa.fa-check.text-success(style='width:20px')
                         
         div.form-group
             div.col-sm-3
@@ -33,9 +33,9 @@ block content
                 div.input-group(style='margin-bottom:8px')
                     span.form-control
                         | #{moment(fanpage.billing.expiration).fromNow()}
-                    span.input-group-addon.label-warning(style='cursor:pointer', onclick='gotoPagamento();')
-                        i.fa.fa-dollar(style='color:#fff;width:20px')
-                a.pull-right(href='#', onclick='gotoPagamento(); return false;')
+                    span.input-group-addon.label-default
+                        i.fa.fa-dollar.text-danger(style='width:20px')
+                a.btn.btn-success.pull-right(href='#', onclick='gotoPagamento(); return false;')
                     | Efetuar pagamento
                         
         div.form-group
@@ -48,20 +48,10 @@ block content
                     div.input-group(style='margin-bottom:8px')
                         if d.id === cmp
                             input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
-                            span.input-group-addon.label-success(style='cursor:not-allowed')
-                                i.fa.fa-lock(style='color:#fff;width:20px')
+                            span.input-group-addon.label-default
+                                i.fa.fa-lock.text-success(style='width:20px')
                         else
                             case d.status
-                                when 'expired'
-                                    input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
-                                    span.input-group-addon.label-danger(style='cursor:pointer', onclick='gotoDominio("#{d.id}");')
-                                        i.fa.fa-dollar(style='color:#fff;width:20px')
-                                            
-                                when 'expiring'
-                                    input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
-                                    span.input-group-addon.label-warning(style='cursor:pointer', onclick='gotoDominio("#{d.id}");')
-                                        i.fa.fa-dollar(style='color:#fff;width:20px')
-                                            
                                 when 'dns_failure'
                                     input.form-control(id='dominio[]', name='dominio[]', type='text', readonly='readonly', value=d.id)
                                     span.input-group-addon.label-warning(style='cursor:pointer', onclick='gotoDominio("#{d.id}");')
@@ -74,6 +64,6 @@ block content
                         
                 if domains.length < 2
                     div.input-group(style='margin-bottom:8px')
-                        input.form-control(id='novodominio', name='novodominio', type='text')
+                        input.form-control(id='novodominio', name='novodominio', type='text', placeholder='www.seudominio.com.br')
                         span.input-group-addon.label-info(style='cursor:pointer')
                             i.fa.fa-plus(onclick='incluirDominio($("#novodominio"), "#{fanpage.id}", "/opcoes");', style='color:#fff;width:20px')

@@ -242,7 +242,7 @@ $(document).ready(function() {
             ).done(function(res) {
                 if (res.created === true) {
                     $('#modal-container .modal-body').load(p_link, function () {
-                        alert('Domínio incluído com sucesso!');
+                        gotoNovoDominio(p_dominio.val());
                     });
                 } else {
                     alert(res.message);
@@ -329,6 +329,20 @@ $(document).ready(function() {
     }
     
     // etc
+    
+    gotoNovoDominio = function(p_dominio) {
+        carregarModal('close', '/opcoes/dominio/' + p_dominio, 'Domínio vinculado com sucesso!', function() {
+            $('.label-dominio').html(p_dominio);
+        }, function() {
+            // salvando
+        }, function() {
+            // fechando
+            gotoOpcoes();
+        }, function() {
+            // excluindo
+        });
+        return false;
+    }
     
     gotoDominio = function(p_dominio) {
         carregarModal('delete-close', '/opcoes/dominio/' + p_dominio, 'Opções &gt; Domínio', function() {

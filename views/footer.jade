@@ -1,25 +1,30 @@
 footer.bs-docs-footer(role='contentinfo')
     div.container
-        div.bs-docs-social
-            div.fb-like-box(data-href='https://www.facebook.com/pages/MobYourLife', data-width=400, data-height=210, data-colorscheme='light', data-show-faces='true', data-header='true', data-stream='false', data-show-border='true')
+        if !fanpage
+            div.bs-docs-social
+                div.fb-like-box(data-href='https://www.facebook.com/pages/MobYourLife', data-width=400, data-height=210, data-colorscheme='light', data-show-faces='true', data-header='true', data-stream='false', data-show-border='true')
+
+            ul.bs-docs-footer-links.muted
+                li
+                    a(href='http://www.fmobstudio.com.br', target='_blank') F&gt;MOB STUDIO
+                li &middot;
+                li
+                    a(href='/como-funciona') Como Funciona
+                li &middot;
+                li
+                    a(href='/duvidas-frequentes') Dúvidas Frequentes
+                li &middot;
+                li
+                    a(href='/termos-de-servico') Termos de Serviço
+                li &middot;
+                li
+                    a(href='/contato') Contato
         
-        ul.bs-docs-footer-links.muted
-            li
-                a(href='http://www.fmobstudio.com.br', target='_blank') F&gt;MOB STUDIO
-            li &middot;
-            li
-                a(href='/como-funciona') Como Funciona
-            li &middot;
-            li
-                a(href='/duvidas-frequentes') Dúvidas Frequentes
-            li &middot;
-            li
-                a(href='/termos-de-servico') Termos de Serviço
-            li &middot;
-            li
-                a(href='/contato') Contato
-        
-        p Mob Your Life&copy; 2013-2015 - Todos os direitos reservados
+            p Mob Your Life&copy; 2013-2015 - Todos os direitos reservados
+        else
+            p Powered by  
+                a(href='https://www.mobyourlife.com.br', target='_blank') Mob Your Life
+                | &copy; 2013-2015 - Todos os direitos reservados
 
 div#fb-root
 

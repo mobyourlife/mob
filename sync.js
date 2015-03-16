@@ -44,11 +44,9 @@ module.exports = function() {
                     item.ref = fanpage;
                     item.source = records.data[i].source;
                     item.time = records.data[i].updated_time;
-
-                    if (records.data[i].images) {
-                        for (j = 0; j < records.data[i].images.length && records.data[i].images[j].width > 1000; j++) {
-                            item.source = records.data[i].images[j].source;
-                        }
+                    
+                    if (records.data[i].images && records.data[i].images.length != 0) {
+                        picture = safe_image(records.data[i].images[0].source);
                     }
                     
                     last = item._id;
@@ -144,7 +142,6 @@ module.exports = function() {
                     Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
                         if (err)
                             throw err;
-                        
 
                         if (item.object_id) {
                             FB.api(item.object_id, { locale: 'pt_BR', fields: ['picture', 'source', 'images'] }, function(inner_object) {
@@ -154,10 +151,8 @@ module.exports = function() {
                                     picture = safe_image(inner_object.source);
                                 }
 
-                                if (inner_object.images) {
-                                    for (j = 0; j < inner_object.images.length && inner_object.images[j].width > 1000; j++) {
-                                        picture = safe_image(inner_object.images[j].source);
-                                    }
+                                if (inner_object.images && inner_object.images.length != 0) {
+                                    picture = safe_image(inner_object.images[0].source);
                                 }
 
                                 if (picture != null) {

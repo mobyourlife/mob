@@ -14,6 +14,19 @@ var auth = require('./config/auth');
 var configDB = require('./config/database');
 
 module.exports = function() {
+    var safe_image = function(url) {
+        var cfs = /\/safe_image\.php\?.*url=(.*)(&cfs=1)/.exec(url);
+        var result = /\/safe_image\.php\?.*url=(.*)/.exec(url);
+
+        if (cfs) {
+            return unescape(cfs[1]);
+        } else if (result) {
+            return unescape(result[1]);
+        }
+
+        return url;
+    }
+        
     // fetch photos function
     var fetchPhotos = function(fanpage, albumid, direction, cursor, last) {
         var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time', 'images'] };
@@ -82,19 +95,6 @@ module.exports = function() {
 
     // fetch feed function
     var fetchFeed = function(fanpage, direction, cursor, last) {
-        var safe_image = function(url) {
-            var cfs = /\/safe_image\.php\?.*url=(.*)(&cfs=1)/.exec(url);
-            var result = /\/safe_image\.php\?.*url=(.*)/.exec(url);
-
-            if (cfs) {
-                return unescape(cfs[1]);
-            } else if (result) {
-                return unescape(result[1]);
-            }
-
-            return url;
-        }
-
         var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'message', 'object_id', 'source'] };
 
         if (direction && cursor) {

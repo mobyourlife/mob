@@ -124,12 +124,12 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
 
 validateEmail = function(uri, res, callback) {
     validateSubdomain(uri, res, function() {
-        callback('suporte@mobyourlife.com.br');
+        callback(null, 'suporte@mobyourlife.com.br');
     }, function(fanpage) {
         if (fanpage.facebook.emails && fanpage.facebook.emails.length != 0) {
-            callback(fanpage.facebook.emails[0]);
+            callback(fanpage, fanpage.facebook.emails[0]);
         } else {
-            callback();
+            callback(fanpage);
         }
     });
 }
@@ -528,7 +528,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     // enviar email
     app.post('/contato', parseForm, csrfProtection, function(req, res) {
-        validateEmail(req.headers.host, res, function(receiver_email) {
+        validateEmail(req.headers.host, res, function(userFanpage, receiver_email) {
             req.checkBody('name', 'Digite o seu nome!').notEmpty();
             req.checkBody('email', 'Digite o seu endereço de email!').notEmpty();
             req.checkBody('message', 'Digite a sua mensagem!').notEmpty();
@@ -553,10 +553,10 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             }
 
             if (errors && errors.length != 0) {
-                res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken() });
+                res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken(), fanpage: userFanpage });
             } else {
                 email.enviarEmail(req.body.name, req.body.email, req.body.message, receiver_email, function() {
-                    res.render('contato-sucesso', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+                    res.render('contato-sucesso', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, fanpage: userFanpage });
                 }, function(err) {
                     if (!errors)
                         errors = [];
@@ -567,7 +567,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                         value: ''
                     });
 
-                    res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken() });
+                    res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken(), fanpage: userFanpage });
                 });
             }
         });

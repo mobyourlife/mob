@@ -268,6 +268,10 @@ module.exports = function() {
                             break;
                         
                         case 'page.feed.remove.photo':
+                        case 'page.feed.remove.share':
+                        case 'page.feed.remove.status':
+                        case 'page.feed.remove.link':
+                        case 'page.feed.remove.video':
                         case 'page.feed.remove.post':
                             removeFeed(item.value.post_id, item.rtu_id);
                             break;

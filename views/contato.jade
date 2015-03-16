@@ -2,7 +2,7 @@ extends layout
 
 block content
     //- Jumbotron
-    div.jumbotron.jumbotron-mob
+    div.jumbotron(class=!fanpage ? 'jumbotron-mob' : null)
         div.container
             h1 Contato
             p Fale direto com a nossa equipe em caso de dúvidas, críticas ou sugestões!

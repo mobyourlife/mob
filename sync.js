@@ -109,6 +109,16 @@ module.exports = function() {
                     break;
             }
         }
+        
+        var getInnerObject = function(row, callback) {
+            if (row.object_id) {
+                FB.api(row.object_id, { locale: 'pt_BR', fields: ['picture', 'source', 'images'] }, function(inner_object) {
+                    callback(row, inner_object);
+                });
+            } else {
+                callback(row);
+            }
+        }
 
         FB.api(fanpage._id + '/feed', args, function(records) {
             if (records && records.data) {
@@ -122,47 +132,37 @@ module.exports = function() {
                         return;
                     }
 
-                    var item = new Feed();
-                    item._id = records.data[i].id;
-                    item.ref = fanpage;
-                    item.time = records.data[i].updated_time;
-                    item.story = records.data[i].story;
-                    item.picture = safe_image(records.data[i].picture);
-                    item.source = records.data[i].source;
-                    item.link = records.data[i].link;
-                    item.type = records.data[i].type;
-                    item.name = records.data[i].name;
-                    item.caption = records.data[i].caption;
-                    item.description = records.data[i].description;
-                    item.message = records.data[i].message;
-                    item.object_id = records.data[i].object_id;
+                    getInnerObject(records.data[i], function(row, inner_object) {
+                        var item = new Feed();
+                        item._id = row.id;
+                        item.ref = fanpage;
+                        item.time = row.updated_time;
+                        item.story = row.story;
+                        item.picture = safe_image(row.picture);
+                        item.source = row.source;
+                        item.link = row.link;
+                        item.type = row.type;
+                        item.name = row.name;
+                        item.caption = row.caption;
+                        item.description = row.description;
+                        item.message = row.message;
+                        item.object_id = row.object_id;
 
-                    last = item._id;
-                    
-                    Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
-                        if (err)
-                            throw err;
-
-                        if (item.object_id) {
-                            FB.api(item.object_id, { locale: 'pt_BR', fields: ['picture', 'source', 'images'] }, function(inner_object) {
-                                var picture = null;
-
-                                if (inner_object.source) {
-                                    picture = source = safe_image(inner_object.source);
-                                }
-
-                                if (inner_object.images && inner_object.images.length != 0) {
-                                    picture = safe_image(inner_object.images[0].source);
-                                }
-
-                                if (picture != null) {
-                                    Feed.update({ _id: item._id }, { "source": source, "picture": picture }, { upsert: true }, function(err) {
-                                        if (err)
-                                            throw err;
-                                    });
-                                }
-                            });
+                        if (inner_object) {
+                            if (inner_object.source) {
+                                item.picture = item.source = safe_image(inner_object.source);
+                            }
+                            if (inner_object.images && inner_object.images.length != 0) {
+                                item.picture = safe_image(inner_object.images[0].source);
+                            }
                         }
+
+                        last = item._id;
+
+                        Feed.update({ _id: item._id }, item.toObject(), { upsert: true }, function(err) {
+                            if (err)
+                                throw err;
+                        });
                     });
                 }
 

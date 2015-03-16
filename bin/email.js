@@ -2,13 +2,15 @@ var nodemailer = require('nodemailer');
 
 module.exports = function() {
     var enviarEmail = function(sender_name, sender_email, sender_message, callbackSuccess, callbackError) {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+        
         // create reusable transporter object using SMTP transport 
         var transporter = nodemailer.createTransport({
-            host: 'mail.mobyourlife.com.br',
+            host: 'localhost',
             port: 587,
             auth: {
                 user: 'nao-responder@mobyourlife.com.br',
-                pass: 'JJ6]\\2N3}78a+p\\'
+                pass: '#X0ScRC%(FVN=C0'
             }
         });
 

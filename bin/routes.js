@@ -504,7 +504,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken() });
         } else {
             email.enviarEmail(req.body.name, req.body.email, req.body.message, function() {
-                res.render('contato-sucesso', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: menu });
+                res.render('contato-sucesso', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
             }, function(err) {
                 if (!errors)
                     errors = [];

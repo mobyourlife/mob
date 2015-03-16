@@ -449,8 +449,20 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     });
     
     // apresentação
+    app.get('/conheça', function(req, res) {
+        res.redirect('/conheca');
+    });
+    
     app.get('/conheca', function(req, res) {
       res.render('conheca', { link: 'conheca', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+    });
+    
+    app.get('/apresentacao', function(req, res) {
+        res.redirect('/conheca');
+    });
+    
+    app.get('/apresentação', function(req, res) {
+        res.redirect('/conheca');
     });
     
     // como funciona
@@ -462,10 +474,26 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     app.get('/precos', function(req, res) {
       res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), monthly: ((sensitive.price / 12).formatMoney()), maint_fees: sensitive.maint_fees.formatMoney(), menu: topMenu });
     });
+    
+    app.get('/preços', function(req, res) {
+        res.redirect('/precos');
+    });
                
     // dúvdas frequentes
     app.get('/duvidas-frequentes', function(req, res) {
         res.render('duvidas-frequentes', { link: 'duvidas-frequentes', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+    });
+    
+    app.get('/duvidas', function(req, res) {
+        res.redirect('/duvidas-frequentes');
+    });
+    
+    app.get('/dúvidas', function(req, res) {
+        res.redirect('/duvidas-frequentes');
+    });
+    
+    app.get('/duvidas-frequentes', function(req, res) {
+        res.redirect('/duvidas-frequentes');
     });
     
     // contato

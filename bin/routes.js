@@ -122,6 +122,18 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
     }
 }
 
+validateEmail = function(uri, res, callback) {
+    validateSubdomain(uri, res, function() {
+        callback('suporte@mobyourlife.com.br');
+    }, function(fanpage) {
+        if (fanpage.facebook.emails && fanpage.facebook.emails.length != 0) {
+            callback(fanpage.facebook.emails[0]);
+        } else {
+            callback();
+        }
+    });
+}
+
 // app/routes.js
 module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection, parseForm) {
     
@@ -498,54 +510,67 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     // contato
     app.get('/contato', csrfProtection, function(req, res) {
+        var fields = null;
+
+        if (req.isAuthenticated()) {
+            fields = {
+                name: req.user.facebook.name,
+                email: req.user.facebook.email
+            };
+        }
+        
         validateSubdomain(req.headers.host, res, function(menu) {
-            var fields = null;
-            
-            if (req.isAuthenticated()) {
-                fields = {
-                    name: req.user.facebook.name,
-                    email: req.user.facebook.email
-                };
-            }
-            
             res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: menu, fields: fields, csrfToken: req.csrfToken() });
         }, function(userFanpage, menu) {
-            res.render('user-contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, csrfToken: req.csrfToken() });
+            res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, fields: fields, csrfToken: req.csrfToken() });
         });
     });
     
     // enviar email
     app.post('/contato', parseForm, csrfProtection, function(req, res) {
-        req.checkBody('name', 'Digite o seu nome!').notEmpty();
-        req.checkBody('email', 'Digite o seu endereço de email!').notEmpty();
-        req.checkBody('message', 'Digite a sua mensagem!').notEmpty();
+        validateEmail(req.headers.host, res, function(receiver_email) {
+            req.checkBody('name', 'Digite o seu nome!').notEmpty();
+            req.checkBody('email', 'Digite o seu endereço de email!').notEmpty();
+            req.checkBody('message', 'Digite a sua mensagem!').notEmpty();
 
-        var errors = req.validationErrors();
-        
-        var fields = {
-            name: req.body.name,
-            email: req.body.email,
-            message: req.body.message
-        };
-        
-        if (errors && errors.length != 0) {
-            res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken() });
-        } else {
-            email.enviarEmail(req.body.name, req.body.email, req.body.message, function() {
-                res.render('contato-sucesso', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
-            }, function(err) {
+            var errors = req.validationErrors();
+
+            var fields = {
+                name: req.body.name,
+                email: req.body.email,
+                message: req.body.message
+            };
+            
+            if (!receiver_email) {
                 if (!errors)
                     errors = [];
                 
                 errors.push({
                     param: '',
-                    msg: 'Erro ao tentar enviar o email! Por favor tente novamente mais tarde! Erro: ' + err,
+                    msg: 'Problemas no envio de email! Por favor entre em contato conosco através de nossa fanpage!',
                     value: ''
                 });
-                    
+            }
+
+            if (errors && errors.length != 0) {
                 res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken() });
-            });
-        }
+            } else {
+                email.enviarEmail(req.body.name, req.body.email, req.body.message, receiver_email, function() {
+                    res.render('contato-sucesso', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+                }, function(err) {
+                    if (!errors)
+                        errors = [];
+
+                    errors.push({
+                        param: '',
+                        msg: 'Erro ao tentar enviar o email! Por favor tente novamente mais tarde! Erro: ' + err,
+                        value: ''
+                    });
+
+                    res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken() });
+                });
+            }
+        });
     });
     
     // =====================================

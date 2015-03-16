@@ -1,7 +1,7 @@
 var nodemailer = require('nodemailer');
 
 module.exports = function() {
-    var enviarEmail = function(sender_name, sender_email, sender_message, callbackSuccess, callbackError) {
+    var enviarEmail = function(sender_name, sender_email, sender_message, receiver_email, callbackSuccess, callbackError) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         
         // create reusable transporter object using SMTP transport 
@@ -20,7 +20,7 @@ module.exports = function() {
         // setup e-mail data with unicode symbols 
         var mailOptions = {
             from: sender_name + ' <' + sender_email + '>', // sender address 
-            to: 'suporte@mobyourlife.com.br', // list of receivers 
+            to: receiver_email, // list of receivers 
             subject: 'Contato pelo site', // Subject line 
             text: sender_message, // plaintext body 
             html: sender_message // html body 

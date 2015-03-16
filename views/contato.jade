@@ -49,18 +49,50 @@ block content
                             div.col-md-12.text-right
                                 button.btn.btn-info.btn-lg(type='submit') Enviar
             
-            div.col-md-4
-                form
-                    legend
-                        span
-                            i.glyphicon.glyphicon-globe.jump-5
-                            | Nossa localização
-                    address
-                        strong F&gt;MOB STUDIO
-                        br
-                        | Rua Luiz Dalincourt 325, Bosque
-                        br
-                        | Campinas, SP
-                    address
-                        strong Suporte Técnico: 
-                        a(href='mailto:suporte@mobyourlife.com.br') suporte@mobyourlife.com.br
+            if !fanpage
+                div.col-md-4
+                    form
+                        legend
+                            span
+                                i.glyphicon.glyphicon-globe.jump-5
+                                | Nossa localização
+                        address
+                            strong F&gt;MOB STUDIO
+                            br
+                            | Rua Luiz Dalincourt 325, Bosque
+                            br
+                            | Campinas, SP
+                        address
+                            strong Suporte Técnico: 
+                            a(href='mailto:suporte@mobyourlife.com.br') suporte@mobyourlife.com.br
+            else
+                div.col-md-4
+                    form
+                        legend
+                            span
+                                i.glyphicon.glyphicon-globe.jump-5
+                                | Dados de contato
+                        address
+                            strong #{fanpage.facebook.name}
+                            br
+                            if fanpage.facebook.place.location.street
+                                | #{fanpage.facebook.place.location.street}
+                                br
+                            if fanpage.facebook.place.location.city
+                                | #{fanpage.facebook.place.location.city}
+                                br
+                            if fanpage.facebook.info.band
+                                if fanpage.facebook.info.band.hometown
+                                    strong Cidade de origem:
+                                    |  #{fanpage.facebook.info.band.hometown}
+                                    br
+                                if fanpage.facebook.info.band.booking_agent
+                                    strong Empresário:
+                                    |  #{fanpage.facebook.info.band.booking_agent}
+                                    br
+                            if fanpage.facebook.place.phone
+                                abbr(title='Telefone comercial') F:
+                                |  #{fanpage.facebook.place.phone}
+                        address
+                            each e in fanpage.facebook.emails
+                                a(href='mailto:' + e) #{e}

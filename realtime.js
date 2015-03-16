@@ -174,6 +174,8 @@ module.exports = function() {
                         break;
                     
                     case 'status':
+                    case 'link':
+                    case 'video':
                         Feed.update({ _id: feed._id }, feed.toObject(), { upsert: true }, function(err) {
                             if (err)
                                 throw err;

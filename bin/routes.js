@@ -645,54 +645,88 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     // escolha do novo site, página protegida
     app.get('/novo-site', isLoggedIn, function(req, res) {
         FB.setAccessToken(req.user.facebook.token);
-        FB.api('/me/accounts', { locale: 'pt_BR', fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
-            if (records.data) {
-                var pages_list = Array();
-                var ids_list = Array();
-                
-                for (r = 0; r < records.data.length; r++) {
-                    var item = {
-                        id: records.data[r].id,
-                        name: records.data[r].name,
-                        about: records.data[r].about,
-                        link: records.data[r].link,
-                        picture: records.data[r].picture.data.url
-                    };
-                    pages_list.push(item);
-                    ids_list.push(records.data[r].id);
+        FB.api('/me/permissions', function(records) {
+            var required = ['public_profile', 'email', 'manage_pages'];
+            var pending = [];
+            
+            for (i = 0; i < records.data.length; i++) {
+                var perm = records.data[i];
+                if (required.indexOf(perm.permission) != -1) {
+                    if (perm.status != 'granted') {
+                        switch (perm.permission) {
+                            case 'public_profile':
+                                pending.push('Perfil público');
+                                break;
+                                
+                            case 'email':
+                                pending.push('Endereço de email');
+                                break;
+                                
+                            case 'manage_pages':
+                                pending.push('Gerenciar páginas');
+                                break;
+                                
+                            default:
+                                break;
+                        }
+                    }
                 }
-                
-                pages_list.sort(function(a, b) {
-                    var x = a.name.toLowerCase(), y = b.name.toLowerCase();
-                    if (x < y) return -1;
-                    if (x > y) return 1;
-                    return 0;
-                });
-                
-                Fanpage.find({ _id: { $in: ids_list } }, function(err, records) {
-                    var built_list = Array();
-                    
-                    if (records) {
-                        for (i = 0; i < pages_list.length; i++) {
-                            var existe = false;
-                            
-                            for (j = 0; j < records.length; j++) {
-                                if (pages_list[i].id == records[j]._id) {
-                                    existe = true;
+            }
+            
+            if (pending.length != 0) {
+                res.render('novo-site-permissoes', { auth: req.isAuthenticated(), user: req.user, menu: topMenu, pending: pending });
+                return;
+            }
+            
+            FB.api('/me/accounts', { locale: 'pt_BR', fields: ['id', 'name', 'about', 'link', 'picture'] }, function(records) {
+                if (records.data) {
+                    var pages_list = Array();
+                    var ids_list = Array();
+
+                    for (r = 0; r < records.data.length; r++) {
+                        var item = {
+                            id: records.data[r].id,
+                            name: records.data[r].name,
+                            about: records.data[r].about,
+                            link: records.data[r].link,
+                            picture: records.data[r].picture.data.url
+                        };
+                        pages_list.push(item);
+                        ids_list.push(records.data[r].id);
+                    }
+
+                    pages_list.sort(function(a, b) {
+                        var x = a.name.toLowerCase(), y = b.name.toLowerCase();
+                        if (x < y) return -1;
+                        if (x > y) return 1;
+                        return 0;
+                    });
+
+                    Fanpage.find({ _id: { $in: ids_list } }, function(err, records) {
+                        var built_list = Array();
+
+                        if (records) {
+                            for (i = 0; i < pages_list.length; i++) {
+                                var existe = false;
+
+                                for (j = 0; j < records.length; j++) {
+                                    if (pages_list[i].id == records[j]._id) {
+                                        existe = true;
+                                    }
+                                }
+
+                                if (existe === false) {
+                                    built_list.push(pages_list[i]);
                                 }
                             }
-                            
-                            if (existe === false) {
-                                built_list.push(pages_list[i]);
-                            }
+                        } else {
+                            built_list = pages_list;
                         }
-                    } else {
-                        built_list = pages_list;
-                    }
-                    
-                    res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, pages: built_list, menu: topMenu });
-                });
-            }
+
+                        res.render('novo-site', { title: 'Criar novo site', auth: req.isAuthenticated(), user: req.user, pages: built_list, menu: topMenu });
+                    });
+                }
+            });
         });
     });
     

@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron.jumbotron-mob
+        div.container
+            h1 Oops!
+            p Alguma coisa deu errado!
+    
+    div.container
+        div.row
+            div.col-sm-3.col-sm-offset-1
+                p.text-center
+                    img.hidden-sm(src='/img/sad-lg.png', alt='Nenhuma fanpage disponível!')
+                    img.visible-sm(src='/img/sad.png', alt='Nenhuma fanpage disponível!')
+            div.col-sm-7.space-right
+                    h2
+                        strong Permissões insuficientes!
+                    p Você precisa fornecer as seguintes permissões ao entrar com Facebook:
+                    ul
+                        each i in pending
+                            li #{i}
+                    p Por favor forneça as permissões que precisamos para criar o seu site.
+                    p
+                        a.btn.btn-primary.btn-lg.space-top(href='/login')
+                            span.fa.fa-facebook.jump-5
+                            span Entrar com Facebook

@@ -13,27 +13,37 @@ block content
                     span.fa.fa-arrow-right
 
     div.container
+        if errors
+            div.alert.alert-danger
+                p
+                    strong
+                        | Por favor verifique os seguintes campos:
+                ul
+                each e in errors
+                    li #{e.msg}
+
         div.row
             div.col-md-8
                 div.well.well-sm
-                    form#mail-form.form-horizontal(action='/enviar-email', method='post')
+                    form#mail-form.form-horizontal(action='/contato', method='post')
+                        input(type='hidden', name='_csrf', value=csrfToken)
                         fieldset
                             legend.text-center Fale Conosco
                         
                         div.form-group
                             label.col-md-3.control-label(for='name') Nome
                             div.col-md-9
-                                input#name.form-control(name='name', type='text', placeholder='Seu nome')
+                                input#name.form-control(name='name', type='text', placeholder='Seu nome', value=fields ? fields.name : null)
                         
                         div.form-group
                             label.col-md-3.control-label(for='email') E-mail
                             div.col-md-9
-                                input#email.form-control(name='email', type='text', placeholder='Seu endereço de e-mail')
+                                input#email.form-control(name='email', type='text', placeholder='Seu endereço de e-mail', value=fields ? fields.email : null)
                         
                         div.form-group
                             label.col-md-3.control-label(for='mensagem') Mensagem
                             div.col-md-9
-                                textarea#message.form-control(placeholder='Digite a sua mensagem aqui', rows=5)
+                                textarea#message.form-control(name='message', placeholder='Digite a sua mensagem aqui', rows=5)
                         
                         div.form-group
                             div.col-md-12.text-right
@@ -51,9 +61,6 @@ block content
                         | Rua Luiz Dalincourt 325, Bosque
                         br
                         | Campinas, SP
-                        br
-                        abbr(title='Telefone comercial') F:
-                        |  (19) 3032-1279
                     address
                         strong Suporte Técnico: 
                         a(href='mailto:suporte@mobyourlife.com.br') suporte@mobyourlife.com.br

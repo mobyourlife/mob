@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    //- Jumbotron
+    div.jumbotron.jumbotron-mob
+        div.container
+            h1 Contato
+            p Fale direto com a nossa equipe em caso de dúvidas, críticas ou sugestões!
+            p
+                a.btn.btn-xl.btn-jumbo(href='/login', data-role='button')
+                    span Crie seu novo site agora
+                    span.jump-5
+                    span.fa.fa-arrow-right
+
+    div.container
+        p
+            img(src='/img/happy.png', alt='Obrigado!')
+        h2 Obrigado!
+        p O seu email foi enviado com sucesso! Iremos respondê-lo em até 24 horas úteis!
+        p
+            a.btn.btn-primary.btn-lg(href='https://www.facebook.com/MobYourLife', target='_blank')
+                span.fa.fa-facebook.jump-5
+                span Curta-nos no Facebook

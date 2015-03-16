@@ -148,7 +148,7 @@ module.exports = function() {
                                 var picture = null;
 
                                 if (inner_object.source) {
-                                    picture = safe_image(inner_object.source);
+                                    picture = source = safe_image(inner_object.source);
                                 }
 
                                 if (inner_object.images && inner_object.images.length != 0) {
@@ -156,7 +156,7 @@ module.exports = function() {
                                 }
 
                                 if (picture != null) {
-                                    Feed.update({ object_id: inner_object.id }, { "picture": picture }, { upsert: true }, function(err) {
+                                    Feed.update({ _id: item._id }, { "source": source, "picture": picture }, { upsert: true }, function(err) {
                                         if (err)
                                             throw err;
                                     });

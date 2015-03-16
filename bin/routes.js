@@ -494,7 +494,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             req.session.backto = null;
             res.redirect(goto);
         } else {
-            res.redirect('/gerenciamento');
+            res.redirect('/meus-sites');
         }
     });
     
@@ -538,7 +538,11 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     });
     
     // gerenciamento, página protegida
-    app.get('/gerenciamento', isLoggedIn, function(req, res) {
+    app.get('/gerenciamento', function(req, res) {
+        res.redirect('/meus-sites');
+    });
+    
+    app.get('/meus-sites', isLoggedIn, function(req, res) {
         var ids = Array();
         for (i = 0; i < req.user.fanpages.length; i++) {
             ids.push(req.user.fanpages[i].id);
@@ -1028,7 +1032,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             if (validateAdmin(req.user)) {
                 next();
             } else {
-                res.redirect('/gerenciamento');
+                res.redirect('/meus-sites');
             }
         } else {
             res.redirect('/');

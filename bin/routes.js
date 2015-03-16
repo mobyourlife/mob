@@ -136,19 +136,18 @@ validateEmail = function(uri, res, callback) {
 
 // app/routes.js
 module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection, parseForm) {
-    
-    // raiz
-    app.get('/', function(req, res) {
-        res.redirect('/inicio');
-    });
 
     // início
-    app.get('/inicio', function(req, res) {
+    app.get('/', function(req, res) {
         validateSubdomain(req.headers.host, res, function(menu) {
             res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
             res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
+    });
+    
+    app.get('/inicio', function(req, res) {
+        res.redirect('/');
     });
 
     // aparência

@@ -173,9 +173,11 @@ module.exports = function() {
                         });
                         break;
                     
+                    case 'share':
                     case 'status':
                     case 'link':
                     case 'video':
+                    case 'post':
                         Feed.update({ _id: feed._id }, feed.toObject(), { upsert: true }, function(err) {
                             if (err)
                                 throw err;
@@ -246,6 +248,9 @@ module.exports = function() {
                         case 'page.feed.add.photo':
                         case 'page.feed.add.share':
                         case 'page.feed.add.status':
+                        case 'page.feed.add.link':
+                        case 'page.feed.add.video':
+                        case 'page.feed.add.post':
                             fetchFeed(token, item.page_id, item.value.post_id, item.rtu_id);
                             break;
                         

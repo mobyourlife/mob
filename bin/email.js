@@ -18,7 +18,13 @@ module.exports = function() {
                             throw err;
 
                         if (user) {
-                            fs.readFile('../email/bem-vindo.html', function(err, html) {
+                            var filename = '../email/bem-vindo.html';
+                            
+                            if (app.get('env') !== 'development') {
+                                filename = '/var/www/mob/email/bem-vindo.html';
+                            }
+                            
+                            fs.readFile(filename, function(err, html) {
                                 if (err)
                                     throw err;
 

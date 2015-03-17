@@ -1,7 +1,13 @@
 var FB = require('fb');
+var fs = require('fs');
 var auth = require('./config/auth');
 var RTU = require('./realtime')();
 var sync = require('./sync')();
+var email = require('./bin/email')();
+
+// models
+var Fanpage = require('./models/fanpage');
+var User = require('./models/user');
 
 // connect to database
 var mongoose = require('mongoose');
@@ -189,6 +195,41 @@ if (process.argv.length >= 3) {
         /* sync all */
         case 'syncall':
             sync.syncAll();
+            break;
+        
+        /* send welcome email */
+        case 'welcome':
+            if (process.argv.length >= 4) {
+                var page_id = process.argv[3].toString();
+                Fanpage.findOne({ '_id': page_id }, function(err, fanpage) {
+                    if (err)
+                        throw err;
+                    
+                    if (fanpage) {
+                        console.log(fanpage);
+                        User.findOne({ _id: fanpage.creation.user }, function(err, user) {
+                            if (err)
+                                throw err;
+                            
+                            if (user) {
+                                fs.readFile('./email/bem-vindo.html', function(err, html) {
+                                    if (err)
+                                        throw err;
+
+                                    html = html.toString();
+                                    html = html.replace('#{user.facebook.name}', user.facebook.name);
+                                    html = html.replace('#{fanpage.facebook.name}', fanpage.facebook.name);
+                                    email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, 'contato@fmoliveira.com.br');
+                                });
+                            } else {
+                                console.log('Não achou o usuário');
+                            }
+                        });
+                    } else {
+                        console.log('Não achou a fanpage');
+                    }
+                });
+            }
             break;
     }
 }

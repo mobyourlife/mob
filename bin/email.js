@@ -1,12 +1,12 @@
 var nodemailer = require('nodemailer');
 
 module.exports = function() {
-    var enviarEmail = function(sender_name, sender_email, sender_message, receiver_email, callbackSuccess, callbackError) {
+    var enviarEmail = function(sender_name, sender_email, subject, message, receiver_email, callbackSuccess, callbackError) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         
         // create reusable transporter object using SMTP transport 
         var transporter = nodemailer.createTransport({
-            host: 'localhost',
+            host: 'mail.mobyourlife.com.br',
             port: 587,
             auth: {
                 user: 'nao-responder@mobyourlife.com.br',
@@ -21,19 +21,23 @@ module.exports = function() {
         var mailOptions = {
             from: sender_name + ' <' + sender_email + '>', // sender address 
             to: receiver_email, // list of receivers 
-            subject: 'Contato pelo site', // Subject line 
-            text: sender_message, // plaintext body 
-            html: sender_message // html body 
+            subject: subject, // Subject line 
+            text: message, // plaintext body 
+            html: message // html body 
         };
 
         // send mail with defined transport object 
         transporter.sendMail(mailOptions, function(error, info){
             if(error){
                 console.log(error);
-                callbackError(error);
+                if (callbackError) {
+                    callbackError(error);
+                }
             }else{
                 console.log('Message sent: ' + info.response);
-                callbackSuccess();
+                if (callbackSuccess) {
+                    callbackSuccess();
+                }
             }
         });
     }

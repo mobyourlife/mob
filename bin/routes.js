@@ -752,6 +752,11 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                             Domain.update({ _id: domain._id }, domain.toObject(), { upsert: true }, function(err) {
                                 if (err)
                                     throw err;
+                                
+                                // send welcome email
+                                email.montarEmail(newFanpage._id, function(html, user_email) {
+                                    email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, user_email);
+                });
 
                                 // if successful, redirects to new website
                                 var goto = 'http://' + domain._id;

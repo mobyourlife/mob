@@ -1,6 +1,45 @@
+var fs = require('fs');
 var nodemailer = require('nodemailer');
 
+// models
+var Fanpage = require('../models/fanpage');
+var User = require('../models/user');
+
 module.exports = function() {
+    var montarEmail = function(page_id, callback) {
+        if (callback) {
+            Fanpage.findOne({ '_id': page_id }, function(err, fanpage) {
+                if (err)
+                    throw err;
+
+                if (fanpage) {
+                    User.findOne({ _id: fanpage.creation.user }, function(err, user) {
+                        if (err)
+                            throw err;
+
+                        if (user) {
+                            fs.readFile('./email/bem-vindo.html', function(err, html) {
+                                if (err)
+                                    throw err;
+
+                                html = html.toString();
+                                html = html.replace('#{user.facebook.name}', user.facebook.name);
+                                html = html.replace('#{fanpage._id}', fanpage._id);
+                                html = html.replace('#{fanpage.facebook.name}', fanpage.facebook.name);
+                                
+                                callback(html, user.facebook.email);
+                            });
+                        } else {
+                            console.log('Não achou o usuário');
+                        }
+                    });
+                } else {
+                    console.log('Não achou a fanpage');
+                }
+            });
+        }
+    }
+    
     var enviarEmail = function(sender_name, sender_email, subject, message, receiver_email, callbackSuccess, callbackError) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         
@@ -28,13 +67,13 @@ module.exports = function() {
 
         // send mail with defined transport object 
         transporter.sendMail(mailOptions, function(error, info){
-            if(error){
+            if (error) {
                 console.log(error);
                 if (callbackError) {
                     callbackError(error);
                 }
-            }else{
-                console.log('Message sent: ' + info.response);
+            } else {
+                console.log('Email enviado com sucesso para ' + receiver_email + '! ' + info.response);
                 if (callbackSuccess) {
                     callbackSuccess();
                 }
@@ -43,6 +82,7 @@ module.exports = function() {
     }
     
     return {
+        montarEmail: montarEmail,
         enviarEmail: enviarEmail
     }
 }

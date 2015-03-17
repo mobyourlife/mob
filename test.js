@@ -206,7 +206,6 @@ if (process.argv.length >= 3) {
                         throw err;
                     
                     if (fanpage) {
-                        console.log(fanpage);
                         User.findOne({ _id: fanpage.creation.user }, function(err, user) {
                             if (err)
                                 throw err;
@@ -218,6 +217,7 @@ if (process.argv.length >= 3) {
 
                                     html = html.toString();
                                     html = html.replace('#{user.facebook.name}', user.facebook.name);
+                                    html = html.replace('#{fanpage._id}', fanpage._id);
                                     html = html.replace('#{fanpage.facebook.name}', fanpage.facebook.name);
                                     email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, 'contato@fmoliveira.com.br');
                                 });

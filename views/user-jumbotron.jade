@@ -3,12 +3,15 @@ if fanpage.cover && fanpage.cover.path
     div.jumbotron(style='background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;')
 else
     div.jumbotron
-        if title
-            div.container
+        div.container
+            if title
                 h1 #{title}
-        else if fanpage.facebook.about
-            div.container
+            else if fanpage.facebook.about
                 h2 #{fanpage.facebook.about}
-        else if fanpage.facebook.description
-            div.container
+            else if fanpage.facebook.description
                 h2 #{fanpage.facebook.description}
+            else
+                h2 Seja bem-vindo!
+                p.isowner
+                    strong Dica:
+                    | Você pode adicionar uma mensagem aqui editando a descrição curta de sua fanpage, ou então, pode adicionar uma foto de capa através do seu painel.

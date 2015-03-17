@@ -5,13 +5,17 @@ else
     div.jumbotron#jumbotron
         div.container
             if title
-                h1 #{title}
+                h1.hidden-xs #{title}
+                h2.visible-xs #{title}
             else if fanpage.facebook.about
-                h2 #{fanpage.facebook.about}
+                h2.hidden-xs #{fanpage.facebook.about}
+                h3.visible-xs #{fanpage.facebook.about}
             else if fanpage.facebook.description
-                h2 #{fanpage.facebook.description}
+                h2.hidden-xs #{fanpage.facebook.description}
+                h3.visible-xs #{fanpage.facebook.description}
             else
-                h2 Seja bem-vindo!
+                h2.hidden-xs Seja bem-vindo!
+                h3.visible-xs Seja bem-vindo!
                 p.isowner
                     strong Dica:
                     | Você pode adicionar uma mensagem aqui editando a descrição curta de sua fanpage, ou então, pode adicionar uma foto de capa através do seu painel.

@@ -276,3 +276,19 @@ div.faq
 .page-empty, .page-rows {
     display: none;
 }
+
+.tour-backdrop {
+  z-index: 98;
+}
+
+.tour-step-backdrop {
+  z-index: 99;
+}
+
+.tour-step-background {
+  z-index: 98;
+}
+
+.popover[class*="tour-"] {
+  z-index: 98;
+}

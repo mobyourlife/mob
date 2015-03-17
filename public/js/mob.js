@@ -66,6 +66,7 @@ $(document).ready(function() {
             if (res.isowner && res.isowner === true) {
                 $('.isowner').show();
                 $('.isnotowner').hide();
+                tour.start();
             }
             
             $('.field-name').text(res.name);

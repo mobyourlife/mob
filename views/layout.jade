@@ -17,6 +17,8 @@ html
         link(rel='stylesheet', href='/css/bootstrap.min.css')
         if fanpage && fanpage.theme
             link(rel='stylesheet', href=fanpage.theme.css, id='mob-theme')
+        if fanpage
+            link(rel='stylesheet', href='/css/bootstrap-tour.min.css')
         link(rel='stylesheet', href='/css/docs.min.css')
         link(rel='stylesheet', href='/css/font-awesome.min.css')
         link(rel='stylesheet', href='/css/custom.css?v=' + cache.version)

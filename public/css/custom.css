@@ -262,4 +262,20 @@ div.faq > section > p {
 .page-empty, .page-rows {
   display: none; }
 
+/* line 280, D:/Repos/mob/public/css/custom.scss */
+.tour-backdrop {
+  z-index: 98; }
+
+/* line 284, D:/Repos/mob/public/css/custom.scss */
+.tour-step-backdrop {
+  z-index: 99; }
+
+/* line 288, D:/Repos/mob/public/css/custom.scss */
+.tour-step-background {
+  z-index: 98; }
+
+/* line 292, D:/Repos/mob/public/css/custom.scss */
+.popover[class*="tour-"] {
+  z-index: 98; }
+
 /*# sourceMappingURL=custom.css.map */

@@ -6,7 +6,7 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-            a.navbar-brand(href='/')
+            a.navbar-brand#brand(href='/')
                 if fanpage
                     span
                         if fanpage.facebook.cdn
@@ -21,7 +21,7 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
             ul.nav.navbar-nav
                 if menu
                     each m in menu
-                        li(class=m.path === link ? 'active' : undefined)
+                        li(class=m.path === link ? 'active' : undefined, id='menu_' + m.path)
                             a(href='/' + m.path) #{m.text}
             
             if !fanpage
@@ -68,7 +68,7 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                                     span.label.label-danger(style='border-radius:1em;position:absolute;top:12px;right:2px')
                                         | 8
                         div.btn-group
-                            button.btn.btn-jumbo.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                            button.btn.btn-jumbo.dropdown-toggle#usermenu(type='button', data-toggle='dropdown', aria-expanded='false')
                                 span.hidden-lg
                                     span.fa.fa-cog.jump-5
                                     span.caret

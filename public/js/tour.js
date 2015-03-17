@@ -1,11 +1,11 @@
 var tour = new Tour({
-    template: '<div class="popover tour-tour tour-tour-0 fade bottom in" role="tooltip" id="step-0" style="display: block; top: 39px; left: 68px;"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev">« Voltar</button> <button class="btn btn-sm btn-default" data-role="next">Avançar »</button>  </div> <button class="btn btn-sm btn-default" data-role="end">Terminar</button> </div> </div>',
+    template: '<div class="popover tour-tour tour-tour-0 fade bottom in" role="tooltip" id="step-0" style="display: block; top: 39px; left: 68px;"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev">« Voltar</button> <button class="btn btn-sm btn-default" data-role="next">Continuar »</button>  </div> <button class="btn btn-sm btn-default" data-role="end">Terminar</button> </div> </div>',
     steps: [
         {
             backdrop: true,
             orphan: true,
             title: 'Parabéns!',
-            content: 'Você acabou de criar o seu novo site!'
+            content: 'Você acabou de criar o seu novo site! Pressione o botão Continuar para conhecê-lo melhor.'
         },
         {
             backdrop: true,
@@ -13,6 +13,13 @@ var tour = new Tour({
             element: '#brand',
             title: 'Que endereço maluco!?',
             content: 'Não se preocupe! Este endereço &quot;' + location.host + '&quot; é temporário! Você poderá personalizá-lo com um .com.br ou qualquer outro domínio de seu gosto.'
+        },
+        {
+            backdrop: true,
+            placement: 'bottom',
+            element: '#btntoggle',
+            title: 'Menu do site',
+            content: 'Utilize este botão para acessar o menu do site em seu dispositivo móvel.'
         },
         {
             backdrop: true,

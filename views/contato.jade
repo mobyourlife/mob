@@ -6,11 +6,12 @@ block content
         div.container
             h1 Contato
             p Fale direto com a nossa equipe em caso de dúvidas, críticas ou sugestões!
-            p
-                a.btn.btn-xl.btn-jumbo(href='/login', data-role='button')
-                    span Crie seu novo site agora
-                    span.jump-5
-                    span.fa.fa-arrow-right
+            if !fanpage
+                p
+                    a.btn.btn-xl.btn-jumbo(href='/login', data-role='button')
+                        span Crie seu novo site agora
+                        span.jump-5
+                        span.fa.fa-arrow-right
 
     div.container
         if errors

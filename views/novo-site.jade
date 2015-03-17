@@ -8,6 +8,16 @@ block content
             p Escolha uma de suas fanpages para criar o seu novo site.
     
     div.container
+        div.container
+            div.col-xs-12
+                div.alert.alert-warning
+                    p
+                        span.fa.fa-warning.jump-5
+                        strong Atenção: 
+                        span Ao utilizar os serviços do Mob Your Life você concorda com os 
+                            a(href='/termos-de-uso') termos de uso
+                            | .
+        
         if pages.length == 0
             div.row
                 div.col-sm-3.col-sm-offset-1

@@ -277,4 +277,14 @@ div.faq > section > p {
 .popover[class*="tour-"] {
   z-index: 98; }
 
+/* line 295, D:/Repos/mob/public/css/custom.scss */
+.tos {
+  text-align: justify; }
+  /* line 298, D:/Repos/mob/public/css/custom.scss */
+  .tos ol {
+    font-size: 20px; }
+    /* line 302, D:/Repos/mob/public/css/custom.scss */
+    .tos ol li ol {
+      font-size: 14px; }
+
 /*# sourceMappingURL=custom.css.map */

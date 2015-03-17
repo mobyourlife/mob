@@ -291,3 +291,17 @@ div.faq
 .popover[class*="tour-"] {
   z-index: 98;
 }
+
+.tos {
+    text-align: justify;
+    
+    ol {
+        font-size: 20px;
+        
+        li {
+            ol {
+                font-size: 14px;
+            }
+        }
+    }
+}

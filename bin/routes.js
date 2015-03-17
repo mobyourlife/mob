@@ -465,7 +465,11 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     });
     
     app.get('/conheca', function(req, res) {
-      res.render('conheca', { link: 'conheca', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('conheca', { link: 'conheca', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+        }, function(userFanpage, menu) {
+            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+        });
     });
     
     app.get('/apresentacao', function(req, res) {
@@ -478,19 +482,27 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     // como funciona
     app.get('/como-funciona', function(req, res) {
-      res.render('como-funciona', { link: 'como-funciona', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('como-funciona', { link: 'como-funciona', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+        }, function(userFanpage, menu) {
+            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+        });
     });
     
     // preços
     app.get('/precos', function(req, res) {
-      res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), monthly: ((sensitive.price / 12).formatMoney()), maint_fees: sensitive.maint_fees.formatMoney(), menu: topMenu });
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), monthly: ((sensitive.price / 12).formatMoney()), maint_fees: sensitive.maint_fees.formatMoney(), menu: topMenu });
+        }, function(userFanpage, menu) {
+            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+        });
     });
     
     app.get('/preços', function(req, res) {
         res.redirect('/precos');
     });
                
-    // dúvdas frequentes
+    // dúvidas frequentes
     app.get('/duvidas-frequentes', function(req, res) {
         res.render('duvidas-frequentes', { link: 'duvidas-frequentes', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
     });
@@ -505,6 +517,23 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     app.get('/duvidas-frequentes', function(req, res) {
         res.redirect('/duvidas-frequentes');
+    });
+    
+    // termos de serviço
+    app.get('/termos-de-serviço', function(req, res) {
+        res.redirect('/termos-de-uso');
+    });
+    
+    app.get('/termos-de-servico', function(req, res) {
+        res.redirect('/termos-de-uso');
+    });
+    
+    app.get('/termos-de-uso', function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('termos-de-uso', { link: 'termos-de-servico', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+        }, function(userFanpage, menu) {
+            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+        });
     });
     
     // contato

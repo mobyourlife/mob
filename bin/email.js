@@ -18,7 +18,7 @@ module.exports = function() {
                             throw err;
 
                         if (user) {
-                            fs.readFile('./email/bem-vindo.html', function(err, html) {
+                            fs.readFile('../email/bem-vindo.html', function(err, html) {
                                 if (err)
                                     throw err;
 

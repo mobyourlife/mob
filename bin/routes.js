@@ -25,7 +25,7 @@ var n = this,
    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
  };
     
-var validarTituloPagina = function() {
+var validarTituloPagina = function(errors) {
     var paginasReservadas = ['inicio', 'sobre', 'fotos', 'contato', 'aparencia', 'foto-de-capa', 'remover-foto-de-capa', 'opcoes', 'gerenciamento', 'login', 'logon', 'logout', 'logoff', 'entrar', 'sair'];
 
     if (!errors)
@@ -231,7 +231,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 var path = helpers.formatAsPath(req.body.title);
 
                 var errors = req.validationErrors();
-                errors = validarTituloPagina();
+                errors = validarTituloPagina(errors);
 
                 if (errors && errors.length != 0) {
                     adminTextosNova(req, res, {

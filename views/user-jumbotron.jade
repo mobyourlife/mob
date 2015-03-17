@@ -1,5 +1,5 @@
 //- Jumbotron
-if !fanpage.cover && fanpage.cover.path
+if fanpage.cover && fanpage.cover.path
     div.jumbotron(style='background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;')
 else
     div.jumbotron#jumbotron

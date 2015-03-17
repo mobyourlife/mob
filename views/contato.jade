@@ -1,7 +1,10 @@
 extends layout
 
 block content
-    //- Jumbotron
+//- Jumbotron
+if fanpage && fanpage.cover && fanpage.cover.path
+    div.jumbotron(style='background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;')
+else
     div.jumbotron(class=!fanpage ? 'jumbotron-mob' : null)
         div.container
             h1 Contato

@@ -6,7 +6,7 @@ var Fanpage = require('../models/fanpage');
 var User = require('../models/user');
 
 module.exports = function() {
-    var montarEmail = function(page_id, callback) {
+    var montarEmail = function(filename, page_id, callback) {
         if (callback) {
             Fanpage.findOne({ '_id': page_id }, function(err, fanpage) {
                 if (err)
@@ -18,12 +18,6 @@ module.exports = function() {
                             throw err;
 
                         if (user) {
-                            var filename = '../email/bem-vindo.html';
-                            
-                            if (app.get('env') !== 'development') {
-                                filename = '/var/www/mob/email/bem-vindo.html';
-                            }
-                            
                             fs.readFile(filename, function(err, html) {
                                 if (err)
                                     throw err;

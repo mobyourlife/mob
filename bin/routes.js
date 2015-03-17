@@ -754,7 +754,13 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                                     throw err;
                                 
                                 // send welcome email
-                                email.montarEmail(newFanpage._id, function(html, user_email) {
+                                var filename = '../email/bem-vindo.html';
+                            
+                                if (app.get('env') !== 'development') {
+                                    filename = '/var/www/mob/email/bem-vindo.html';
+                                }
+                                
+                                email.montarEmail(filename, newFanpage._id, function(html, user_email) {
                                     email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, user_email);
                 });
 

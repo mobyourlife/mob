@@ -219,7 +219,7 @@ if (process.argv.length >= 3) {
                                     html = html.replace('#{user.facebook.name}', user.facebook.name);
                                     html = html.replace('#{fanpage._id}', fanpage._id);
                                     html = html.replace('#{fanpage.facebook.name}', fanpage.facebook.name);
-                                    email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, 'contato@fmoliveira.com.br');
+                                    email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, user.facebook.email);
                                 });
                             } else {
                                 console.log('Não achou o usuário');

@@ -2,9 +2,17 @@ extends layout
 
 block content
     //- Jumbotron
-    div.jumbotron.jumbotron-mob
+    div.jumbotron(class=!fanpage ? 'jumbotron-mob' : null)
         div.container
-            h1 404 Não encontrado
+            h1 Oops!
     
-    div.container
-         p A página que você tentou acessar não existe!
+    div.container.text-center
+        p
+            img(src='/img/oops.png', alt='Página não encontrada!')
+        h2 Página não encontrada!
+        p A página que você tentou acessar não existe!
+        p O nosso suporte técnico já foi avisado e caso isto seja um problema eles irão corrigir em breve.
+        p  
+            a.btn.btn-primary.btn-lg(href='/')
+                span.jump-5 Clique aqui para continuar navegando no site
+                span.fa.fa-arrow-right

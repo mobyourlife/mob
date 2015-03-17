@@ -7,7 +7,7 @@ block content
             h1 #{title}
             p Escolha uma de suas fanpages para criar o seu novo site.
     
-    div.container
+    div.container#main
         div.container
             div.col-xs-12
                 div.alert.alert-warning
@@ -55,7 +55,7 @@ block content
                                             | Criar novo site
                                 div.hidden-xs.col-sm-4.space-vertical.space-right
                                     div.row
-                                        a.btn.btn-success.pull-right(href='/novo-site/' + p.id)
+                                        a.btn.btn-success.pull-right(href='/novo-site/' + p.id, onclick='$('#main').empty().html('<p style="margin-bottom: 80px;">&nbsp;</p><h2 class="text-center">Por favor aguarde...</h2>').activity();')
                                             span.fa.fa-external-link.jump-5
                                             | Criar novo site
             div.container

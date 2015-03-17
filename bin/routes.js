@@ -96,7 +96,7 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
                             menu.push({ path: 'sobre', text: 'Sobre' });
                             
                             for (i = 0; i < found.length; i++) {
-                                menu.push({ path: found[0].path, text: found[0].title });
+                                menu.push({ path: found[i].path, text: found[i].title });
                             }
                             
                             menu.push({ path: 'fotos', text: 'Fotos' });

@@ -292,7 +292,7 @@ module.exports = function() {
                     fanpage.facebook.info.payment_options.visa = records.payment_options.visa;
                 }
 
-                Fanpage.update({ _id: records.id }, fanpage.toObject(), { upsert: true }, function(err) {
+                Fanpage.update({ _id: fanpage._id }, fanpage.toObject(), { upsert: true }, function(err) {
                     if (err)
                         throw err;
                     

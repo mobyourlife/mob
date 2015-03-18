@@ -285,12 +285,12 @@ module.exports = function() {
                             break;
                             
                         case 'page':
+                        case 'page.feed.add.like':
+                        case 'page.feed.remove.like':
                             fetchProfile(item.page_id, item.rtu_id);
                             break;
                         
-                        case 'page.feed.add.like':
                         case 'page.feed.add.comment':
-                        case 'page.feed.remove.like':
                         case 'page.feed.remove.comment':
                             ignore(item.rtu_id);
                             break;

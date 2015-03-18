@@ -222,6 +222,15 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             res.render('404', { link: 'gerenciar-albuns', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu, isowner) {
             Album.find({ ref: userFanpage._id }, function(err, records) {
+                records.sort(function(a, b) {
+                    if (a.name && b.name) {
+                        var x = a.name.toLowerCase(), y = b.name.toLowerCase();
+                        if (x < y) return -1;
+                        if (x > y) return 1;
+                    }
+                    return 0;
+                });
+                
                 res.render('gerenciar-albuns', { fanpage: userFanpage, albums: records, menu: menu });
             });
         });
@@ -914,6 +923,53 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
         res.redirect(req.headers.referer);
     });
     
+    // api para gerenciar álbuns
+    app.post('/api/set-album', function(req, res) {
+        if (req.isAuthenticated()) {
+            if (req.body.album_id && req.body.special_type) {
+                Album.findOne({ _id: req.body.album_id }, function(err, one) {
+                    if (err)
+                        throw err;
+                    
+                    var proceed = false;
+                    
+                    for (i = 0; i < req.user.fanpages.length; i++) {
+                        if (req.user.fanpages[i].id.toString().localeCompare(one.ref.toString()) === 0) {
+                            proceed = true;
+                            break;
+                        }
+                    }
+                    
+                    if (proceed) {
+                        var saveit = function() {
+                            Album.update({ _id: req.body.album_id }, { special: req.body.special_type }, function(err) {
+                                if (err)
+                                    throw err;
+
+                                res.status(200).send();
+                            });
+                        };
+
+                        if (req.body.special_type === 'banner') {
+                            Album.update({ ref: one.ref, special: 'banner' }, { special: 'default' }, function(err) {
+                                if (err)
+                                    throw err;
+
+                                saveit();
+                            });
+                        } else {
+                            saveit();
+                        }
+                    } else {
+                        res.status(403).send();
+                    }
+                });
+            } else {
+                res.status(402).send();
+            }
+        }
+    });
+    
     // api para sincronização de login
     app.get('/api/login', function(req, res) {
         if (req.isAuthenticated()) {
@@ -1213,7 +1269,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     app.use(function(req, res){
         validateSubdomain(req.headers.host, res, function(menu) {
-            res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, menu: menu });
+            res.status(404).render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
             var custompage = req.url.substr(1);
             TextPage.find({ ref: userFanpage._id, path: custompage }, function(err, found) {
@@ -1223,7 +1279,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 if (found && found.length == 1) {
                     res.render('user-textpage', { link: custompage, auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, title: found[0].title, body: found[0].body });
                 } else {
-                    res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+                    res.status(404).render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
                 }
             });
         });

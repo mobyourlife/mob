@@ -14,19 +14,27 @@ block content
             p
                 div.btn-group
                     button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                        span.fa.fa-file-image-o.jump-5
-                        span.jump-5 Página padrão
+                        case item.special
+                            when 'page'
+                                span.fa.fa-star-o.jump-5
+                                span.jump-5 Página exclusiva
+                            when 'banner'
+                                span.fa.fa-exchange.jump-5
+                                span.jump-5 Banner rotativo
+                            default
+                                span.fa.fa-file-image-o.jump-5
+                                span.jump-5 Página padrão
                         span.caret
-                    ul.dropdown-menu(role='menu')
+                    ul.dropdown-menu(role='menu', data-albumid=item._id)
                         li
-                            a(href='#')
+                            a(href='#', data-action='album-special', data-special='default')
                                 span.fa.fa-file-image-o.jump-5
                                 span Página padrão
                         li
-                            a(href='#')
+                            a(href='#', data-action='album-special', data-special='page')
                                 span.fa.fa-star-o.jump-5
                                 span Página exclusiva
                         li
-                            a(href='#')
+                            a(href='#', data-action='album-special', data-special='banner')
                                 span.fa.fa-exchange.jump-5
                                 span Banner rotativo

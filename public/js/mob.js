@@ -423,4 +423,29 @@ $(document).ready(function() {
             $('form').submit();
         }
     }
+    
+    $('[data-action="album-special"]').click(function() {
+        var album_id = $(this).parent().parent().data('albumid');
+        var special_type = $(this).data('special');
+        $('body').activity();
+        
+        $.ajax(
+            {
+                url: "https://www.mobyourlife.com.br/api/set-album",
+                type: "POST",
+                dataType: 'json',
+                xhrFields: { withCredentials: true },
+                data: {
+                    album_id: album_id,
+                    special_type: special_type
+                }
+            }
+        ).always(function(res) {
+            if (res.status == 200) {
+                location.reload();
+            } else {
+                $('body').activity(false);
+            }
+        });
+    });
 });

@@ -20,6 +20,10 @@ block content
                             p #{p.facebook.about}
                         div.col-sm-3.space-vertical.space-right
                             div.row
+                                a.btn.btn-info.pull-right(href='http://' + p._id + '.mobyourlife.com.br')
+                                    span.fa.fa-external-link.jump-5
+                                    | Visualizar site
+                            div.row
                                 a.btn.btn-primary.pull-right(href='/admin/' + p._id)
                                     span.fa.fa-cog.jump-5
                                     | Administrar

@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    - var title = 'Gerenciar álbuns';
+    include user-jumbotron
+    
+    div.container
+        if fanpage.cover && fanpage.cover.path
+            h1 #{title}
+        
+        each item in albums
+            p
+                strong #{item.name}:
+            p
+                div.btn-group
+                    button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                        span.fa.fa-file-image-o.jump-5
+                        span.jump-5 Página padrão
+                        span.caret
+                    ul.dropdown-menu(role='menu')
+                        li
+                            a(href='#')
+                                span.fa.fa-file-image-o.jump-5
+                                span Página padrão
+                        li
+                            a(href='#')
+                                span.fa.fa-star-o.jump-5
+                                span Página exclusiva
+                        li
+                            a(href='#')
+                                span.fa.fa-exchange.jump-5
+                                span Banner rotativo

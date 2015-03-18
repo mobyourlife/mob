@@ -58,6 +58,7 @@ moment.locale('pt-br');
 // load up the models
 var Fanpage            = require('../models/fanpage');
 var Domain             = require('../models/domain');
+var Album              = require('../models/album');
 var Photo              = require('../models/photo');
 var Feed               = require('../models/feed');
 var Ticket             = require('../models/ticket');
@@ -212,6 +213,17 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                     return;
                 }
             }
+        });
+    });
+    
+    // gerenciar álbuns
+    app.get('/gerenciar-albuns', function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'gerenciar-albuns', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu, isowner) {
+            Album.find({ ref: userFanpage._id }, function(err, records) {
+                res.render('gerenciar-albuns', { fanpage: userFanpage, albums: records, menu: menu });
+            });
         });
     });
     

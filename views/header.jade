@@ -115,6 +115,11 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                                             span.modal-title
                                                 | Remover foto de capa
                                 li.isowner.dropdown-submenu
+                                    a(href='/gerenciar-albuns')
+                                        span.fa.fa-camera.jump-5
+                                        span.modal-title
+                                            | Gerenciar álbuns
+                                li.isowner.dropdown-submenu
                                     a(href='/paginas-estaticas')
                                         span.fa.fa-file-word-o.jump-5
                                         span.modal-title
@@ -144,6 +149,9 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                                 li.isowner
                                     a(href='/remover-foto-de-capa', onclick='return removerFotoCapa();')
                                         | Remover foto de capa
+                            li.isowner
+                                a(href='/gerenciar-albuns')
+                                    | Gerenciar álbuns
                             li.isowner
                                 a(href='/paginas-estaticas')
                                     | Páginas estáticas

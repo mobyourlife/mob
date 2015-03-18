@@ -201,10 +201,14 @@ if (process.argv.length >= 3) {
                     if (err)
                         throw err;
                     
-                    if (process.argv.length >= 5) {
-                        sync.syncFanpage(one, process.argv[4].toString());
+                    if (one) {
+                        if (process.argv.length >= 5) {
+                            sync.syncFanpage(one, process.argv[4].toString());
+                        } else {
+                            sync.syncFanpage(one);
+                        }
                     } else {
-                        sync.syncFanpage(one);
+                        console.log('Fanpage não encontrada!');
                     }
                 });
             }

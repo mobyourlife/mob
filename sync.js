@@ -47,6 +47,11 @@ module.exports = function() {
         }
 
         FB.api(albumid + '/photos', args, function(records) {
+            if (records && records.errors) {
+                console.log('## ERRO nas fotos do álbum ' + albumid);
+                console.log(records.errors);
+            }
+            
             if (records && records.data) {
                 for (i = 0; i < records.data.length; i++) {
                     /* a paginação está se repetindo, então aborta */
@@ -89,6 +94,11 @@ module.exports = function() {
         var args = { locale: 'pt_BR', fields: ['id', 'name', 'updated_time'] };
 
         FB.api(fanpage._id + '/albums', args, function(records) {
+            if (records && records.errors) {
+                console.log('## ERRO nos álbuns da fanpage ' + fanpage._id);
+                console.log(records.errors);
+            }
+            
             if (records && records.data) {
                 for (i = 0; i < records.data.length; i++) {
                     // save album info as well
@@ -131,6 +141,11 @@ module.exports = function() {
         }
 
         FB.api(fanpage._id + '/feed', args, function(records) {
+            if (records && records.errors) {
+                console.log('## ERRO no feed da fanpage ' + fanpage._id);
+                console.log(records.errors);
+            }
+            
             if (records && records.data) {
                 for (i = 0; i < records.data.length; i++) {
                     if (records.data[i].type == 'status') {
@@ -199,6 +214,11 @@ module.exports = function() {
     var fetchProfile = function(fanpage, callback) {
         console.log('Fetching profile for fanpage "' + fanpage._id + '" named "' + fanpage.facebook.name + '"...');
         FB.api(fanpage._id, { locale: 'pt_BR', fields: ['id', 'name', 'about', 'description', 'picture', 'category', 'category_list', 'is_verified', 'link', 'website', 'emails', 'checkins', 'likes', 'talking_about_count', 'were_here_count', 'phone', 'location', 'parking', 'general_info', 'hours', 'band_members', 'booking_agent', 'press_contact', 'hometown', 'company_overview', 'founded', 'mission', 'directed_by', 'attire', 'general_manager', 'price_range', 'restaurant_services', 'restaurant_specialties', 'birthday', 'payment_options'] }, function(records) {
+            if (records && records.errors) {
+                console.log('## ERRO na fanpage ' + fanpage._id);
+                console.log(records.errors);
+            }
+            
             if (records && records.name && records.name != null && records.name.length != 0) {
                 fanpage.facebook.name = records.name;
                 fanpage.facebook.about = records.about;
@@ -315,17 +335,19 @@ module.exports = function() {
     }
 
     // sync fanpage
-    var syncFanpage = function(fanpage) {
+    var syncFanpage = function(fanpage, token) {
         console.log('Processing fanpage "' + fanpage._id + '" named "' + fanpage.facebook.name + '"...');
 
         User.findOne({ '_id': fanpage.creation.user }, function(err, found) {
             var token = null;
 
-            if (found && found.fanpages && found.fanpages.length != 0) {
-                for (i = 0; i < found.fanpages.length; i++) {
-                    if (found.fanpages[i].id.localeCompare(fanpage._id) == 0) {
-                        token = found.fanpages[i].access_token;
-                        break;
+            if (!token) {
+                if (found && found.fanpages && found.fanpages.length != 0) {
+                    for (i = 0; i < found.fanpages.length; i++) {
+                        if (found.fanpages[i].id.localeCompare(fanpage._id) == 0) {
+                            token = found.fanpages[i].access_token;
+                            break;
+                        }
                     }
                 }
             }

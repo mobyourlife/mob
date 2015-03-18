@@ -192,6 +192,23 @@ if (process.argv.length >= 3) {
             sync.syncAll();
             break;
         
+        /* sync fanpage */
+        case 'syncfanpage':
+            if (process.argv.length >= 4) {
+                var page_id = process.argv[3].toString();
+                Fanpage.findOne({ _id: page_id }, function(err, one) {
+                    if (err)
+                        throw err;
+                    
+                    if (process.argv.length >= 5) {
+                        sync.syncFanpage(one, process.argv[4].toString());
+                    } else {
+                        sync.syncFanpage(one);
+                    }
+                });
+            }
+            break;
+        
         /* send welcome email */
         case 'welcome':
             if (process.argv.length >= 4) {

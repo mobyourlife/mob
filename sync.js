@@ -199,7 +199,7 @@ module.exports = function() {
     var fetchProfile = function(fanpage, callback) {
         console.log('Fetching profile for fanpage "' + fanpage._id + '" named "' + fanpage.facebook.name + '"...');
         FB.api(fanpage._id, { locale: 'pt_BR', fields: ['id', 'name', 'about', 'description', 'picture', 'category', 'category_list', 'is_verified', 'link', 'website', 'emails', 'checkins', 'likes', 'talking_about_count', 'were_here_count', 'phone', 'location', 'parking', 'general_info', 'hours', 'band_members', 'booking_agent', 'press_contact', 'hometown', 'company_overview', 'founded', 'mission', 'directed_by', 'attire', 'general_manager', 'price_range', 'restaurant_services', 'restaurant_specialties', 'birthday', 'payment_options'] }, function(records) {
-            if (records) {
+            if (records && records.name && records.name != null && records.name.length != 0) {
                 fanpage.facebook.name = records.name;
                 fanpage.facebook.about = records.about;
                 fanpage.facebook.description = records.description;

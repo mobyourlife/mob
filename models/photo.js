@@ -9,7 +9,8 @@ var photoSchema = mongoose.Schema({
     ref: { type: String, ref: 'Fanpage' },
     source: String,
     time: Date,
-    cdn: String
+    cdn: String,
+    album_id: { type: String, ref: 'Album' },
 });
 
 // export photo model

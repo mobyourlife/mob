@@ -6,6 +6,7 @@ var FB = require('fb');
 // load models
 var Fanpage = require('./models/fanpage');
 var User = require('./models/user');
+var Album = require('./models/album');
 var Photo = require('./models/photo');
 var Feed = require('./models/feed');
 
@@ -29,7 +30,7 @@ module.exports = function() {
         
     // fetch photos function
     var fetchPhotos = function(fanpage, albumid, direction, cursor, last) {
-        var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time', 'images'] };
+        var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time', 'images', 'album'] };
 
         if (direction && cursor) {
 
@@ -57,6 +58,7 @@ module.exports = function() {
                     item.ref = fanpage;
                     item.source = records.data[i].source;
                     item.time = records.data[i].updated_time;
+                    item.album_id = records.data[i].album.id;
                     
                     if (records.data[i].images && records.data[i].images.length != 0) {
                         picture = safe_image(records.data[i].images[0].source);
@@ -82,11 +84,17 @@ module.exports = function() {
     // fetch albums functions
     var fetchAlbums = function(fanpage) {
         console.log('Fetching albums for fanpage "' + fanpage._id + '" named "' + fanpage.facebook.name + '"...');
-        var args = { locale: 'pt_BR', fields: ['id'] };
+        var args = { locale: 'pt_BR', fields: ['id', 'name', 'updated_time'] };
 
         FB.api(fanpage._id + '/albums', args, function(records) {
             if (records && records.data) {
                 for (i = 0; i < records.data.length; i++) {
+                    // save album info as well
+                    Album.update({ _id: records.data[i].id }, { _id: records.data[i].id, ref: fanpage._id, name: records.data[i].name, time: records.data[i].updated_time }, { upsert: true }, function(err) {
+                        if (err)
+                            throw err;
+                    });
+                    
                     fetchPhotos(fanpage, records.data[i].id);
                 }
             }

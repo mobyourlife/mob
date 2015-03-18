@@ -115,15 +115,17 @@ module.exports = function() {
     }
     
     var fetchPhoto = function(token, page_id, photo_id, rtu_id, callback) {
-        FB.api('/v2.2/' + photo_id, { access_token: token, locale: 'pt_BR' }, function(p) {
+        FB.api('/v2.2/' + photo_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'source', 'updated_time', 'images', 'album', 'name'] }, function(p) {
             if (p.error) {
                 checkAsError(rtu_id, p.error, token);
             } else {
                 var photo = new Photo();
                 photo._id = p.id;
                 photo.ref = page_id;
-                photo.time = p.updated_time;
                 photo.source = safe_image(p.source);
+                photo.time = p.updated_time;
+                photo.name = p.name;
+                photo.album_id = p.album.id;
 
                 if (p.images && p.images.length != 0) {
                     photo.source = safe_image(p.images[0].source);

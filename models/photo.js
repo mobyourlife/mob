@@ -10,6 +10,7 @@ var photoSchema = mongoose.Schema({
     source: String,
     time: Date,
     cdn: String,
+    name: String,
     album_id: { type: String, ref: 'Album' },
 });
 

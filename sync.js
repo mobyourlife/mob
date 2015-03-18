@@ -31,7 +31,7 @@ module.exports = function() {
         
     // fetch photos function
     var fetchPhotos = function(fanpage, albumid, direction, cursor, last) {
-        var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time', 'images', 'album'] };
+        var args = { locale: 'pt_BR', fields: ['id', 'source', 'updated_time', 'images', 'album', 'name'] };
 
         if (direction && cursor) {
 
@@ -59,6 +59,7 @@ module.exports = function() {
                     item.ref = fanpage;
                     item.source = records.data[i].source;
                     item.time = records.data[i].updated_time;
+                    item.name = records.data[i].name;
                     item.album_id = records.data[i].album.id;
                     
                     if (records.data[i].images && records.data[i].images.length != 0) {

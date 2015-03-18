@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var FB = require('fb');
+var helpers = require('./bin/helpers')();
 
 // load models
 var Fanpage = require('./models/fanpage');
@@ -90,7 +91,7 @@ module.exports = function() {
             if (records && records.data) {
                 for (i = 0; i < records.data.length; i++) {
                     // save album info as well
-                    Album.update({ _id: records.data[i].id }, { _id: records.data[i].id, ref: fanpage._id, name: records.data[i].name, time: records.data[i].updated_time }, { upsert: true }, function(err) {
+                    Album.update({ _id: records.data[i].id }, { _id: records.data[i].id, ref: fanpage._id, name: records.data[i].name, path: helpers.formatAsPath(records.data[i].name) + '-' + records.data[i].id, time: records.data[i].updated_time }, { upsert: true }, function(err) {
                         if (err)
                             throw err;
                     });

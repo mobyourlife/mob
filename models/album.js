@@ -8,6 +8,7 @@ var albumSchema = mongoose.Schema({
     _id: String,
     ref: { type: String, ref: 'Fanpage' },
     name: String,
+    path: String,
     time: Date,
     special: String
 });

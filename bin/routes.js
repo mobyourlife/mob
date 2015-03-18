@@ -92,25 +92,32 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
                             if (err)
                                 throw err;
                             
-                            var menu = Array();
-                            menu.push({ path: 'inicio', text: 'Início' });
-                            menu.push({ path: 'sobre', text: 'Sobre' });
+                            Album.find({ ref: fanpage._id, special: 'page' }, function(err, albums) {
                             
-                            for (i = 0; i < found.length; i++) {
-                                menu.push({ path: found[i].path, text: found[i].title });
-                            }
-                            
-                            menu.push({ path: 'fotos', text: 'Fotos' });
-                            menu.push({ path: 'contato', text: 'Contato' });
-                            
-                            if(!fanpage.theme) {
-                                fanpage.theme = {
-                                    css: themes[0].css,
-                                    navbar: themes[0].navbar
-                                };
-                            }
-                            
-                            callbackSubdomain(fanpage, menu);
+                                var menu = Array();
+                                menu.push({ path: 'inicio', text: 'Início' });
+                                menu.push({ path: 'sobre', text: 'Sobre' });
+
+                                for (i = 0; i < found.length; i++) {
+                                    menu.push({ path: found[i].path, text: found[i].title });
+                                }
+                                
+                                for (i = 0; i < albums.length; i++) {
+                                    menu.push({ path: albums[i].path, text: albums[i].name });
+                                }
+
+                                menu.push({ path: 'fotos', text: 'Fotos' });
+                                menu.push({ path: 'contato', text: 'Contato' });
+
+                                if(!fanpage.theme) {
+                                    fanpage.theme = {
+                                        css: themes[0].css,
+                                        navbar: themes[0].navbar
+                                    };
+                                }
+
+                                callbackSubdomain(fanpage, menu);
+                            });
                         });
                     } else {
                         res.redirect('http://www.mobyourlife.com.br');

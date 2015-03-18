@@ -307,7 +307,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 var errors = req.validationErrors();
                 errors = validarTituloPagina(path, errors);
 
-                if (errors) {
+                if (errors && errors.length != 0) {
                     adminTextosEditar(req, res, {
                         path: path,
                         title: req.body.title,

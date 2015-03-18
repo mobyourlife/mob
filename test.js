@@ -3,6 +3,7 @@ var auth = require('./config/auth');
 var RTU = require('./realtime')();
 var sync = require('./sync')();
 var email = require('./bin/email')();
+var Fanpage = require('./models/fanpage');
 
 // connect to database
 var mongoose = require('mongoose');

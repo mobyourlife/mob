@@ -151,10 +151,6 @@ $(document).ready(function() {
                 if (data.fotos) {
                     data.fotos.forEach(function(f) {
                         if ($('.foto-container[data-imgid="' + f._id + '"]').length == 0) {
-                            if (($('.foto-container').length % 3) == 0) {
-                                f.name = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tristique felis at metus sodales ultrices. Nam elementum non tellus non eleifend. Donec ut urna vel lorem faucibus suscipit.';
-                            }
-                            
                             if (f.name && f.name.length >= 40) {
                                 f.name = f.name.substring(0, 40) + '...';
                             }

@@ -153,7 +153,7 @@ module.exports = function() {
     }
     
     var fetchFeed = function(token, page_id, post_id, rtu_id) {
-        FB.api('/v2.2/' + post_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'updated_time', 'story', 'picture', 'source', 'link', 'type', 'name', 'caption', 'description', 'message', 'object_id'] }, function(f) {
+        FB.api('/v2.2/' + post_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'updated_time', 'story', 'picture', 'source', 'link', 'type', 'name', 'caption', 'description', 'message', 'object_id', 'actions'] }, function(f) {
             if (f.error) {
                 checkAsError(rtu_id, f.error, token);
             } else {

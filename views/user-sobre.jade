@@ -27,3 +27,13 @@ block content
         div(style='text-align:justify;')
             p #{fanpage.facebook.about}
             p #{fanpage.facebook.description}
+            
+            if fanpage.facebook.info
+                if fanpage.facebook.info.company
+                    if fanpage.facebook.info.company.mission
+                        h2 Missão
+                        p #{fanpage.facebook.info.company.mission}
+                    
+                    if fanpage.facebook.info.company.company_overview
+                        h2 Visão
+                        p #{fanpage.facebook.info.company.company_overview}

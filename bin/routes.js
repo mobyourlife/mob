@@ -134,13 +134,31 @@ validateEmail = function(uri, res, callback) {
     });
 }
 
+getUserPages = function(req, callback) {
+    var pages = [];
+    
+    if (callback) {
+        if (req.isAuthenticated() && req.user.fanpages && req.user.fanpages.length && req.user.fanpages.length != 0) {
+            for (i = 0; i < req.user.fanpages.length; i++) {
+                pages.push(req.user.fanpages[i].id);
+            }
+        }
+
+        Fanpage.find({ _id: { "$in": pages } }, function(err, records) {
+            callback(records.length);
+        });
+    }
+}
+
 // app/routes.js
 module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection, parseForm) {
 
     // início
     app.get('/', function(req, res) {
         validateSubdomain(req.headers.host, res, function(menu) {
-            res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, menu: menu });
+            getUserPages(req, function(page_count) {
+                res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, menu: menu, pageCount: page_count });
+            });
         }, function(userFanpage, menu) {
             res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
@@ -466,7 +484,9 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     app.get('/conheca', function(req, res) {
         validateSubdomain(req.headers.host, res, function(menu) {
-            res.render('conheca', { link: 'conheca', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+            getUserPages(req, function(page_count) {
+                res.render('conheca', { link: 'conheca', auth: req.isAuthenticated(), user: req.user, menu: topMenu, pageCount: page_count });
+            });
         }, function(userFanpage, menu) {
             res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
@@ -481,6 +501,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     });
     
     // como funciona
+    /*
     app.get('/como-funciona', function(req, res) {
         validateSubdomain(req.headers.host, res, function(menu) {
             res.render('como-funciona', { link: 'como-funciona', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
@@ -488,11 +509,14 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
     });
+    */
     
     // preços
     app.get('/precos', function(req, res) {
         validateSubdomain(req.headers.host, res, function(menu) {
-            res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), monthly: ((sensitive.price / 12).formatMoney()), maint_fees: sensitive.maint_fees.formatMoney(), menu: topMenu });
+            getUserPages(req, function(page_count) {
+                res.render('precos', { link: 'precos', auth: req.isAuthenticated(), user: req.user, price: sensitive.price.formatMoney(), monthly: ((sensitive.price / 12).formatMoney()), maint_fees: sensitive.maint_fees.formatMoney(), menu: topMenu, pageCount: page_count });
+            });
         }, function(userFanpage, menu) {
             res.render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
@@ -504,7 +528,9 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                
     // dúvidas frequentes
     app.get('/duvidas-frequentes', function(req, res) {
-        res.render('duvidas-frequentes', { link: 'duvidas-frequentes', auth: req.isAuthenticated(), user: req.user, menu: topMenu });
+        getUserPages(req, function(page_count) {
+            res.render('duvidas-frequentes', { link: 'duvidas-frequentes', auth: req.isAuthenticated(), user: req.user, menu: topMenu, pageCount: page_count });
+        });
     });
     
     app.get('/duvidas', function(req, res) {
@@ -548,7 +574,9 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
         }
         
         validateSubdomain(req.headers.host, res, function(menu) {
-            res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: menu, fields: fields, csrfToken: req.csrfToken() });
+            getUserPages(req, function(page_count) {
+                res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: menu, fields: fields, csrfToken: req.csrfToken(), pageCount: page_count });
+            });
         }, function(userFanpage, menu) {
             res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, fields: fields, csrfToken: req.csrfToken() });
         });
@@ -556,48 +584,50 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     
     // enviar email
     app.post('/contato', parseForm, csrfProtection, function(req, res) {
-        validateEmail(req.headers.host, res, function(userFanpage, receiver_email) {
-            req.checkBody('name', 'Digite o seu nome!').notEmpty();
-            req.checkBody('email', 'Digite o seu endereço de email!').notEmpty();
-            req.checkBody('message', 'Digite a sua mensagem!').notEmpty();
+        getUserPages(req, function(page_count) {
+            validateEmail(req.headers.host, res, function(userFanpage, receiver_email) {
+                req.checkBody('name', 'Digite o seu nome!').notEmpty();
+                req.checkBody('email', 'Digite o seu endereço de email!').notEmpty();
+                req.checkBody('message', 'Digite a sua mensagem!').notEmpty();
 
-            var errors = req.validationErrors();
+                var errors = req.validationErrors();
 
-            var fields = {
-                name: req.body.name,
-                email: req.body.email,
-                message: req.body.message
-            };
-            
-            if (!receiver_email) {
-                if (!errors)
-                    errors = [];
-                
-                errors.push({
-                    param: '',
-                    msg: 'Problemas no envio de email! Por favor entre em contato conosco através de nossa fanpage!',
-                    value: ''
-                });
-            }
+                var fields = {
+                    name: req.body.name,
+                    email: req.body.email,
+                    message: req.body.message
+                };
 
-            if (errors && errors.length != 0) {
-                res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken(), fanpage: userFanpage });
-            } else {
-                email.enviarEmail(req.body.name, req.body.email, req.body.message, receiver_email, function() {
-                    res.render('contato-sucesso', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, fanpage: userFanpage });
-                }, function(err) {
+                if (!receiver_email) {
                     if (!errors)
                         errors = [];
 
                     errors.push({
                         param: '',
-                        msg: 'Erro ao tentar enviar o email! Por favor tente novamente mais tarde! Erro: ' + err,
+                        msg: 'Problemas no envio de email! Por favor entre em contato conosco através de nossa fanpage!',
                         value: ''
                     });
+                }
 
-                    res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken(), fanpage: userFanpage });
-                });
-            }
+                if (errors && errors.length != 0) {
+                    res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken(), fanpage: userFanpage, pageCount: page_count });
+                } else {
+                    email.enviarEmail(req.body.name, req.body.email, req.body.message, receiver_email, function() {
+                        res.render('contato-sucesso', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, fanpage: userFanpage });
+                    }, function(err) {
+                        if (!errors)
+                            errors = [];
+
+                        errors.push({
+                            param: '',
+                            msg: 'Erro ao tentar enviar o email! Por favor tente novamente mais tarde! Erro: ' + err,
+                            value: ''
+                        });
+
+                        res.render('contato', { link: 'contato', auth: req.isAuthenticated(), user: req.user, menu: topMenu, errors: errors, fields: fields, csrfToken: req.csrfToken(), fanpage: userFanpage, pageCount: page_count });
+                    });
+                }
+            });
         });
     });
     

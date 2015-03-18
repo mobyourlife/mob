@@ -10,11 +10,7 @@ block content
                 h1 Contato
                 p Fale direto com a nossa equipe em caso de dúvidas, críticas ou sugestões!
                 if !fanpage
-                    p
-                        a.btn.btn-xl.btn-jumbo(href='/login', data-role='button')
-                            span Crie seu novo site agora
-                            span.jump-5
-                            span.fa.fa-arrow-right
+                    include call-to-action
 
     div.container
         if errors

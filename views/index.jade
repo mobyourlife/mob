@@ -6,11 +6,7 @@ block content
         div.container
             h1 Bem-vindo à facilidade!
             p Diferente e único: o Mob Your Life cria e atualiza seu novo site automaticamente através de seu Facebook!
-            p
-                a.btn.btn-xl.btn-jumbo(href='/login', data-role='button')
-                    span Crie seu novo site agora
-                    span.jump-5
-                    span.fa.fa-arrow-right
+            include call-to-action
     
     //- Caixas de apresentação
     div.container
@@ -46,7 +42,13 @@ block content
             div.col-md-12
                 hr
                 p
-                    a.btn.btn-xxl.btn-jumbo(href='/login', data-role='button')
-                        span Crie seu novo site agora
-                        span.jump-5
-                        span.fa.fa-arrow-right
+                    if pageCount == 0
+                        a.btn.btn-xxl.btn-jumbo(href='/login', data-role='button')
+                            span Crie seu novo site agora
+                            span.jump-5
+                            span.fa.fa-arrow-right
+                    else
+                        a.btn.btn-xxl.btn-jumbo(href='/novo-site', data-role='button')
+                            span Crie mais um site agora
+                            span.jump-5
+                            span.fa.fa-plus

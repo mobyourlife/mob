@@ -1,0 +1,15 @@
+p
+    if pageCount == 0
+        a.btn.btn-xl.btn-jumbo(href='/login', data-role='button')
+            span Crie seu novo site agora
+            span.jump-5
+            span.fa.fa-arrow-right
+    else
+        a.btn.btn-xl.btn-jumbo.jump-5(href='/meus-sites', data-role='button')
+            span Veja seus sites
+            span.jump-5
+            span.fa.fa-arrow-right
+        a.btn.btn-xl.btn-jumbo(href='/novo-site', data-role='button')
+            span Crie mais um site
+            span.jump-5
+            span.fa.fa-plus

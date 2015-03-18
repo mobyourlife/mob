@@ -146,13 +146,12 @@ $(document).ready(function() {
         
         $fotos.activity();
         
-        
         $.get('/api/fotos' + (album && album != 'fotos' ? '-' + album : '') + compl, function(data) {
             if (data) {
                 if (data.fotos) {
                     data.fotos.forEach(function(f) {
                         if ($('.foto-container[data-imgid="' + f._id + '"]').length == 0) {
-                            $fotos.append('<div class="foto-container col-xs-12 col-sm-6 col-md-4 col-lg-4 text-center" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '" data-imgsrc="' + (f.cdn ? f.cdn : f.source) + '"><div class="foto" style="background-image: url(\'' + (f.cdn ? f.cdn : f.source) + '\');"><img src="/img/blank-4x3.png" alt="Mob Your Life"/></div></div>');
+                            $fotos.append('<div class="foto-container col-xs-12 col-sm-6 col-md-4 col-lg-4 text-center" data-imgid="' + f._id + '" data-imgtime="' + moment(f.time).unix() + '" data-imgsrc="' + (f.cdn ? f.cdn : f.source) + '"><div class="foto" style="background-image: url(\'' + (f.cdn ? f.cdn : f.source) + '\');"><img src="/img/blank-4x3.png" alt="Mob Your Life"/></div>' + (f.name ? f.name : '&nbsp;') + '</div>');
                             $('.foto-container[data-imgid="' + f._id + '"]').click(fullScreen);
                         }
                     });

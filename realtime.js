@@ -164,7 +164,13 @@ module.exports = function() {
                 feed.story = f.story;
                 feed.picture = safe_image(f.picture);
                 feed.source = safe_image(f.source);
-                feed.link = f.link;
+                
+                if (f.type === 'status' && f.actions) {
+                    feed.link = f.actions[0].link;
+                } else {
+                    feed.link = f.link;
+                }
+                
                 feed.type = f.type;
                 feed.name = f.name;
                 feed.caption = f.caption;

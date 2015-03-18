@@ -142,9 +142,12 @@ $(document).ready(function() {
             compl = '/' + last.data('imgtime');
         }
         
+        var album = location.href.substring(location.href.lastIndexOf('/') + 1).split('#')[0];
+        
         $fotos.activity();
         
-        $.get('/api/fotos' + compl, function(data) {
+        
+        $.get('/api/fotos' + (album && album != 'fotos' ? '-' + album : '') + compl, function(data) {
             if (data) {
                 if (data.fotos) {
                     data.fotos.forEach(function(f) {

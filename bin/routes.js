@@ -1091,8 +1091,41 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 filter.time = { $lte: moment.unix(req.params.before).format() };
             }
             
-            Photo.find(filter).limit(15).sort('-time').exec(function(err, found) {
-                res.send({ fotos: found });
+            Album.find({ ref: userFanpage._id, special: { '$in': [null, 'default'] } }, function(err, list) {
+                var albums = [];
+                
+                if (list) {
+                    for (i = 0; i < list.length; i++) {
+                        albums.push(list[i]._id);
+                    }
+                }
+                
+                filter.album_id = { '$in': albums };
+                
+                Photo.find(filter).limit(15).sort('-time').exec(function(err, found) {
+                    res.send({ fotos: found });
+                });
+            });
+        });
+    });
+    
+    app.get('/api/fotos-:album/:before?', function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            var filter = { ref: userFanpage._id };
+            
+            if (req.params.before) {
+                filter.time = { $lte: moment.unix(req.params.before).format() };
+            }
+            
+            Album.findOne({ ref: userFanpage._id, path: req.params.album }, function(err, one) {
+                if (one) {
+                    filter.album_id = one._id;
+                    Photo.find(filter).limit(15).sort('-time').exec(function(err, found) {
+                        res.send({ fotos: found });
+                    });
+                }
             });
         });
     });
@@ -1286,7 +1319,13 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 if (found && found.length == 1) {
                     res.render('user-textpage', { link: custompage, auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, title: found[0].title, body: found[0].body });
                 } else {
-                    res.status(404).render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+                    Album.findOne({ ref: userFanpage._id, special: 'page', path: custompage }, function(err, one) {
+                        if (one) {
+                            res.render('user-fotos', { link: one.path, auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, customTitle: one.name });
+                        } else {
+                            res.status(404).render('404', { link: '404', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+                        }
+                    });
                 }
             });
         });

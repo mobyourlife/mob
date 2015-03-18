@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    - var title = 'Fotos';
+    - var title = customTitle ? customTitle : 'Fotos';
     include user-jumbotron
     
     div.container.page-empty

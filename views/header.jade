@@ -27,7 +27,7 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
             if !fanpage
                 div.navbar-form.navbar-right
                     if auth === true
-                        div.btn-group.hidden-xs.hidden-sm
+                        div.btn-group.hidden-xs
                             button.btn.btn-jumbo.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
                                 span.hidden-lg
                                     span.fa.fa-wrench.jump-5
@@ -51,7 +51,7 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                                     a(href='/sair')
                                         span.fa.fa-sign-out.jump-5
                                         | Sair
-                        ul.nav.navbar-nav.visible-xs.visible-sm
+                        ul.nav.navbar-nav.visible-xs
                             if isAdmin
                                 li
                                     a(href='/admin')
@@ -82,7 +82,7 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                                     span.fa.fa-bell
                                     span.label.label-danger(style='border-radius:1em;position:absolute;top:12px;right:2px')
                                         | 8
-                        div.btn-group.hidden-xs.hidden-sm
+                        div.btn-group.hidden-xs
                             button.btn.btn-jumbo.dropdown-toggle#usermenu(type='button', data-toggle='dropdown', aria-expanded='false')
                                 span.hidden-lg
                                     span.fa.fa-wrench.jump-5
@@ -133,7 +133,7 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                                     a(href='http://www.mobyourlife.com.br/sair')
                                         span.fa.fa-sign-out.jump-5
                                         | Sair
-                        ul.nav.navbar-nav.visible-xs.visible-sm
+                        ul.nav.navbar-nav.visible-xs
                             li.isowner
                                 a(href='/aparencia')
                                     | Aparência

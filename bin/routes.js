@@ -695,7 +695,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     // administração, página protegida a administradores da fanpage do Mob Your Life
     app.get('/admin', isLoggedIn, isAdmin, function(req, res) {
         Fanpage.find({}, function(err, records) {
-            res.render('admin', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customers: records, menu: topMenu });
+            res.render('admin', { auth: req.isAuthenticated(), user: req.user, isAdmin: validateAdmin(req.user), customers: records, menu: topMenu, moment: moment });
         });
     });
     

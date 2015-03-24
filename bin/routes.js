@@ -88,6 +88,12 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
                 Fanpage.findOne({'_id': found.ref}, function(err, found) {
                     if (found) {
                         var fanpage = found;
+                        
+                        if (fanpage.billing.expiration <= Date.now()) {
+                            res.render('expired', { fanpage: fanpage });
+                            return;
+                        }
+                        
                         TextPage.find({ ref: fanpage._id }, function(err, found) {
                             if (err)
                                 throw err;

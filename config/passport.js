@@ -85,7 +85,10 @@ module.exports = function(passport) {
                     newUser._id    = profile.id; // set the users facebook id                   
                     newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
                     newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                    newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                    
+                    if (profile.emails && profile.emails.length && profile.emails.length > 0) {
+                        newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                    }
                     
                     FB.api('/me/accounts', { locale: 'pt_BR', fields: ['id', 'name', 'access_token', 'category', 'category_list', 'perms'] }, function(records) {
                         if (records) {

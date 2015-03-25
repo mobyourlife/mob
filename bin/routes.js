@@ -824,9 +824,11 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                                     filename = '/var/www/mob/email/bem-vindo.html';
                                 }
                                 
-                                email.montarEmail(filename, newFanpage._id, function(html, user_email) {
-                                    email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, user_email);
-                });
+                                if (req.user.facebook.email) {
+                                    email.montarEmail(filename, newFanpage._id, function(html, user_email) {
+                                        email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, user_email);
+                                    });
+                                }
 
                                 // if successful, redirects to new website
                                 var goto = 'http://' + domain._id;

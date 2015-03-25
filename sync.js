@@ -369,7 +369,9 @@ module.exports = function() {
 
         Fanpage.find({}, function(err, foundFanpages) {
             foundFanpages.forEach(function(fanpage) {
-                syncFanpage(fanpage);
+                if (fanpage.billing.expiration > Date.now()) {
+                    syncFanpage(fanpage);
+                }
             });
         });
     }

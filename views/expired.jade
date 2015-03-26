@@ -3,10 +3,7 @@ html
     head
         block head
             block title
-                if fanpage
-                    title #{fanpage.facebook.name}
-                else
-                    title Mob Your Life
+                title #{fanpage.facebook.name}
         block meta
             meta(charset='utf-8')
             meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -33,10 +30,13 @@ body
                     p
                         img(src='/img/oops.png', alt='Que pena!')
                     h1.cover-heading
+                        | #{fanpage.facebook.name}
+                    h2.cover-heading
                         | Que pena!
                     p.lead
-                        | Estamos fora do ar por motivos administrativos.
-                    p.lead Em caso de dúvida nos contate através de nossa fanpage.
+                        | Este site está fora do ar por motivos administrativos.
+                    p.lead
+                        | Crie seu novo site com o Mob Your Life, venha fazer um teste gratuito!
                     p
                         a.btn.btn-primary.btn-lg(href='https://www.mobyourlife.com.br/login')
                             span Crie seu novo site com o Mob Your Life!

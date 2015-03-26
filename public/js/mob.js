@@ -280,22 +280,48 @@ $(document).ready(function() {
             $('.jumbotron').empty().append('<div id="adjustable"><a id="resizeCover" class="btn btn-info fa-2x glyphicon glyphicon-resize-vertical" title="Clique e arraste para redimensionar"></a> <a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk" title="Salvar a capa atual"></a>  <a id="cancelCover" class="btn btn-danger fa-2x resize glyphicon glyphicon-remove" title="Cancelar"></a></div>');
             $('.jumbotron').addClass('adjustable');
             
-            $('#resizeCover').mousedown(function(event) {
+            var handleResizeStart = function(clientY) {
                 $resizing = true;
-                $origin_y = event.clientY;
+                $origin_y = clientY;
                 $origin_h = $('.jumbotron').height();
-            });
+            }
             
-            $('body').mouseup(function(event) {
+            var handleResizeMove = function(clientY) {
+                if ($resizing === true) {
+                    dif = clientY - $origin_y;
+                    $('.jumbotron').height($origin_h + dif);
+                }
+            }
+            
+            var handleResizeFinish = function() {
                 $resizing = false;
+            }
+            
+            $('#resizeCover').mousedown(function(event) {
+                handleResizeStart(event.clientY);
             });
             
             $('body').mousemove(function(event) {
-                if ($resizing === true) {
-                    dif = event.clientY - $origin_y;
-                    $('.jumbotron').height($origin_h + dif);
-                }
+                handleResizeMove(event.clientY);
             });
+            
+            $('body').mouseup(function(event) {
+                handleResizeFinish();
+            });
+            
+            if ("ontouchstart" in window) {
+                $('#resizeCover').bind('touchstart', function(event) {
+                    handleResizeStart(event.originalEvent.touches[0].clientY);
+                });
+
+                $('body').bind('touchmove', function(event) {
+                    handleResizeMove(event.originalEvent.touches[0].clientY);
+                });
+
+                $('body').bind('touchend', function(event) {
+                    handleResizeFinish();
+                });
+            }
 
             $('#saveCover').click(function() {
                 $('.jumbotron').empty().activity();

@@ -6,6 +6,7 @@ var sync = require('./sync')();
 var Fanpage = require('./models/fanpage');
 var Feed = require('./models/feed');
 var Photo = require('./models/photo');
+var Video = require('./models/video');
 var User = require('./models/user');
 var Update = require('./models/update');
 
@@ -154,6 +155,58 @@ module.exports = function() {
         });
     }
     
+    var fetchVideo = function(token, page_id, feed, rtu_id, callback) {
+        var callbackVideo = function() {
+            if (rtu_id) {
+                checkAsUpdated(rtu_id, function() {
+                    if (callback) {
+                        callback();
+                    }
+                });
+            } else {
+                if (callback) {
+                    callback();
+                }
+            }
+        }
+        
+        var saveVideo = function(video) {
+            Video.update({ _id: video._id }, video.toObject(), { upsert: true }, function(err) {
+                if (err)
+                    throw err;
+
+                callbackVideo();
+            });
+        }
+        
+        /* check if it's a FB video */
+        if (feed.object_id) {
+            FB.api('/v2.2/' + feed.object_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'updated_time', 'description', 'name'] }, function(fbvid) {
+                if (fbvid) {
+                    var video = new Video();
+                    video._id = fbvid.id;
+                    video.ref = page_id;
+                    video.time = fbvid.updated_time;
+                    video.name = fbvid.name;
+                    video.description = fbvid.description;
+                    saveVideo(video);
+                } else {
+                    callbackVideo();
+                }
+            });
+        } else {
+            /* or an external video */
+            var video = new Video();
+            video._id = feed.id;
+            video.ref = page_id;
+            video.time = feed.updated_time;
+            video.name = feed.name;
+            video.description = feed.description;
+            video.link = feed.link;
+            saveVideo(video);
+        }
+    }
+    
     var fetchFeed = function(token, page_id, post_id, rtu_id) {
         FB.api('/v2.2/' + post_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'updated_time', 'story', 'picture', 'source', 'link', 'type', 'name', 'caption', 'description', 'message', 'object_id', 'actions'] }, function(f) {
             if (f.error) {
@@ -194,10 +247,20 @@ module.exports = function() {
                         });
                         break;
                     
+                    case 'video':
+                        fetchVideo(token, page_id, feed, null, function(picture) {
+                            Feed.update({ _id: feed._id }, feed.toObject(), { upsert: true }, function(err) {
+                                if (err)
+                                    throw err;
+                        
+                                checkAsUpdated(rtu_id);
+                            });
+                        });
+                        break;
+                    
                     case 'share':
                     case 'status':
                     case 'link':
-                    case 'video':
                     case 'post':
                         Feed.update({ _id: feed._id }, feed.toObject(), { upsert: true }, function(err) {
                             if (err)

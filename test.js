@@ -214,6 +214,11 @@ if (process.argv.length >= 3) {
             }
             break;
         
+        /* sync existing videos */
+        case 'syncvids':
+            RTU.syncExistingVideos();
+            break;
+        
         /* send welcome email */
         case 'welcome':
             if (process.argv.length >= 4) {

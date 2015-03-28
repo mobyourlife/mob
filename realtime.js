@@ -189,6 +189,7 @@ module.exports = function() {
                     video.time = fbvid.updated_time;
                     video.name = fbvid.name;
                     video.description = fbvid.description;
+                    video.link = 'https://www.facebook.com/video.php?v=' + feed.object_id;
                     saveVideo(video);
                 } else {
                     callbackVideo();
@@ -205,6 +206,38 @@ module.exports = function() {
             video.link = feed.link;
             saveVideo(video);
         }
+    }
+    
+    // sync existing videos
+    var syncExistingVideos = function() {
+        console.log('Syncing existing videos');
+        
+        Feed.find({ type: 'video' }, function(err, found) {
+            if (err)
+                throw err;
+
+            found.forEach(function(item) {
+                Fanpage.findOne({ _id: item.ref }, function(err, fp) {
+                    if (err)
+                        throw err;
+                    
+                    User.findOne({ _id: fp.creation.user }, function(err, user) {
+                        if (err)
+                            throw err;
+                        
+                        if (user) {
+                            if (user.fanpages) {
+                                for (i = 0; i < user.fanpages.length; i++) {
+                                    if (user.fanpages[i].id === fp._id) {
+                                        fetchVideo(user.fanpages[i].access_token, item.ref, item);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+            });
+        });
     }
     
     var fetchFeed = function(token, page_id, post_id, rtu_id) {
@@ -369,6 +402,7 @@ module.exports = function() {
     }
 
     return {
-        syncPending: syncPending
+        syncPending: syncPending,
+        syncExistingVideos: syncExistingVideos
     }
 }

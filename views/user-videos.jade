@@ -1,0 +1,28 @@
+extends layout
+
+block content
+    - var title = 'Vídeos';
+    include user-jumbotron
+    
+    div.container.page-empty
+        div.text-center
+            div.isowner
+                p
+                    img(src='/img/sad.png', alt='Ah não!')
+                h2 Nenhum vídeo!
+                p Este site está tão triste sem nenhum vídeo! Que tal publicar o seu primeiro agora?
+                p
+                    a.btn.btn-primary.btn-lg(href='https://www.facebook.com/' + fanpage.id, target='_blank')
+                        span.fa.fa-facebook.jump-5
+                        span Publique com o Facebook
+            div.isnotowner
+                p
+                    img(src='/img/happy.png', alt='Olá!')
+                h2 Seja bem-vindo!
+                p Parece que este site é novo e ainda não tem nenhum vídeo. Volte mais tarde para conferir as novidades!
+                p
+                    a.btn.btn-primary.btn-lg(href='https://www.facebook.com/' + fanpage.id, target='_blank')
+                        span.fa.fa-facebook.jump-5
+                        span Curta-nos no Facebook
+    
+    div.container.page-rows.videos

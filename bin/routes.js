@@ -60,6 +60,7 @@ var Fanpage            = require('../models/fanpage');
 var Domain             = require('../models/domain');
 var Album              = require('../models/album');
 var Photo              = require('../models/photo');
+var Video              = require('../models/video');
 var Feed               = require('../models/feed');
 var Ticket             = require('../models/ticket');
 var TextPage           = require('../models/textpage');
@@ -113,6 +114,7 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
                                 }
 
                                 menu.push({ path: 'fotos', text: 'Fotos' });
+                                menu.push({ path: 'videos', text: 'Vídeos' });
                                 menu.push({ path: 'contato', text: 'Contato' });
 
                                 if(!fanpage.theme) {
@@ -508,6 +510,15 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, menu: menu });
         }, function(userFanpage, menu) {
             res.render('user-fotos', { link: 'fotos', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+        });
+    });
+
+    // vídeos
+    app.get('/videos', function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            res.render('user-videos', { link: 'videos', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
         });
     });
     
@@ -1134,6 +1145,23 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                         res.send({ fotos: found });
                     });
                 }
+            });
+        });
+    });
+    
+    // api para consulta dos vídeos
+    app.get('/api/videos/:before?', function(req, res) {
+        validateSubdomain(req.headers.host, res, function(menu) {
+            res.render('404', { link: 'opcoes', auth: req.isAuthenticated(), user: req.user, menu: menu });
+        }, function(userFanpage, menu) {
+            var filter = { ref: userFanpage._id };
+            
+            if (req.params.before) {
+                filter.time = { $lte: moment.unix(req.params.before).format() };
+            }
+            
+            Video.find(filter).limit(15).sort('-time').exec(function(err, found) {
+                res.send({ videos: found });
             });
         });
     });

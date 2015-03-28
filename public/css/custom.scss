@@ -203,6 +203,13 @@ div.container.fotos {
     }
 }
 
+div.container.videos {
+    div.video-container {
+        margin-bottom: 2em;
+        cursor: pointer;
+    }
+}
+
 #toTop{
 	position: fixed;
 	bottom: 10px;

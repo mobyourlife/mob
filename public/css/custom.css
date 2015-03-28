@@ -199,7 +199,12 @@ div.container.fotos div.foto {
     width: 100%;
     height: auto; }
 
-/* line 206, D:/Repos/mob/public/css/custom.scss */
+/* line 207, D:/Repos/mob/public/css/custom.scss */
+div.container.videos div.video-container {
+  margin-bottom: 2em;
+  cursor: pointer; }
+
+/* line 213, D:/Repos/mob/public/css/custom.scss */
 #toTop {
   position: fixed;
   bottom: 10px;
@@ -207,7 +212,7 @@ div.container.fotos div.foto {
   cursor: pointer;
   display: none; }
 
-/* line 214, D:/Repos/mob/public/css/custom.scss */
+/* line 221, D:/Repos/mob/public/css/custom.scss */
 div#fullscreen {
   position: fixed;
   top: 0;
@@ -220,18 +225,18 @@ div#fullscreen {
   background-size: contain;
   background-position: center; }
 
-/* line 227, D:/Repos/mob/public/css/custom.scss */
+/* line 234, D:/Repos/mob/public/css/custom.scss */
 .embed-half {
   width: 100vw;
   height: 100vh; }
-  /* line 231, D:/Repos/mob/public/css/custom.scss */
+  /* line 238, D:/Repos/mob/public/css/custom.scss */
   .embed-half > div {
     width: 80vw;
     height: 80vh;
     max-width: 80vw;
     max-height: 80vh;
     margin: 0 auto; }
-  /* line 239, D:/Repos/mob/public/css/custom.scss */
+  /* line 246, D:/Repos/mob/public/css/custom.scss */
   .embed-half > a.closeFullScreen {
     position: fixed;
     top: 0px;
@@ -241,49 +246,49 @@ div#fullscreen {
     text-decoration: none;
     cursor: pointer; }
 
-/* line 250, D:/Repos/mob/public/css/custom.scss */
+/* line 257, D:/Repos/mob/public/css/custom.scss */
 .lead {
   font-size: 33px;
   margin-bottom: 0px; }
 
-/* line 260, D:/Repos/mob/public/css/custom.scss */
+/* line 267, D:/Repos/mob/public/css/custom.scss */
 div.faq > section > p {
   margin-bottom: 2em; }
 
-/* line 267, D:/Repos/mob/public/css/custom.scss */
+/* line 274, D:/Repos/mob/public/css/custom.scss */
 .theme-box {
   margin-bottom: 2em; }
-  /* line 270, D:/Repos/mob/public/css/custom.scss */
+  /* line 277, D:/Repos/mob/public/css/custom.scss */
   .theme-box button {
     margin: 0 5px; }
 
-/* line 275, D:/Repos/mob/public/css/custom.scss */
+/* line 282, D:/Repos/mob/public/css/custom.scss */
 .page-empty, .page-rows {
   display: none; }
 
-/* line 279, D:/Repos/mob/public/css/custom.scss */
+/* line 286, D:/Repos/mob/public/css/custom.scss */
 .tour-backdrop {
   z-index: 98; }
 
-/* line 283, D:/Repos/mob/public/css/custom.scss */
+/* line 290, D:/Repos/mob/public/css/custom.scss */
 .tour-step-backdrop {
   z-index: 99; }
 
-/* line 287, D:/Repos/mob/public/css/custom.scss */
+/* line 294, D:/Repos/mob/public/css/custom.scss */
 .tour-step-background {
   z-index: 98; }
 
-/* line 291, D:/Repos/mob/public/css/custom.scss */
+/* line 298, D:/Repos/mob/public/css/custom.scss */
 .popover[class*="tour-"] {
   z-index: 98; }
 
-/* line 295, D:/Repos/mob/public/css/custom.scss */
+/* line 302, D:/Repos/mob/public/css/custom.scss */
 .tos {
   text-align: justify; }
-  /* line 298, D:/Repos/mob/public/css/custom.scss */
+  /* line 305, D:/Repos/mob/public/css/custom.scss */
   .tos ol {
     font-size: 20px; }
-    /* line 302, D:/Repos/mob/public/css/custom.scss */
+    /* line 309, D:/Repos/mob/public/css/custom.scss */
     .tos ol li ol {
       font-size: 14px; }
 

@@ -17,7 +17,12 @@ each f in feeds
                             iframe.embed-responsive-item(src=video)
                     default
                         a(href=f.link, target='_blank')
-                            img(src=f.cdn ? f.cdn : f.picture)
+                            if f.cdn
+                                img(src=f.cdn)
+                            else if f.source
+                                img(src=f.source)
+                            else
+                                img(src=f.picture)
             div.timeline-body
                 p
                     if f.name

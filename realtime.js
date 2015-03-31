@@ -157,6 +157,17 @@ module.exports = function() {
     
     var fetchVideo = function(token, page_id, feed, rtu_id, callback) {
         var callbackVideo = function() {
+            Video.find({ ref: page_id }, function(err, allvids) {
+                if (err)
+                    throw err;
+                
+                console.log('Total de ' + allvids.length + ' videos na fanpage ' + page_id);
+                Fanpage.update({ _id: page_id }, { video_count: allvids.length }, function(err) {
+                    if (err)
+                        throw err;
+                });
+            });
+            
             if (rtu_id) {
                 checkAsUpdated(rtu_id, function() {
                     if (callback) {

@@ -114,7 +114,11 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
                                 }
 
                                 menu.push({ path: 'fotos', text: 'Fotos' });
-                                menu.push({ path: 'videos', text: 'Vídeos' });
+                                
+                                if (fanpage.video_count && fanpage.video_count > 0) {
+                                    menu.push({ path: 'videos', text: 'Vídeos' });
+                                }
+                                
                                 menu.push({ path: 'contato', text: 'Contato' });
 
                                 if(!fanpage.theme) {

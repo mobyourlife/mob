@@ -119,7 +119,8 @@ var fanpageSchema = mongoose.Schema({
         active: Boolean,
         evaluation: Boolean,
         expiration: Date
-    }
+    },
+    video_count: Number
 });
 
 // export user model

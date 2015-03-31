@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var FB = require('fb');
 var sync = require('./sync')();
+var helpers = require('./bin/helpers')();
 
 // init models
 var Fanpage = require('./models/fanpage');
@@ -111,6 +112,17 @@ module.exports = function() {
             
             if (callback) {
                 callback();
+            }
+        });
+    }
+    
+    var fetchAlbum = function(token, page_id, album_id) {
+        FB.api('/v2.2/' + album_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'name', 'updated_time'] }, function(info) {
+            if (info) {
+                Album.update({ _id: album_id }, { name: info.name, time: info.updated_time, ref: page_id, path: helpers.formatAsPath(records.data[i].name) + '-' + records.data[i].id }, function(err) {
+                    if (err)
+                        throw err;
+                });
             }
         });
     }

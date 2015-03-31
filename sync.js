@@ -210,6 +210,12 @@ module.exports = function() {
         });
     }
     
+    var formatLineBreaks = function(s) {
+        if (s) {
+            return s.replace('\n', '<br/>');
+        }
+    }
+    
     // sync profile
     var fetchProfile = function(fanpage, callback) {
         console.log('Fetching profile for fanpage "' + fanpage._id + '" named "' + fanpage.facebook.name + '"...');
@@ -221,8 +227,8 @@ module.exports = function() {
             
             if (records && records.name && records.name != null && records.name.length != 0) {
                 fanpage.facebook.name = records.name;
-                fanpage.facebook.about = records.about;
-                fanpage.facebook.description = records.description;
+                fanpage.facebook.about = formatLineBreaks(records.about);
+                fanpage.facebook.description = formatLineBreaks(records.description);
                 
                 if (records.picture && records.picture.data) {
                     fanpage.facebook.picture = records.picture.data.url;
@@ -276,9 +282,9 @@ module.exports = function() {
                 fanpage.facebook.info.band.hometown = records.hometown;
 
                 /* company */
-                fanpage.facebook.info.company.company_overview = records.company_overview;
+                fanpage.facebook.info.company.company_overview = formatLineBreaks(records.company_overview);
                 fanpage.facebook.info.company.founded = records.founded;
-                fanpage.facebook.info.company.mission = records.mission;
+                fanpage.facebook.info.company.mission = formatLineBreaks(records.mission);
 
                 /* film */
                 fanpage.facebook.info.film.directed_by = records.directed_by;

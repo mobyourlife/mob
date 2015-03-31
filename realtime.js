@@ -7,6 +7,7 @@ var helpers = require('./bin/helpers')();
 var Fanpage = require('./models/fanpage');
 var Feed = require('./models/feed');
 var Photo = require('./models/photo');
+var Album = require('./models/album');
 var Video = require('./models/video');
 var User = require('./models/user');
 var Update = require('./models/update');

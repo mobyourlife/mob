@@ -184,7 +184,7 @@ module.exports = function() {
                                 item.picture = item.source = safe_image(inner_object.source);
                             }
                             if (inner_object.images && inner_object.images.length != 0) {
-                                item.picture = safe_image(inner_object.images[0].source);
+                                item.picture = item.source = safe_image(inner_object.images[0].source);
                             }
                         }
 

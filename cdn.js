@@ -77,8 +77,8 @@ cdn = function() {
     
     Feed.find({ "cdn": null }, function(err, records) {
         records.forEach(function(item) {
-            if (item.picture != null || item.source != null) {
-                var uri = (item.picture != null ? item.picture : item.source);
+            if (item.source != null) {
+                var uri = item.source;
                 var dest = 'feeds/' + item.id;
                 up2cdn(uri, dest, function(cdnuri) {
                     item.cdn = cdnuri;

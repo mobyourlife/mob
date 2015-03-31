@@ -212,7 +212,10 @@ module.exports = function() {
     
     var formatLineBreaks = function(s) {
         if (s) {
-            return s.replace('\n', '<br/>');
+            while (s.indexOf('\n') != -1) {
+                s = s.replace('\n', '<br/>');
+            }
+            return s;
         }
     }
     

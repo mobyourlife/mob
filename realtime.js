@@ -138,7 +138,11 @@ module.exports = function() {
                 photo.source = safe_image(p.source);
                 photo.time = p.updated_time;
                 photo.name = p.name;
-                photo.album_id = p.album.id;
+                
+                if (p.album) {
+                    photo.album_id = p.album.id;
+                    fetchAlbum(token, page_id, p.album.id);
+                }
 
                 if (p.images && p.images.length != 0) {
                     photo.source = safe_image(p.images[0].source);

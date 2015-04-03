@@ -543,8 +543,16 @@ $(document).ready(function() {
             }
         });
     });
-    
-    $('img').on('error', function() {
-        $(this).hide();
-    });
 });
+
+function imageFailed(imgid) {
+    console.log('Falhou imagem ' + imgid);
+    var $parent = $('.feed[data-imgid="' + imgid + '"]');
+    $parent.find('img').hide();
+    
+    console.log($parent.find('div.timeline-body'));
+    
+    if ($parent.find('div.timeline-body').length === 0) {
+        $parent.hide();
+    }
+}

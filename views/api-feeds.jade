@@ -18,11 +18,11 @@ each f in feeds
                     default
                         a(href=f.link, target='_blank')
                             if f.cdn
-                                img.validate-image(src=f.cdn)
+                                img.validate-image(src=f.cdn, onerror='imageFailed("' + f.id + '");')
                             else if f.source
                                 img(src=f.source, onerror='imageFailed("' + f.id + '");')
                             else
-                                img.validate-image(src=f.picture)
+                                img.validate-image(src=f.picture, onerror='imageFailed("' + f.id + '");')
             if f.name || f.message || f.description
                 div.timeline-body
                     p

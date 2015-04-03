@@ -543,4 +543,8 @@ $(document).ready(function() {
             }
         });
     });
+    
+    $('img').on('error', function() {
+        $(this).hide();
+    });
 });

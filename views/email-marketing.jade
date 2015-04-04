@@ -1,0 +1,70 @@
+font(face='Arial,Helvetica,Tahoma,Verdana')
+    table(width='100%')
+        thead
+            tr
+                td(width='25%')
+                    img(src=fanpage.facebook.picture)
+                td(width='75%')
+                    p(align='center')
+                        font(size='5em')
+                            strong #{fanpage.facebook.name}
+        tbody
+            tr
+                td(colspan='2')
+                    p &nbsp;
+            tr
+                td(colspan='2')
+                    p Olá! Confira as novidades do nosso site. Acesse 
+                        a(href='http://' + fanpage.url, target='_blank') #{fanpage.url}
+                        |  agora!
+            each f in feeds
+                tr
+                    td(colspan='2')
+                        p &nbsp;
+                tr
+                    td(colspan='2')
+                        case f.type
+                            when 'video'
+                                - var video = f.link
+                                - video = video.replace('m.youtube.com/watch?v=', 'youtube.com/embed/')
+                                - video = video.replace('youtube.com/watch?v=', 'youtube.com/embed/')
+                                - video = video.replace('facebook.com/video.php?v=', 'facebook.com/video/embed?video_id=')
+                                div.embed-responsive.embed-responsive-16by9
+                                    iframe.embed-responsive-item(src=video)
+                            default
+                                p
+                                    if f.cdn
+                                        img(src=f.cdn, alt='Mob Your Life', style='max-height: 200px')
+                                    else if f.source
+                                        img(src=f.source, alt='Mob Your Life', style='max-height: 200px')
+                                    else
+                                        img(src=f.picture, alt='Mob Your Life', style='max-height: 200px')
+                        p
+                            if f.name
+                                strong #{f.name}
+                                br
+                            if f.description
+                                - var description = f.description.replace('\n', ' ')
+                                span!= description
+                            if !f.description && f.message
+                                - var message = f.message.replace('\n', ' ')
+                                span!= message
+                        p
+                            case f.type
+                                when 'video'
+                                    a(href=f.link) Clique aqui para assistir o vídeo!
+                                default
+                                    a(href=f.link) Clique aqui para continuar lendo!
+        tfoot
+            tr
+                td(colspan='2')
+                    p &nbsp;
+            tr
+                td(colspan='2')
+                    hr
+            tr
+                td(colspan='2')
+                    p Powered by  
+                        a(href='https://www.mobyourlife.com.br', target='_blank') Mob Your Life
+                        sup &copy;
+                        |  2013-2015 - Todos os direitos reservados

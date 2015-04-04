@@ -953,6 +953,15 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
         res.redirect(req.headers.referer);
     });
     
+    // geração do email marketing
+    app.get('/email-marketing/:id', function(req, res) {
+        Fanpage.findOne({ _id: req.params.id }, function(err, fanpage) {
+            Feed.find({ ref: req.params.id, time: { $gte: moment().add(-1, 'months').format('YYYY-MM-DD hh:mm:ss') }}).sort({ likes_count: -1, shares_count: -1 }).limit(8).exec(function(err, feeds) {
+                res.render('email-marketing', { fanpage: fanpage, feeds: feeds });
+            });
+        });
+    });
+    
     // api para gerenciar álbuns
     app.post('/api/set-album', function(req, res) {
         if (req.isAuthenticated()) {

@@ -18,7 +18,9 @@ var feedSchema = mongoose.Schema({
     description: String,
     message: String,
     object_id: String,
-    cdn: String
+    cdn: String,
+    shares_count: Number,
+    likes_count: Number
 });
 
 // export user model

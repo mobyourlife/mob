@@ -269,7 +269,7 @@ module.exports = function() {
     }
     
     var fetchFeed = function(token, page_id, post_id, rtu_id) {
-        FB.api('/v2.2/' + post_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'updated_time', 'story', 'picture', 'source', 'link', 'type', 'name', 'caption', 'description', 'message', 'object_id', 'actions'] }, function(f) {
+        FB.api('/v2.2/' + post_id, { access_token: token, locale: 'pt_BR', fields: ['id', 'updated_time', 'story', 'picture', 'source', 'link', 'type', 'name', 'caption', 'description', 'message', 'object_id', 'actions', 'shares', 'likes'] }, function(f) {
             if (f.error) {
                 checkAsError(rtu_id, f.error, token);
             } else {
@@ -280,6 +280,8 @@ module.exports = function() {
                 feed.story = f.story;
                 feed.picture = safe_image(f.picture);
                 feed.source = safe_image(f.source);
+                feed.shares_count = (f.shares ? f.shares.count : 0);
+                feed.likes_count = (f.likes && f.likes.data ? f.likes.data.length : 0);
                 
                 if (f.type === 'status' && f.actions) {
                     feed.link = f.actions[0].link;

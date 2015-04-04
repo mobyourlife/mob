@@ -115,7 +115,7 @@ module.exports = function() {
 
     // fetch feed function
     var fetchFeed = function(fanpage, direction, cursor, last) {
-        var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'message', 'object_id', 'source', 'actions'] };
+        var args = { locale: 'pt_BR', limit: 25, fields: ['id', 'story', 'picture', 'link', 'updated_time', 'type', 'name', 'caption', 'description', 'message', 'object_id', 'source', 'actions', 'shares', 'likes'] };
 
         if (direction && cursor) {
 
@@ -165,6 +165,8 @@ module.exports = function() {
                         item.story = row.story;
                         item.picture = safe_image(row.picture);
                         item.source = row.source;
+                        item.shares_count = (row.shares ? row.shares.count : 0);
+                        item.likes_count = (row.likes && row.likes.data ? row.likes.data.length : 0);
                         
                         if (row.type === 'status' && row.actions) {
                             item.link = row.actions[0].link;

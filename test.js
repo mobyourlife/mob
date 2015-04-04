@@ -1,9 +1,11 @@
+var https = require('https');
 var FB = require('fb');
 var auth = require('./config/auth');
 var RTU = require('./realtime')();
 var sync = require('./sync')();
 var email = require('./bin/email')();
 var Fanpage = require('./models/fanpage');
+var Mailing = require('./models/mailing');
 
 // connect to database
 var mongoose = require('mongoose');
@@ -225,6 +227,52 @@ if (process.argv.length >= 3) {
                 var page_id = process.argv[3].toString();
                 email.montarEmail(page_id, function(html, user_email) {
                     email.enviarEmail('Mob Your Life', 'nao-responder@mobyourlife.com.br', 'Bem-vindo ao Mob Your Life', html, user_email);
+                });
+            }
+            break;
+        
+        /* send email marketing */
+        case 'emailmkt':
+            if (process.argv.length >= 4) {
+                var page_id = process.argv[3].toString();
+                Fanpage.findOne({ _id: page_id }, function(err, fanpage) {
+                    if (fanpage && fanpage.facebook) {
+                        Mailing.find({ ref: page_id }, function(err, list) {
+                            if (list && list.length && list.length > 0 ) {
+                                console.log('Enviando mensagem para ' + list.length + ' emails.');
+                                var options = {
+                                    host: 'www.mobyourlife.com.br',
+                                    path: '/email-marketing/' + page_id
+                                }
+                                var request = https.request(options, function (res) {
+                                    var data = '';
+                                    res.on('data', function (chunk) {
+                                        data += chunk;
+                                    });
+                                    res.on('end', function () {
+                                        for(i = 0; i < list.length; i++) {
+                                            if (list[i].opted == true) {
+                                                email.enviarEmail(fanpage.facebook.name, fanpage.facebook.emails && fanpage.facebook.emails.length ? fanpage.facebook.emails[0] : null, fanpage.facebook.name + ' - Novidades do site', data, list[i].email, function() {
+                                                    console.log('Email enviado com sucesso!');
+                                                }, function(err) {
+                                                    console.log('Erro ao enviar email!');
+                                                });
+                                            }
+                                        }
+                                    });
+                                });
+                                request.on('error', function (e) {
+                                    console.log(e.message);
+                                });
+                                request.end();
+                            } else {
+                                console.log('Nenhum email na lista desta fanpage!');
+                                console.log
+                            }
+                        });
+                    } else {
+                        console.log('Fanpage inválida ' + page_id);
+                    }
                 });
             }
             break;

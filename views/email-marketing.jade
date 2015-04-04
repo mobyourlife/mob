@@ -28,7 +28,7 @@ font(face='Arial,Helvetica,Tahoma,Verdana')
                                 case f.type
                                     when 'video'
                                         if f.link.indexOf('facebook') != -1
-                                            img(src=f.picture, alt='Mob Your Life', style='max-height: 200px')
+                                            img(src=f.picture, alt='Mob Your Life', style='max-height: 200px', onerror='this.style.visibility="hidden";')
                                         else
                                             - var video = f.link
                                             - video = video.replace('m.youtube.com/watch?v=', 'img.youtube.com/vi/')
@@ -39,11 +39,11 @@ font(face='Arial,Helvetica,Tahoma,Verdana')
                                             img(src=video, alt='Mob Your Life', style='max-height: 200px')
                                     default
                                         if f.cdn
-                                            img(src=f.cdn, alt='Mob Your Life', style='max-height: 200px')
+                                            img(src=f.cdn, alt='Mob Your Life', style='max-height: 200px', onerror='this.style.visibility="hidden";')
                                         else if f.source
-                                            img(src=f.source, alt='Mob Your Life', style='max-height: 200px')
+                                            img(src=f.source, alt='Mob Your Life', style='max-height: 200px', onerror='this.style.visibility="hidden";')
                                         else
-                                            img(src=f.picture, alt='Mob Your Life', style='max-height: 200px')
+                                            img(src=f.picture, alt='Mob Your Life', style='max-height: 200px', onerror='this.style.visibility="hidden";')
                         p
                             if f.name
                                 strong #{f.name}

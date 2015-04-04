@@ -252,7 +252,8 @@ if (process.argv.length >= 3) {
                                     res.on('end', function () {
                                         for(i = 0; i < list.length; i++) {
                                             if (list[i].opted == true) {
-                                                email.enviarEmail(fanpage.facebook.name, fanpage.facebook.emails && fanpage.facebook.emails.length ? fanpage.facebook.emails[0] : null, fanpage.facebook.name + ' - Novidades do site', data, list[i].email, function() {
+                                                console.log('Enviando email para ' + list[i].email);
+                                                email.enviarEmail(fanpage.facebook.name, 'nao-responder@mobyourlife.com.br', fanpage.facebook.name + ' - Novidades do site', data, list[i].email, function() {
                                                     console.log('Email enviado com sucesso!');
                                                 }, function(err) {
                                                     console.log('Erro ao enviar email!');

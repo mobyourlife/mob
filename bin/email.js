@@ -45,11 +45,11 @@ module.exports = function() {
         
         // create reusable transporter object using SMTP transport 
         var transporter = nodemailer.createTransport({
-            host: 'mail.mobyourlife.com.br',
+            host: 'email-smtp.us-east-1.amazonaws.com',
             port: 587,
             auth: {
-                user: 'nao-responder@mobyourlife.com.br',
-                pass: '#X0ScRC%(FVN=C0'
+                user: 'AKIAJTGWWHSDOUHLWDYA',
+                pass: 'ApqfKmIODVtNcGh8YJlpi8Gj4qh912/mnmNIEl3FNARi'
             }
         });
 

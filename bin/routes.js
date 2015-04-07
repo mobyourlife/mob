@@ -71,7 +71,8 @@ var topMenu = [
             { path: 'conheca', text: 'Conheça' },
             //{ path: 'como-funciona', text: 'Como Funciona' },
             { path: 'precos', text: 'Preços' },
-            { path: 'duvidas-frequentes', text: 'Dúvidas' },
+            //{ path: 'duvidas-frequentes', text: 'Dúvidas' },
+            { url: 'http://suporte.mobyourlife.com.br/hc', text: 'Central de Ajuda' },
             { path: 'contato', text: 'Contato' }
         ];
 

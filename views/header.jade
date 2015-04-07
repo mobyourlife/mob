@@ -21,8 +21,12 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
             ul.nav.navbar-nav
                 if menu
                     each m in menu
-                        li(class=m.path === link ? 'active' : undefined, id='menu_' + m.path)
-                            a(href='/' + m.path) #{m.text}
+                        if m.url
+                            li
+                                a(href=m.url, target='_blank') #{m.text}
+                        else
+                            li(class=m.path === link ? 'active' : undefined, id='menu_' + m.path)
+                                a(href='/' + m.path) #{m.text}
             
             if !fanpage
                 div.navbar-form.navbar-right

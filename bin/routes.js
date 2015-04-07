@@ -1012,7 +1012,6 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
     // api para sincronização de login
     app.get('/api/login', function(req, res) {
         if (req.isAuthenticated()) {
-            
             var parsed = new URL(req.headers.referer);
             Domain.findOne({ '_id': parsed.hostname }, function(err, found) {
                 if (found) {
@@ -1020,19 +1019,19 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                         if (found) {
                             for (i = 0; i < req.user.fanpages.length; i++) {
                                 if (req.user.fanpages[i].id == found._id) {
-                                    res.send({ auth: true, name: req.user.facebook.name, isowner: true });
+                                    res.send({ auth: true, uid: req.user._id, name: req.user.facebook.name, email: req.user.facebook.email, isowner: true });
                                     return;
                                 }
                             }
                             
                             /* não é o dono quem está acessando */
-                            res.send({ auth: true, name: req.user.facebook.name, isowner: false });
+                            res.send({ auth: true, uid: req.user._id, name: req.user.facebook.name, email: req.user.facebook.email, isowner: false });
                         } else {
-                            res.send({ auth: true, name: req.user.facebook.name, isowner: false });
+                            res.send({ auth: true, uid: req.user._id, name: req.user.facebook.name, email: req.user.facebook.email, isowner: false });
                         }
                     });
                 } else {
-                    res.send({ auth: true, name: req.user.facebook.name, isowner: false });
+                    res.send({ auth: true, uid: req.user._id, name: req.user.facebook.name, email: req.user.facebook.email, isowner: false });
                 }
             });
             

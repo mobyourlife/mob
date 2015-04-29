@@ -89,7 +89,7 @@ $(document).ready(function() {
         
         $container.activity();
         
-        $.get('/api/feeds' + compl, function(data) {
+        $.get('https://www.mobyourlife.com.br/api/feeds' + compl, function(data) {
             if (data) {
                 var $items = $(data);
                 for (i = 0; i < $items.length; i++) {
@@ -146,7 +146,7 @@ $(document).ready(function() {
         
         $fotos.activity();
         
-        $.get('/api/fotos' + (album && album != 'fotos' ? '-' + album : '') + compl, function(data) {
+        $.get('https://www.mobyourlife.com.br/api/fotos' + (album && album != 'fotos' ? '-' + album : '') + compl, function(data) {
             if (data) {
                 if (data.fotos) {
                     data.fotos.forEach(function(f) {
@@ -204,7 +204,7 @@ $(document).ready(function() {
         
         $videos.activity();
         
-        $.get('/api/videos' + compl, function(data) {
+        $.get('https://www.mobyourlife.com.br/api/videos' + compl, function(data) {
             if (data) {
                 console.log(data);
                 if (data.videos) {

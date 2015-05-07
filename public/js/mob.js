@@ -1,3 +1,5 @@
+var $csrf_token = '';
+
 $(document).ready(function() {
     moment.locale('pt-br');
     
@@ -70,6 +72,7 @@ $(document).ready(function() {
             }
             
             $('.field-name').text(res.name);
+            $csrf_token = res.csrf;
         }
     });
     
@@ -531,6 +534,7 @@ $(document).ready(function() {
                 dataType: 'json',
                 xhrFields: { withCredentials: true },
                 data: {
+                    _csrf: $csrf_token,
                     album_id: album_id,
                     special_type: special_type
                 }

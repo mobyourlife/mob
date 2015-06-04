@@ -21,8 +21,9 @@ block content
             li.text-primary
                 strong #{fanpage.facebook.name}
             li.text-info #{fanpage.facebook.category}
-            each c in fanpage.facebook.category_list
-                li #{c.name}
+            if fanpage.facebook.category_list
+                each c in fanpage.facebook.category_list
+                    li #{c.name}
         
         div(style='text-align:justify;')
             p!= fanpage.facebook.about

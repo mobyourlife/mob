@@ -218,6 +218,13 @@ $(document).ready(function() {
                             }
                             
                             var link = f.link;
+                            var regfb = /facebook.com\/[0-9]+\/videos\/([0-9]+)\/?/;
+                            var testfb = regfb.exec(link);
+                            
+                            if (testfb && testfb.length == 2) {
+                                link = 'https://www.facebook.com/video.php?v=' + testfb[1];
+                            }
+                            
                             link = link.replace('m.youtube.com/watch?v=', 'youtube.com/embed/');
                             link = link.replace('youtube.com/watch?v=', 'youtube.com/embed/');
                             link = link.replace('facebook.com/video.php?v=', 'facebook.com/video/embed?video_id=');

@@ -93,6 +93,7 @@ block content
                             if fanpage.facebook.place.phone
                                 abbr(title='Telefone comercial') F:
                                 |  #{fanpage.facebook.place.phone}
-                        address
-                            each e in fanpage.facebook.emails
-                                a(href='mailto:' + e) #{e}
+                        if fanpage.facebook.emails
+                            address
+                                each e in fanpage.facebook.emails
+                                    a(href='mailto:' + e) #{e}

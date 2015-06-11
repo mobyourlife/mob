@@ -121,7 +121,11 @@ var fanpageSchema = mongoose.Schema({
         expiration: Date
     },
     video_count: Number,
-    url: String
+    url: String,
+    custom: {
+        display_name: String,
+        about_page: String
+    }
 });
 
 // export user model

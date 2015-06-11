@@ -103,8 +103,9 @@ validateSubdomain = function(uri, res, callbackTop, callbackSubdomain) {
                             Album.find({ ref: fanpage._id, special: 'page' }, function(err, albums) {
                             
                                 var menu = Array();
+                                var about_page = (fanpage && fanpage.custom && fanpage.custom.about_page && fanpage.custom.about_page.length != 0) ? fanpage.custom.about_page : 'Sobre';
                                 menu.push({ path: 'inicio', text: 'Início' });
-                                menu.push({ path: 'sobre', text: 'Sobre' });
+                                menu.push({ path: 'sobre', text: about_page });
 
                                 for (i = 0; i < found.length; i++) {
                                     menu.push({ path: found[i].path, text: found[i].title });

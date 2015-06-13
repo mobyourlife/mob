@@ -9,12 +9,16 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
             a.navbar-brand#brand(href='/')
                 if fanpage
                     span
-                        if fanpage.facebook.cdn
-                            img.icon(src=fanpage.facebook.cdn, alt=fanpage.facebook.name)
+                        if fanpage.logo && fanpage.logo.path && fanpage.logo.width
+                            img.icon(src=fanpage.logo.path, style='width:' + fanpage.logo.width + 'px;height:auto;', alt=fanpage.facebook.name)
                         else
-                            img.icon(src=fanpage.facebook.picture, alt=fanpage.facebook.name)
-                    span
-                        | #{fanpage.custom.display_name}
+                            if fanpage.facebook.cdn
+                                img.icon(src=fanpage.facebook.cdn, alt=fanpage.facebook.name)
+                            else
+                                img.icon(src=fanpage.facebook.picture, alt=fanpage.facebook.name)
+                    if !fanpage.logo || !fanpage.logo.hide_title
+                        span
+                            | #{fanpage.custom.display_name}
                 else
                     img(src='/img/logo.png', alt='Mob Your Life')
         div.collapse.navbar-collapse

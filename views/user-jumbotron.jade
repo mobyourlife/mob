@@ -3,7 +3,8 @@ if fanpage.cover && fanpage.cover.path
     div.jumbotron#jumbotron(style='background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;')
 else
     div.jumbotron#jumbotron
-        div.container
+        - var jumboMargin = ((fanpage.logo && fanpage.logo.path && fanpage.logo.width) ? 'padding-left:' + (fanpage.logo.width * 1.2) + 'px' : '')
+        div.container(style=jumboMargin)
             if title
                 h1.hidden-xs #{title}
                 h2.visible-xs #{title}

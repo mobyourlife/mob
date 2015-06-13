@@ -200,9 +200,7 @@
       clear: left;
     }
     ul.timeline > li > .timeline-panel {
-        width: calc(100% - 90px);
-        width: -moz-calc(100% - 90px);
-        width: -webkit-calc(100% - 90px);
+        width: 100%;
     }
 
     ul.timeline > li > .timeline-badge {

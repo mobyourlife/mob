@@ -182,7 +182,23 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 res.render('index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, menu: menu, pageCount: page_count });
             });
         }, function(userFanpage, menu) {
-            res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+            Album.findOne({ 'ref': userFanpage._id, 'special': 'banner' }, function(err, album) {
+                if (err) {
+                    throw err;
+                }
+                
+                if (album) {
+                    Photo.find({ 'album_id': album._id }, function(err, photos) {
+                        var slides = [];
+                        for (var i = 0; i < photos.length; i++) {
+                            slides.push(photos[i].source);
+                        }
+                        res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu, slides: slides });
+                    });
+                } else {
+                    res.render('user-index', { link: 'inicio', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, menu: menu });
+                }
+            });
         });
     });
     

@@ -1,22 +1,45 @@
 //- Jumbotron
-if fanpage.cover && fanpage.cover.path
-    div.jumbotron#jumbotron(style='background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;')
+if slides && slides.length > 0
+    div#mySlides.carousel.slide(data-ride='carousel', data-interval='10000')
+        ol.carousel-indicators
+            - var i = 0
+            each si in slides
+                - i++
+                li(data-target='#mySlides' data-slide-to=i, class=(i == 1 ? 'active' : ''))
+        
+        div.carousel-inner(role='listbox', style='height:' + (fanpage.cover && fanpage.cover.height ? fanpage.cover.height : 350) + 'px;')
+            - var j = 0
+            each sj in slides
+                - j++
+                div.item(class=(j == 1 ? 'active' : ''), style='height:100%;')
+                    div.fill(style='background-image: url("' + sj + '");')
+        
+        a.left.carousel-control(href='#mySlides', role='button', data-slide='prev')
+            span.fa.fa-chevron-left(aria-hidden='true', style='position: absolute; top: 40%;')
+            span.sr-only Anterior
+        
+        a.right.carousel-control(href='#mySlides', role='button', data-slide='next')
+            span.fa.fa-chevron-right(aria-hidden='true', style='position: absolute; top: 40%;')
+            span.sr-only Próximo
 else
-    div.jumbotron#jumbotron
-        - var jumboMargin = ((fanpage.logo && fanpage.logo.path && fanpage.logo.width) ? 'padding-left:' + (fanpage.logo.width * 1.2) + 'px' : '')
-        div.container(style=jumboMargin)
-            if title
-                h1.hidden-xs #{title}
-                h2.visible-xs #{title}
-            else if fanpage.facebook.about
-                h2.hidden-xs #{fanpage.facebook.about}
-                h3.visible-xs #{fanpage.facebook.about}
-            else if fanpage.facebook.description
-                h2.hidden-xs #{fanpage.facebook.description}
-                h3.visible-xs #{fanpage.facebook.description}
-            else
-                h2.hidden-xs Seja bem-vindo!
-                h3.visible-xs Seja bem-vindo!
-                p.isowner
-                    strong Dica:
-                    | Você pode adicionar uma mensagem aqui editando a descrição curta de sua fanpage, ou então, pode adicionar uma foto de capa através do seu painel.
+    if fanpage.cover && fanpage.cover.path
+        div.jumbotron#jumbotron(style='background-image: url("/uploads/' + fanpage.cover.path + '"); height: ' + fanpage.cover.height + 'px;')
+    else
+        div.jumbotron#jumbotron
+            - var jumboMargin = ((fanpage.logo && fanpage.logo.path && fanpage.logo.width) ? 'padding-left:' + (fanpage.logo.width * 1.2) + 'px' : '')
+            div.container(style=jumboMargin)
+                if title
+                    h1.hidden-xs #{title}
+                    h2.visible-xs #{title}
+                else if fanpage.facebook.about
+                    h2.hidden-xs #{fanpage.facebook.about}
+                    h3.visible-xs #{fanpage.facebook.about}
+                else if fanpage.facebook.description
+                    h2.hidden-xs #{fanpage.facebook.description}
+                    h3.visible-xs #{fanpage.facebook.description}
+                else
+                    h2.hidden-xs Seja bem-vindo!
+                    h3.visible-xs Seja bem-vindo!
+                    p.isowner
+                        strong Dica:
+                        | Você pode adicionar uma mensagem aqui editando a descrição curta de sua fanpage, ou então, pode adicionar uma foto de capa através do seu painel.

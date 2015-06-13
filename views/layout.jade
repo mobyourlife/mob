@@ -16,7 +16,10 @@ html
         link(rel='icon', href='/favicon.ico')
         link(rel='stylesheet', href='/css/bootstrap.min.css')
         if fanpage && fanpage.theme
-            link(rel='stylesheet', href=fanpage.theme.css, id='mob-theme')
+            if fanpage.theme.colour
+                link(rel='stylesheet', href='/css/schemes/' + fanpage.theme.colour + '.css', id='mob-theme')
+            else
+                link(rel='stylesheet', href=fanpage.theme.css, id='mob-theme')
         if fanpage
             link(rel='stylesheet', href='/css/bootstrap-tour.min.css')
         link(rel='stylesheet', href='/css/docs.min.css')

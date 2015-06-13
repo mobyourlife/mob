@@ -10,7 +10,11 @@ var fanpageSchema = mongoose.Schema({
     _id: String,
     theme: {
         css: String,
-        navbar: String
+        navbar: String,
+        
+        /* new theme fields */
+        name: String,
+        colour: String
     },
     cover: {
         path: String,

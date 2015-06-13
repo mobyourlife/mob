@@ -36,6 +36,10 @@ body {
 .icon-small {
   display: none; }
 
+@media (max-width: 768px) {
+  .icon-big {
+    margin-left: 0 !important; } }
+
 .jumbotron {
   background-repeat: no-repeat;
   background-size: cover;

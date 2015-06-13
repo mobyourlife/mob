@@ -564,6 +564,16 @@ $(document).ready(function() {
     });
 });
 
+$('.navbar-collapse').on('show.bs.collapse', function() {
+    $('.icon-big').hide();
+    $('.icon-small').fadeIn();
+});
+
+$('.navbar-collapse').on('hide.bs.collapse', function() {
+    $('.icon-small').hide();
+    $('.icon-big').fadeIn();
+});
+
 function imageFailed(imgid) {
     var $parent = $('.feed[data-imgid="' + imgid + '"]');
     $parent.find('img').hide();

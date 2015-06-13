@@ -10,13 +10,20 @@ div.navbar.navbar-fixed-top(role='navigation', class=themeNavBar)
                 if fanpage
                     span
                         if fanpage.logo && fanpage.logo.path && fanpage.logo.width
-                            img.icon(src=fanpage.logo.path, style='width:' + fanpage.logo.width + 'px;height:auto;' + (fanpage.logo.margin ? 'margin-left:' + fanpage.logo.margin + 'px;' : ''), alt=fanpage.facebook.name)
+                            img.icon.icon-big(src=fanpage.logo.path, style='width:' + fanpage.logo.width + 'px;height:auto;' + (fanpage.logo.margin ? 'margin-left:' + fanpage.logo.margin + 'px;' : ''), alt=fanpage.facebook.name)
+                            if fanpage.facebook.cdn
+                                img.icon.icon-small(src=fanpage.facebook.cdn, alt=fanpage.facebook.name)
+                            else
+                                img.icon.icon-small(src=fanpage.facebook.picture, alt=fanpage.facebook.name)
                         else
                             if fanpage.facebook.cdn
                                 img.icon(src=fanpage.facebook.cdn, alt=fanpage.facebook.name)
                             else
                                 img.icon(src=fanpage.facebook.picture, alt=fanpage.facebook.name)
-                    if !fanpage.logo || !fanpage.logo.hide_title
+                    if fanpage.logo && fanpage.logo.hide_title
+                        span.icon-small
+                            | #{fanpage.custom.display_name}
+                    else
                         span
                             | #{fanpage.custom.display_name}
                 else

@@ -11,6 +11,14 @@ $(document).ready(function() {
         } else {
             $('#toTop').fadeOut();
         }
+        
+        if ($(this).scrollTop() > 75) {
+            $('.icon-big').hide();
+            $('.icon-small').fadeIn();
+        } else {
+            $('.icon-small').hide();
+            $('.icon-big').fadeIn();
+        }
     });
     $('#toTop').click(function() {
         $("html, body").animate({ scrollTop: 0 }, 600);

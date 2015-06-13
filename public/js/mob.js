@@ -4,7 +4,7 @@ $(document).ready(function() {
     moment.locale('pt-br');
     
     // back top button
-    $('body').append('<div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span> Voltar ao topo</div>');
+    $('body').append('<div id="toTop" class="btn btn-info"><span class="fa fa-chevron-up"></span> Voltar ao topo</div>');
     $(window).scroll(function () {
         if ($(this).scrollTop() != 0) {
             $('#toTop').fadeIn();
@@ -358,7 +358,7 @@ $(document).ready(function() {
         $('.jumbotron').css('background-image', 'url("' + url + '")');
         
         if (!$('.jumbotron').hasClass('adjustable')) {
-            $('.jumbotron').empty().append('<div id="adjustable"><a id="resizeCover" class="btn btn-info fa-2x glyphicon glyphicon-resize-vertical" title="Clique e arraste para redimensionar"></a> <a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk" title="Salvar a capa atual"></a>  <a id="cancelCover" class="btn btn-danger fa-2x resize glyphicon glyphicon-remove" title="Cancelar"></a></div>');
+            $('.jumbotron').empty().append('<div id="adjustable"><a id="resizeCover" class="btn btn-info fa-2x fa fa-arrows-v" title="Clique e arraste para redimensionar"></a> <a id="saveCover" class="btn btn-success fa-2x resize fa fa-floppy-o" title="Salvar a capa atual"></a>  <a id="cancelCover" class="btn btn-danger fa-2x resize fa fa-times" title="Cancelar"></a></div>');
             $('.jumbotron').addClass('adjustable');
             
             var handleResizeStart = function(clientY) {
@@ -425,7 +425,7 @@ $(document).ready(function() {
         $('.jumbotron').css('background-image', '');
         
         if (!$('.jumbotron').hasClass('adjustable')) {
-            $('.jumbotron').empty().append('<div id="adjustable"><a id="saveCover" class="btn btn-success fa-2x resize glyphicon glyphicon-floppy-disk" title="Salvar a capa atual"></a> <a id="cancelCover" class="btn btn-danger fa-2x resize glyphicon glyphicon-remove" title="Cancelar"></a></div>');
+            $('.jumbotron').empty().append('<div id="adjustable"><a id="saveCover" class="btn btn-success fa-2x resize fa fa-floppy-o" title="Salvar a capa atual"></a> <a id="cancelCover" class="btn btn-danger fa-2x resize fa fa-times" title="Cancelar"></a></div>');
             $('.jumbotron').addClass('adjustable');
 
             $('#saveCover').click(function() {

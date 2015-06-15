@@ -1,6 +1,7 @@
 /* jslint node: true */
 
 var express = require('express');
+var compression = require('compression');
 var expressValidator = require('express-validator');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -93,6 +94,7 @@ var csrfProtection = csrf({ cookie: true });
 var parseForm = bodyParser.urlencoded({ extended: false });
 
 // setup passport
+app.use(compression());
 app.use(cookieParser());
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch', store: new MongoStore({ mongooseConnection: mongoose.connection })})); // session secret and store
 app.use(passport.initialize());

@@ -135,7 +135,12 @@ var fanpageSchema = mongoose.Schema({
     custom: {
         display_name: String,
         about_page: String
-    }
+    },
+    ratings: [{
+        reviewer: String,
+        rating: Number
+    }],
+    ratings_average: Number
 });
 
 // export user model

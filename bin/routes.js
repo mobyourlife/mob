@@ -468,6 +468,15 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 value: userFanpage.facebook.stats.likes
             });
             
+            /* avaliações */
+            if (userFanpage.ratings && userFanpage.ratings_average) {
+                hotInfo.push({
+                    icon: "fa-star-o",
+                    label: "Avaliação geral",
+                    value: userFanpage.ratings_average.toFixed(1).replace('.', ',')
+                });
+            }
+            
             /* fundação da empresa */
             if (userFanpage.facebook.info.company && userFanpage.facebook.info.company.founded) {
                 hotInfo.push({
@@ -519,7 +528,7 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
             } else if (hotInfo.length === 2) {
                 var hotInfoClass = 'col-md-6 col-sm-6 col-xs-12';
             } else {
-                var hotInfoClass = 'col-md-4 col-sm-4 col-xs-12';
+                var hotInfoClass = 'col-md-3 col-sm-3 col-xs-12';
             }
             
             res.render('user-sobre', { link: 'sobre', auth: req.isAuthenticated(), user: req.user, fanpage: userFanpage, hotInfo: hotInfo, hotInfoClass: hotInfoClass, menu: menu });

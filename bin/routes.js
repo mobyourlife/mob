@@ -527,6 +527,8 @@ module.exports = function(app, RTU, passport, FB, SignedRequest, csrfProtection,
                 var hotInfoClass = 'col-md-12 col-sm-12 col-xs-12';
             } else if (hotInfo.length === 2) {
                 var hotInfoClass = 'col-md-6 col-sm-6 col-xs-12';
+            } else if (hotInfo.length === 3) {
+                var hotInfoClass = 'col-md-4 col-sm-4 col-xs-12';
             } else {
                 var hotInfoClass = 'col-md-3 col-sm-3 col-xs-12';
             }

@@ -23,14 +23,14 @@ body {
   display: inline; }
 
 .navbar-brand {
-  margin-top: -6px; }
+  margin-top: -10px; }
   .navbar-brand img.icon {
-    width: 32px;
-    height: 32px;
+    width: auto;
+    height: 40px;
     margin-right: 10px; }
   .navbar-brand > span {
     float: left;
-    line-height: 32px;
+    line-height: 40px;
     vertical-align: middle; }
 
 .icon-small {

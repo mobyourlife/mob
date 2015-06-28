@@ -37,17 +37,17 @@ body {
 }
 
 .navbar-brand {
-    margin-top: -6px;
+    margin-top: -10px;
 
     & img.icon {
-        width: 32px;
-        height: 32px;
+        width: auto;
+        height: 40px;
         margin-right: 10px;
     }
 
     & > span {
         float: left;
-        line-height: 32px;
+        line-height: 40px;
         vertical-align: middle;
     }
 }

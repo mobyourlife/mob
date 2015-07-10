@@ -1,4 +1,5 @@
 /* jslint node: true */
+require('pmx').init();
 
 var express = require('express');
 var compression = require('compression');
